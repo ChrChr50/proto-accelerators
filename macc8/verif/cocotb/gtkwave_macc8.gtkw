@@ -1,0 +1,42 @@
+[*]
+[*] GTKWave save file for MACC-8 (open with: make WAVES=1 then gtkwave macc8.fst gtkwave_macc8.gtkw)
+[*] Signal paths assume the Verilator FST top wrapper 'TOP.macc8_top'.
+[*] If your dump uses a different top hierarchy, drag signals in manually.
+[*]
+[dumpfile] "macc8.fst"
+[savefile] "gtkwave_macc8.gtkw"
+[timestart] 0
+[size] 1600 900
+@28
+TOP.macc8_top.clk
+TOP.macc8_top.rst_n
+@200
+-serial
+@28
+TOP.macc8_top.act_valid
+TOP.macc8_top.act_ready
+@22
+TOP.macc8_top.act_data[7:0]
+@200
+-regbus
+@28
+TOP.macc8_top.reg_write
+@22
+TOP.macc8_top.reg_addr[7:0]
+TOP.macc8_top.reg_wdata[31:0]
+TOP.macc8_top.reg_rdata[31:0]
+@200
+-status
+@28
+TOP.macc8_top.busy
+TOP.macc8_top.done
+@22
+TOP.macc8_top.u_datapath.acc_q[31:0]
+@28
+TOP.macc8_top.u_datapath.ovf_q
+@200
+-fsm
+@22
+TOP.macc8_top.u_fsm.state_q[1:0]
+[pattern_trace] 1
+[pattern_trace] 0

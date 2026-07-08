@@ -1,0 +1,6 @@
+cocotb>=1.9
+cocotb-bus
+numpy
+pytest
+volare
+openlane>=2.0

@@ -1,0 +1,41 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  lint-sim-formal:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install Python deps
+        run: pip install -r env/requirements.txt
+
+      - name: Install OSS-CAD-Suite tools
+        run: echo "TODO: install verible, verilator, sby via oss-cad-suite"
+
+      - name: Lint
+        run: make lint
+
+      - name: Simulate
+        run: make sim
+
+      - name: Formal
+        run: make formal
+
+  synth-nightly:
+    if: github.event_name == 'schedule'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fetch Sky130 PDK
+        run: make pdk
+      - name: Synthesize
+        run: make synth

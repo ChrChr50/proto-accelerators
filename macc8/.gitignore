@@ -1,0 +1,19 @@
+# tool outputs
+build/
+reports/
+pd/openlane/runs/
+pdk/
+verif/vectors/*
+!verif/vectors/.gitkeep
+sim_build/
+obj_dir/
+*.vcd
+*.fst
+*.log
+__pycache__/
+.venv/
+# PDK / big binaries
+*.gds
+*.lef
+*.def
+!**/tech/**  # keep tech LEFs if vendored

@@ -1,0 +1,33 @@
+{
+  "DESIGN_NAME": "macc8_top",
+  "VERILOG_FILES": [
+    "dir::../../rtl/macc8_pkg.sv",
+    "dir::../../rtl/macc8_reset_sync.sv",
+    "dir::../../rtl/macc8_mac_lane.sv",
+    "dir::../../rtl/macc8_adder_tree.sv",
+    "dir::../../rtl/macc8_accumulator.sv",
+    "dir::../../rtl/macc8_datapath.sv",
+    "dir::../../rtl/macc8_serial_rx.sv",
+    "dir::../../rtl/macc8_fsm.sv",
+    "dir::../../rtl/macc8_regfile.sv",
+    "dir::../../rtl/macc8_top.sv"
+  ],
+  "CLOCK_PORT": "clk",
+  "CLOCK_PERIOD": 10.0,
+  "PDK": "sky130A",
+  "STD_CELL_LIBRARY": "sky130_fd_sc_hd",
+
+  "SDC_FILE": "dir::../../constraints/macc8.sdc",
+
+  "FP_CORE_UTIL": 40,
+  "PL_TARGET_DENSITY_PCT": 55,
+  "FP_PDN_MULTILAYER": true,
+
+  "RUN_LINTER": true,
+  "QUIT_ON_LINTER_WARNINGS": false,
+  "QUIT_ON_SYNTH_CHECKS": true,
+
+  "//": "Package symbols are macc8_pkg:: scoped, so Yosys read_verilog handles the",
+  "//sv": "SystemVerilog directly; no slang/synlig plugin is required.",
+  "SYNTH_DEFINES": []
+}

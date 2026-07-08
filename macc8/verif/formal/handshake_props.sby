@@ -1,0 +1,17 @@
+# SymbiYosys proof of the MACC-8 serial-RX handshake properties (k-induction).
+# Run:  sby -f handshake_props.sby     (from verif/formal/)
+[options]
+mode prove
+depth 12
+
+[engines]
+smtbmc z3
+
+[script]
+read -formal macc8_pkg.sv macc8_serial_rx.sv macc8_props_rx.sv
+prep -top macc8_props_rx
+
+[files]
+../../rtl/macc8_pkg.sv
+../../rtl/macc8_serial_rx.sv
+macc8_props_rx.sv

@@ -1,0 +1,8 @@
+# Claude Code local tooling/config and working notes — not part of the portfolio repo
+.claude/
+
+# spent one-off delivery-drop folders (contents already migrated into their
+# destination projects; only PLACEMENT.md remains as a record)
+/files/
+/files (2)/
+/files (4)/
