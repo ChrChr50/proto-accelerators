@@ -11,7 +11,7 @@ help:            ## list targets
 
 lint:            ## Verible + Verilator lint
 	verible-verilog-lint --rules_config lint/.rules.verible_lint $$(cat $(RTL) | grep -v '^#')
-	verilator --lint-only -Wall -f $(RTL)
+	verilator --lint-only -Wall -f $(RTL) lint/verilator_lint.vlt
 
 sim:             ## cocotb + Verilator regression
 	$(MAKE) -C verif/cocotb SIM=verilator

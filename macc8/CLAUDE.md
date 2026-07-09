@@ -29,8 +29,11 @@ docs/int8_mac_design_spec.md and docs/int8_mac_block_diagram.md — read them fi
    wrap/saturate) and verif/cocotb/test_macc8.py (directed: zeros, one-hot,
    +/-127, -128*-128, multi-chunk accumulate, 4- vs 8-lane, overflow/sat;
    plus constrained-random checked against the golden model).
-4. Write verif/sva/ + verif/formal/props.sv properties (handshake stability,
-   start->done causality, one-hot FSM, no deadlock).
+4. Write formal properties as clocked immediate assertions guarded by a
+   past-valid flag (vanilla open-source Yosys doesn't parse inline-clocked
+   `assert property`) — see verif/formal/macc8_props_fsm.sv and
+   verif/formal/macc8_props_rx.sv, driven by fsm_props.sby / handshake_props.sby
+   (handshake stability, start->done causality, one-hot FSM, no deadlock).
 
 ## Verify each stage before moving on
 - `make lint`   -> Verible + Verilator clean (fix or justify-waive warnings).

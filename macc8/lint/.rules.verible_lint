@@ -1,2 +1,9 @@
 # Verible lint rule configuration — enabled/disabled rules.
 # See: verible-verilog-lint --help_rules
+#
+# Intentionally left at Verible's built-in defaults (this file has no active
+# rule lines) rather than guessing which rules to disable: no Verible binary
+# is available in this environment to validate rule names or see which
+# defaults actually fire against this RTL. Tune this after the first real
+# `make lint` run (see verif/formal or CI) surfaces genuine violations —
+# don't waive a rule preemptively without seeing what it flags.

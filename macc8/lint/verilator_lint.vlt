@@ -1,2 +1,12 @@
-// Verilator lint waiver file.
-// `lint_off -rule <RULE> -file "*/rtl/*.sv"` entries go here, each justified.
+// Verilator lint waiver file — passed to `verilator --lint-only` by the
+// top-level `make lint` target (see Makefile).
+//
+// These two waivers mirror the ones already used in the cocotb sim build
+// (verif/cocotb/Makefile EXTRA_ARGS: -Wno-DECLFILENAME -Wno-UNUSEDSIGNAL),
+// so `make lint` and `make sim` agree on what's an acceptable warning. Not
+// independently re-verified in this environment (no Verilator installed
+// here yet) — if a real run surfaces different or additional warnings,
+// update both this file and verif/cocotb/Makefile together.
+`verilator_config
+lint_off -rule DECLFILENAME -file "*/rtl/*.sv"
+lint_off -rule UNUSEDSIGNAL -file "*/rtl/*.sv"
