@@ -115,8 +115,9 @@ module macc8_regfile (
   logic [31:0] rdata_c;
   always_comb begin
     unique case (reg_addr)
+      // [6]lane_sel [3]auto_start [2]acc_en; pulse bits (start/acc_clr/done_clr/soft_rst) read 0
       ADDR_CTRL     : rdata_c = {25'd0, ctrl_lane_sel_q, 2'b00, ctrl_auto_start_q,
-                                 ctrl_acc_en_q, 2'b00}; // [6]lane_sel [3]auto [2]acc_en; pulses read 0
+                                 ctrl_acc_en_q, 2'b00};
       ADDR_STATUS   : rdata_c = {29'd0, acc_ovf, done_sticky_q, busy};   // [2]ovf [1]done [0]busy
       ADDR_CONFIG   : rdata_c = {29'd0, cfg_acc_sat_q, cfg_wt_signed_q, cfg_act_signed_q};
       ADDR_WEIGHTS0 : rdata_c = wt_q[0*WT_W +: 4*WT_W];

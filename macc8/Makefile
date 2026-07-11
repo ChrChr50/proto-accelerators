@@ -10,7 +10,7 @@ help:            ## list targets
 	@grep -E '^[a-z].*:.*##' $(MAKEFILE_LIST) | sed 's/:.*##/ -/'
 
 lint:            ## Verible + Verilator lint
-	verible-verilog-lint --rules_config lint/.rules.verible_lint $$(cat $(RTL) | grep -v '^#')
+	verible-verilog-lint --rules_config lint/.rules.verible_lint $$(cat $(RTL) | grep -vE '^#|^\+')
 	verilator --lint-only -Wall -f $(RTL) lint/verilator_lint.vlt
 
 sim:             ## cocotb + Verilator regression

@@ -12,6 +12,9 @@ obj_dir/
 *.log
 __pycache__/
 .venv/
+# cocotb / SymbiYosys run artifacts
+verif/cocotb/results.xml
+verif/formal/*/
 # PDK / big binaries
 *.gds
 *.lef

@@ -20,12 +20,20 @@ if [ -d "$REPO_ROOT/oss-cad-suite" ]; then
   OSS_CAD_SUITE_DIR="$REPO_ROOT/oss-cad-suite"
 fi
 
-if [ -f "$VENV_DIR/bin/activate" ]; then
-  source "$VENV_DIR/bin/activate"
-fi
-
+# Order matters: OSS-CAD-Suite's own environment script prepends its bundled
+# Python (with its own bundled cocotb) to PATH. Source it *before* activating
+# the venv, so the venv's `python3`/`cocotb-config` end up first on PATH and
+# win -- otherwise every cocotb run silently uses OSS-CAD-Suite's bundled
+# cocotb instead of the env/requirements.txt-pinned version, which is exactly
+# the version drift this venv exists to avoid. Learned the hard way 2026-07-11
+# (was resolving cocotb-config to oss-cad-suite/bin/cocotb-config, running
+# cocotb 2.1.0.dev0 instead of the pinned 1.9.2).
 if [ -d "$OSS_CAD_SUITE_DIR" ]; then
   source "$OSS_CAD_SUITE_DIR/environment"
+fi
+
+if [ -f "$VENV_DIR/bin/activate" ]; then
+  source "$VENV_DIR/bin/activate"
 fi
 
 # OSS-CAD-Suite doesn't bundle Verible; installed separately (see

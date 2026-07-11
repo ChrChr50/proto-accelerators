@@ -1,12 +1,21 @@
-// Verilator lint waiver file — passed to `verilator --lint-only` by the
+// Lint waiver file (for `verilator --lint-only`), passed in by the
 // top-level `make lint` target (see Makefile).
+//
+// NOTE: don't start any comment line in this file with the word "verilator"
+// (any case) -- Verilator's preprocessor treats that as a special pragma
+// comment trigger, not plain text, and errors out (BADVLTPRAGMA) if what
+// follows isn't a recognized pragma keyword. Learned the hard way 2026-07-11.
 //
 // These two waivers mirror the ones already used in the cocotb sim build
 // (verif/cocotb/Makefile EXTRA_ARGS: -Wno-DECLFILENAME -Wno-UNUSEDSIGNAL),
-// so `make lint` and `make sim` agree on what's an acceptable warning. Not
-// independently re-verified in this environment (no Verilator installed
-// here yet) — if a real run surfaces different or additional warnings,
-// update both this file and verif/cocotb/Makefile together.
+// so `make lint` and `make sim` agree on what's an acceptable warning.
+//
+// File glob note: use "*rtl/*.sv" (no leading slash after the first *), not
+// "*/rtl/*.sv" -- the latter requires a literal "/" immediately before "rtl",
+// which never matches the plain relative path "rtl/foo.sv" this Makefile's
+// `make lint` target actually passes (the "*" would have to match "" and
+// still be followed by "/rtl", but there's no leading slash on a relative
+// path). Confirmed working 2026-07-11 against Verilator 5.051-devel.
 `verilator_config
-lint_off -rule DECLFILENAME -file "*/rtl/*.sv"
-lint_off -rule UNUSEDSIGNAL -file "*/rtl/*.sv"
+lint_off -rule DECLFILENAME -file "*rtl/*.sv"
+lint_off -rule UNUSEDSIGNAL -file "*rtl/*.sv"
