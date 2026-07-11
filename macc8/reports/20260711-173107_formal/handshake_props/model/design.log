@@ -1,0 +1,397 @@
+
+ /----------------------------------------------------------------------------\
+ |  yosys -- Yosys Open SYnthesis Suite                                       |
+ |  Copyright (C) 2012 - 2026  Claire Xenia Wolf <claire@yosyshq.com>         |
+ |  Distributed under an ISC-like license, type "license" to see terms        |
+ \----------------------------------------------------------------------------/
+ Yosys 0.67+24 (git sha1 0e82bbefe, Release, Clang /usr/bin/clang++ 18.1.8)
+
+-- Executing script file `../model/design.ys' --
+
+1. Executing Verilog-2005 frontend: macc8_pkg.sv
+Parsing formal SystemVerilog input from `macc8_pkg.sv' to AST representation.
+Successfully finished Verilog frontend.
+
+2. Executing Verilog-2005 frontend: macc8_serial_rx.sv
+Parsing formal SystemVerilog input from `macc8_serial_rx.sv' to AST representation.
+Storing AST representation for module `$abstract\macc8_serial_rx'.
+Successfully finished Verilog frontend.
+
+3. Executing Verilog-2005 frontend: macc8_props_rx.sv
+Parsing formal SystemVerilog input from `macc8_props_rx.sv' to AST representation.
+Storing AST representation for module `$abstract\macc8_props_rx'.
+Successfully finished Verilog frontend.
+
+4. Executing PREP pass.
+
+4.1. Executing HIERARCHY pass (managing design hierarchy).
+
+4.2. Executing AST frontend in derive mode using pre-parsed AST for module `\macc8_props_rx'.
+Generating RTLIL representation for module `\macc8_props_rx'.
+
+4.2.1. Analyzing design hierarchy..
+Top module:  \macc8_props_rx
+
+4.2.2. Executing AST frontend in derive mode using pre-parsed AST for module `\macc8_serial_rx'.
+Generating RTLIL representation for module `\macc8_serial_rx'.
+
+4.2.3. Analyzing design hierarchy..
+Top module:  \macc8_props_rx
+Used module:     \macc8_serial_rx
+
+4.2.4. Analyzing design hierarchy..
+Top module:  \macc8_props_rx
+Used module:     \macc8_serial_rx
+Removing unused module `$abstract\macc8_props_rx'.
+Removing unused module `$abstract\macc8_serial_rx'.
+Removed 2 unused modules.
+Module macc8_props_rx directly or indirectly contains formal properties -> setting "keep" attribute.
+
+4.3. Executing PROC pass (convert processes to netlists).
+
+4.3.1. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Cleaned up 0 empty switches.
+
+4.3.2. Executing PROC_RMDEAD pass (remove dead branches from decision trees).
+Marked 3 switch rules as full_case in process $proc$macc8_serial_rx.sv:33$30 in module macc8_serial_rx.
+Marked 1 switch rules as full_case in process $proc$macc8_props_rx.sv:31$4 in module macc8_props_rx.
+Removed a total of 0 dead cases.
+
+4.3.3. Executing PROC_PRUNE pass (remove redundant assignments in processes).
+Removed 1 redundant assignment.
+Promoted 8 assignments to connections.
+
+4.3.4. Executing PROC_INIT pass (extract init attributes).
+Found init rule in `\macc8_props_rx.$proc$macc8_props_rx.sv:28$24'.
+  Set init value: \past_valid = 1'0
+
+4.3.5. Executing PROC_ARST pass (detect async resets in processes).
+Found async reset \rst_n in `\macc8_serial_rx.$proc$macc8_serial_rx.sv:33$30'.
+
+4.3.6. Executing PROC_ROM pass (convert switches to ROMs).
+Converted 0 switches.
+<suppressed ~4 debug messages>
+
+4.3.7. Executing PROC_MUX pass (convert decision trees to multiplexers).
+Creating decoders for process `\macc8_serial_rx.$proc$macc8_serial_rx.sv:33$30'.
+     1/7: $3$lookahead\act_regs_q$29[63:0]$40
+     2/7: $3$bitselwrite$pos$macc8_serial_rx.sv:40$25[31:0]$39
+     3/7: $2$lookahead\act_regs_q$29[63:0]$37
+     4/7: $2$bitselwrite$pos$macc8_serial_rx.sv:40$25[31:0]$36
+     5/7: $1$lookahead\act_regs_q$29[63:0]$35
+     6/7: $1$bitselwrite$pos$macc8_serial_rx.sv:40$25[31:0]$34
+     7/7: $0\cnt_q[3:0]
+Creating decoders for process `\macc8_props_rx.$proc$macc8_props_rx.sv:28$24'.
+Creating decoders for process `\macc8_props_rx.$proc$macc8_props_rx.sv:31$4'.
+     1/5: \a_consume_clears_EN
+     2/5: \a_ready_needs_en_EN
+     3/5: \a_full_blocks_EN
+     4/5: \a_ready_def_EN
+     5/5: \a_reset_empty_EN
+Creating decoders for process `\macc8_props_rx.$proc$macc8_props_rx.sv:29$3'.
+
+4.3.8. Executing PROC_DLATCH pass (convert process syncs to latches).
+
+4.3.9. Executing PROC_DFF pass (convert process syncs to FFs).
+Creating register for signal `\macc8_serial_rx.\cnt_q' using process `\macc8_serial_rx.$proc$macc8_serial_rx.sv:33$30'.
+  created $adff cell `$procdff$96' with positive edge clock and positive level reset.
+Creating register for signal `\macc8_serial_rx.\act_regs_q' using process `\macc8_serial_rx.$proc$macc8_serial_rx.sv:33$30'.
+  created $adff cell `$procdff$101' with positive edge clock and positive level reset.
+Creating register for signal `\macc8_serial_rx.$bitselwrite$pos$macc8_serial_rx.sv:40$25' using process `\macc8_serial_rx.$proc$macc8_serial_rx.sv:33$30'.
+  created $adff cell `$procdff$106' with positive edge clock and positive level reset.
+Creating register for signal `\macc8_serial_rx.$lookahead\act_regs_q$29' using process `\macc8_serial_rx.$proc$macc8_serial_rx.sv:33$30'.
+  created $adff cell `$procdff$111' with positive edge clock and positive level reset.
+Creating register for signal `\macc8_props_rx.$past$macc8_props_rx.sv:41$1$0' using process `\macc8_props_rx.$proc$macc8_props_rx.sv:31$4'.
+  created $dff cell `$procdff$112' with positive edge clock.
+Creating register for signal `\macc8_props_rx.$past$macc8_props_rx.sv:42$2$0' using process `\macc8_props_rx.$proc$macc8_props_rx.sv:31$4'.
+  created $dff cell `$procdff$113' with positive edge clock.
+Creating register for signal `\macc8_props_rx.\past_valid' using process `\macc8_props_rx.$proc$macc8_props_rx.sv:29$3'.
+  created $dff cell `$procdff$114' with positive edge clock.
+
+4.3.10. Executing PROC_MEMWR pass (convert process memory writes to cells).
+
+4.3.11. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Found and cleaned up 2 empty switches in `\macc8_serial_rx.$proc$macc8_serial_rx.sv:33$30'.
+Removing empty process `macc8_serial_rx.$proc$macc8_serial_rx.sv:33$30'.
+Removing empty process `macc8_props_rx.$proc$macc8_props_rx.sv:28$24'.
+Found and cleaned up 2 empty switches in `\macc8_props_rx.$proc$macc8_props_rx.sv:31$4'.
+Removing empty process `macc8_props_rx.$proc$macc8_props_rx.sv:31$4'.
+Removing empty process `macc8_props_rx.$proc$macc8_props_rx.sv:29$3'.
+Cleaned up 4 empty switches.
+
+4.3.12. Executing OPT_EXPR pass (perform const folding).
+Optimizing module macc8_serial_rx.
+<suppressed ~8 debug messages>
+Optimizing module macc8_props_rx.
+<suppressed ~5 debug messages>
+
+4.4. Executing FUTURE pass.
+
+4.5. Executing OPT_EXPR pass (perform const folding).
+Optimizing module macc8_serial_rx.
+Optimizing module macc8_props_rx.
+
+4.6. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \macc8_serial_rx..
+Finding unused cells or wires in module \macc8_props_rx..
+Removed 11 unused cells and 50 unused wires.
+<suppressed ~13 debug messages>
+
+4.7. Executing CHECK pass (checking for obvious problems).
+Checking module macc8_serial_rx...
+Checking module macc8_props_rx...
+Found and reported 0 problems.
+
+4.8. Executing OPT pass (performing simple optimizations).
+
+4.8.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module macc8_serial_rx.
+Optimizing module macc8_props_rx.
+
+4.8.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\macc8_serial_rx'.
+Computing hashes of 21 cells of `\macc8_serial_rx'.
+Finding duplicate cells in `\macc8_serial_rx'.
+Computing hashes of 20 cells of `\macc8_serial_rx'.
+Finding duplicate cells in `\macc8_serial_rx'.
+<suppressed ~3 debug messages>
+Finding identical cells in module `\macc8_props_rx'.
+Computing hashes of 32 cells of `\macc8_props_rx'.
+Finding duplicate cells in `\macc8_props_rx'.
+Computing hashes of 28 cells of `\macc8_props_rx'.
+Finding duplicate cells in `\macc8_props_rx'.
+<suppressed ~12 debug messages>
+Removed a total of 5 cells.
+
+4.8.3. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \macc8_serial_rx..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+    dead port 1/2 on $mux $procmux$55.
+Running muxtree optimizer on module \macc8_props_rx..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 1 multiplexer ports.
+<suppressed ~18 debug messages>
+
+4.8.4. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \macc8_serial_rx.
+  Optimizing cells in module \macc8_props_rx.
+Performed a total of 0 changes.
+
+4.8.5. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\macc8_serial_rx'.
+Computing hashes of 19 cells of `\macc8_serial_rx'.
+Finding duplicate cells in `\macc8_serial_rx'.
+Finding identical cells in module `\macc8_props_rx'.
+Computing hashes of 28 cells of `\macc8_props_rx'.
+Finding duplicate cells in `\macc8_props_rx'.
+Computing hashes of 26 cells of `\macc8_props_rx'.
+Finding duplicate cells in `\macc8_props_rx'.
+<suppressed ~6 debug messages>
+Removed a total of 2 cells.
+
+4.8.6. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \macc8_serial_rx..
+Finding unused cells or wires in module \macc8_props_rx..
+Removed 0 unused cells and 6 unused wires.
+<suppressed ~2 debug messages>
+
+4.8.7. Executing OPT_EXPR pass (perform const folding).
+Optimizing module macc8_serial_rx.
+Optimizing module macc8_props_rx.
+
+4.8.8. Rerunning OPT passes. (Maybe there is more to do..)
+
+4.8.9. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \macc8_serial_rx..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Running muxtree optimizer on module \macc8_props_rx..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+<suppressed ~13 debug messages>
+
+4.8.10. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \macc8_serial_rx.
+  Optimizing cells in module \macc8_props_rx.
+Performed a total of 0 changes.
+
+4.8.11. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\macc8_serial_rx'.
+Computing hashes of 19 cells of `\macc8_serial_rx'.
+Finding duplicate cells in `\macc8_serial_rx'.
+Finding identical cells in module `\macc8_props_rx'.
+Computing hashes of 26 cells of `\macc8_props_rx'.
+Finding duplicate cells in `\macc8_props_rx'.
+Removed a total of 0 cells.
+
+4.8.12. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \macc8_serial_rx..
+Finding unused cells or wires in module \macc8_props_rx..
+
+4.8.13. Executing OPT_EXPR pass (perform const folding).
+Optimizing module macc8_serial_rx.
+Optimizing module macc8_props_rx.
+
+4.8.14. Finished fast OPT passes. (There is nothing left to do.)
+
+4.9. Executing WREDUCE pass (reducing word size of cells).
+Removed top 28 bits (of 32) from port B of cell macc8_serial_rx.$mul$macc8_serial_rx.sv:40$41 ($mul).
+Removed top 24 bits (of 32) from port Y of cell macc8_serial_rx.$mul$macc8_serial_rx.sv:40$41 ($mul).
+Removed top 24 bits (of 32) from port A of cell macc8_serial_rx.$add$macc8_serial_rx.sv:40$42 ($add).
+Removed top 31 bits (of 32) from port B of cell macc8_serial_rx.$add$macc8_serial_rx.sv:40$42 ($add).
+Removed top 23 bits (of 32) from port Y of cell macc8_serial_rx.$add$macc8_serial_rx.sv:40$42 ($add).
+Removed top 23 bits (of 33) from port A of cell macc8_serial_rx.$neg$macc8_serial_rx.sv:40$47 ($neg).
+Converting cell macc8_serial_rx.$neg$macc8_serial_rx.sv:40$47 ($neg) from signed to unsigned.
+Removed top 1 bits (of 10) from port A of cell macc8_serial_rx.$neg$macc8_serial_rx.sv:40$47 ($neg).
+Removed top 3 bits (of 4) from port B of cell macc8_serial_rx.$add$macc8_serial_rx.sv:41$50 ($add).
+Removed top 23 bits (of 32) from wire macc8_serial_rx.$add$macc8_serial_rx.sv:40$42_Y.
+Removed top 24 bits (of 32) from wire macc8_serial_rx.$mul$macc8_serial_rx.sv:40$41_Y.
+Removed top 1 bits (of 4) from port B of cell macc8_props_rx.$eq$macc8_props_rx.sv:33$7 ($eq).
+
+4.10. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \macc8_serial_rx..
+Finding unused cells or wires in module \macc8_props_rx..
+Removed 0 unused cells and 2 unused wires.
+<suppressed ~1 debug messages>
+
+4.11. Executing MEMORY_COLLECT pass (generating $mem cells).
+
+4.12. Executing OPT pass (performing simple optimizations).
+
+4.12.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module macc8_serial_rx.
+Optimizing module macc8_props_rx.
+
+4.12.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\macc8_serial_rx'.
+Computing hashes of 19 cells of `\macc8_serial_rx'.
+Finding duplicate cells in `\macc8_serial_rx'.
+Finding identical cells in module `\macc8_props_rx'.
+Computing hashes of 26 cells of `\macc8_props_rx'.
+Finding duplicate cells in `\macc8_props_rx'.
+Removed a total of 0 cells.
+
+4.12.3. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \macc8_serial_rx..
+Finding unused cells or wires in module \macc8_props_rx..
+
+4.12.4. Finished fast OPT passes.
+
+4.13. Executing SORT pass.
+
+4.14. Printing statistics.
+
+=== macc8_props_rx ===
+
+        +----------Local Count, excluding submodules.
+        | 
+       32 wires
+      105 wire bits
+       17 public wires
+       90 public wire bits
+        7 ports
+       17 port bits
+       25 cells
+        6   $check
+        3   $dff
+        3   $eq
+        2   $logic_and
+        3   $logic_not
+        4   $logic_or
+        4   $mux
+        1 submodules
+        1   macc8_serial_rx
+
+=== macc8_serial_rx ===
+
+        +----------Local Count, excluding submodules.
+        | 
+       27 wires
+      687 wire bits
+       12 public wires
+      151 public wire bits
+       10 ports
+       83 port bits
+       19 cells
+        2   $add
+        2   $adff
+        3   $and
+        1   $ge
+        1   $mul
+        4   $mux
+        1   $neg
+        2   $not
+        1   $or
+        2   $shift
+
+=== design hierarchy ===
+
+        +----------Count including submodules.
+        | 
+       44 macc8_props_rx
+       19 macc8_serial_rx
+
+        +----------Count including submodules.
+        | 
+       59 wires
+      792 wire bits
+       29 public wires
+      241 public wire bits
+       17 ports
+      100 port bits
+        - memories
+        - memory bits
+        - processes
+       44 cells
+        2   $add
+        2   $adff
+        3   $and
+        6   $check
+        3   $dff
+        3   $eq
+        1   $ge
+        2   $logic_and
+        3   $logic_not
+        4   $logic_or
+        1   $mul
+        8   $mux
+        1   $neg
+        2   $not
+        1   $or
+        2   $shift
+        1 submodules
+        1   macc8_serial_rx
+
+4.15. Executing CHECK pass (checking for obvious problems).
+Checking module macc8_props_rx...
+Checking module macc8_serial_rx...
+Found and reported 0 problems.
+
+5. Executing HIERARCHY pass (managing design hierarchy).
+Attribute `top' found on module `macc8_props_rx'. Setting top module to macc8_props_rx.
+
+5.1. Analyzing design hierarchy..
+Top module:  \macc8_props_rx
+Used module:     \macc8_serial_rx
+
+5.2. Analyzing design hierarchy..
+Top module:  \macc8_props_rx
+Used module:     \macc8_serial_rx
+Removed 0 unused modules.
+Module macc8_props_rx directly or indirectly contains formal properties -> setting "keep" attribute.
+
+6. Executing jny backend.
+
+7. Executing RTLIL backend.
+Output filename: ../model/design.il
+
+End of script. Logfile hash: b29948b46a, time: 0.09s, user: 0.02s, system: 0.01s, MEM: 20.26 MB peak
+Yosys 0.67+24 (git sha1 0e82bbefe, Release, Clang /usr/bin/clang++ 18.1.8)
+Time spent: 17% 5x opt_clean (0 sec), 13% 4x read_verilog (0 sec), ...

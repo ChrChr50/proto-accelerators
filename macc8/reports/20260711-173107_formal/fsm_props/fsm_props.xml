@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+<testsuite timestamp="2026-07-11T17:31:08" hostname="Chris" package="fsm_props" id="0" name="default" tests="11" errors="0" failures="0" time="0" skipped="0">
+<properties>
+<property name="os" value="Linux"/>
+<property name="expect" value="PASS"/>
+<property name="status" value="PASS"/>
+</properties>
+<testcase classname="default" name="build execution" time="0">
+</testcase>
+<testcase classname="default" name="Property ASSERT in macc8_props_fsm at macc8_props_fsm.sv:49.9-49.68" time="0" type="ASSERT" location="macc8_props_fsm.sv:49.9-49.68" id="a_adacc_to_done">
+</testcase>
+<testcase classname="default" name="Property ASSERT in macc8_props_fsm at macc8_props_fsm.sv:41.7-41.63" time="0" type="ASSERT" location="macc8_props_fsm.sv:41.7-41.63" id="a_cap_excl">
+</testcase>
+<testcase classname="default" name="Property ASSERT in macc8_props_fsm at macc8_props_fsm.sv:43.7-43.63" time="0" type="ASSERT" location="macc8_props_fsm.sv:43.7-43.63" id="a_consume_valid">
+</testcase>
+<testcase classname="default" name="Property ASSERT in macc8_props_fsm at macc8_props_fsm.sv:53.9-53.71" time="0" type="ASSERT" location="macc8_props_fsm.sv:53.9-53.71" id="a_done_after_adacc">
+</testcase>
+<testcase classname="default" name="Property ASSERT in macc8_props_fsm at macc8_props_fsm.sv:42.7-42.53" time="0" type="ASSERT" location="macc8_props_fsm.sv:42.7-42.53" id="a_done_is_phase">
+</testcase>
+<testcase classname="default" name="Property ASSERT in macc8_props_fsm at macc8_props_fsm.sv:50.9-50.66" time="0" type="ASSERT" location="macc8_props_fsm.sv:50.9-50.66" id="a_done_to_idle">
+</testcase>
+<testcase classname="default" name="Property ASSERT in macc8_props_fsm at macc8_props_fsm.sv:40.7-40.52" time="0" type="ASSERT" location="macc8_props_fsm.sv:40.7-40.52" id="a_idle_xor_busy">
+</testcase>
+<testcase classname="default" name="Property ASSERT in macc8_props_fsm at macc8_props_fsm.sv:54.9-54.88" time="0" type="ASSERT" location="macc8_props_fsm.sv:54.9-54.88" id="a_mul_needs_go">
+</testcase>
+<testcase classname="default" name="Property ASSERT in macc8_props_fsm at macc8_props_fsm.sv:48.9-48.69" time="0" type="ASSERT" location="macc8_props_fsm.sv:48.9-48.69" id="a_mul_to_adacc">
+</testcase>
+<testcase classname="default" name="Property ASSERT in macc8_props_fsm at macc8_props_fsm.sv:37.7-37.63" time="0" type="ASSERT" location="macc8_props_fsm.sv:37.7-37.63" id="a_reset_idle">
+</testcase>
+<testcase classname="default" name="Property ASSERT in macc8_props_fsm at macc8_props_fsm.sv:57.9-57.77" time="0" type="ASSERT" location="macc8_props_fsm.sv:57.9-57.77" id="a_stay_idle">
+</testcase>
+<system-out>SBY 17:31:07 [/mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/reports/20260711-173107_formal/fsm_props] Removing directory '/mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/reports/20260711-173107_formal/fsm_props'.
+SBY 17:31:07 [/mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/reports/20260711-173107_formal/fsm_props] Copy '/mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/verif/formal/../../rtl/macc8_pkg.sv' to '/mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/reports/20260711-173107_formal/fsm_props/src/macc8_pkg.sv'.
+SBY 17:31:07 [/mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/reports/20260711-173107_formal/fsm_props] Copy '/mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/verif/formal/../../rtl/macc8_fsm.sv' to '/mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/reports/20260711-173107_formal/fsm_props/src/macc8_fsm.sv'.
+SBY 17:31:07 [/mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/reports/20260711-173107_formal/fsm_props] Copy '/mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/verif/formal/macc8_props_fsm.sv' to '/mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/reports/20260711-173107_formal/fsm_props/src/macc8_props_fsm.sv'.
+SBY 17:31:07 [/mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/reports/20260711-173107_formal/fsm_props] engine_0: smtbmc z3
+SBY 17:31:07 [/mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/reports/20260711-173107_formal/fsm_props] base: starting process &quot;cd /mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/reports/20260711-173107_formal/fsm_props/src; yosys -ql ../model/design.log ../model/design.ys&quot;
+SBY 17:31:07 [/mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/reports/20260711-173107_formal/fsm_props] base: finished (returncode=0)
+SBY 17:31:07 [/mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/reports/20260711-173107_formal/fsm_props] prep: starting process &quot;cd /mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/reports/20260711-173107_formal/fsm_props/model; yosys -ql design_prep.log design_prep.ys&quot;
+SBY 17:31:07 [/mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/reports/20260711-173107_formal/fsm_props] prep: finished (returncode=0)
+SBY 17:31:07 [/mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/reports/20260711-173107_formal/fsm_props] smt2: starting process &quot;cd /mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/reports/20260711-173107_formal/fsm_props/model; yosys -ql design_smt2.log design_smt2.ys&quot;
+SBY 17:31:07 [/mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/reports/20260711-173107_formal/fsm_props] smt2: finished (returncode=0)
+SBY 17:31:07 [/mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/reports/20260711-173107_formal/fsm_props] engine_0.basecase: starting process &quot;cd /mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/reports/20260711-173107_formal/fsm_props; yosys-smtbmc -s z3 --presat --noprogress -t 12  --append 0 --dump-vcd engine_0/trace.vcd --dump-yw engine_0/trace.yw --dump-vlogtb engine_0/trace_tb.v --dump-smtc engine_0/trace.smtc model/design_smt2.smt2&quot;
+SBY 17:31:07 [/mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/reports/20260711-173107_formal/fsm_props] engine_0.induction: starting process &quot;cd /mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/reports/20260711-173107_formal/fsm_props; yosys-smtbmc -s z3 --presat -i --noprogress -t 12  --append 0 --dump-vcd engine_0/trace_induct.vcd --dump-yw engine_0/trace_induct.yw --dump-vlogtb engine_0/trace_induct_tb.v --dump-smtc engine_0/trace_induct.smtc model/design_smt2.smt2&quot;
+SBY 17:31:07 [/mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/reports/20260711-173107_formal/fsm_props] engine_0.basecase: ##   0:00:00  Solver: z3
+SBY 17:31:07 [/mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/reports/20260711-173107_formal/fsm_props] engine_0.induction: ##   0:00:00  Solver: z3
+SBY 17:31:07 [/mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/reports/20260711-173107_formal/fsm_props] engine_0.induction: ##   0:00:00  Trying induction in step 12..
+SBY 17:31:07 [/mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/reports/20260711-173107_formal/fsm_props] engine_0.basecase: ##   0:00:00  Checking assumptions in step 0..
+SBY 17:31:08 [/mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/reports/20260711-173107_formal/fsm_props] engine_0.basecase: ##   0:00:00  Checking assertions in step 0..
+SBY 17:31:08 [/mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/reports/20260711-173107_formal/fsm_props] engine_0.basecase: ##   0:00:00  Checking assumptions in step 1..
+SBY 17:31:08 [/mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/reports/20260711-173107_formal/fsm_props] engine_0.basecase: ##   0:00:00  Checking assertions in step 1..
+SBY 17:31:08 [/mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/reports/20260711-173107_formal/fsm_props] engine_0.basecase: ##   0:00:00  Checking assumptions in step 2..
+SBY 17:31:08 [/mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/reports/20260711-173107_formal/fsm_props] engine_0.basecase: ##   0:00:00  Checking assertions in step 2..
+SBY 17:31:08 [/mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/reports/20260711-173107_formal/fsm_props] engine_0.basecase: ##   0:00:00  Checking assumptions in step 3..
+SBY 17:31:08 [/mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/reports/20260711-173107_formal/fsm_props] engine_0.basecase: ##   0:00:00  Checking assertions in step 3..
+SBY 17:31:08 [/mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/reports/20260711-173107_formal/fsm_props] engine_0.basecase: ##   0:00:00  Checking assumptions in step 4..
+SBY 17:31:08 [/mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/reports/20260711-173107_formal/fsm_props] engine_0.basecase: ##   0:00:00  Checking assertions in step 4..
+SBY 17:31:08 [/mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/reports/20260711-173107_formal/fsm_props] engine_0.basecase: ##   0:00:00  Checking assumptions in step 5..
+SBY 17:31:08 [/mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/reports/20260711-173107_formal/fsm_props] engine_0.basecase: ##   0:00:00  Checking assertions in step 5..
+SBY 17:31:08 [/mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/reports/20260711-173107_formal/fsm_props] engine_0.basecase: ##   0:00:00  Checking assumptions in step 6..
+SBY 17:31:08 [/mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/reports/20260711-173107_formal/fsm_props] engine_0.basecase: ##   0:00:00  Checking assertions in step 6..
+SBY 17:31:08 [/mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/reports/20260711-173107_formal/fsm_props] engine_0.basecase: ##   0:00:00  Checking assumptions in step 7..
+SBY 17:31:08 [/mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/reports/20260711-173107_formal/fsm_props] engine_0.basecase: ##   0:00:00  Checking assertions in step 7..
+SBY 17:31:08 [/mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/reports/20260711-173107_formal/fsm_props] engine_0.basecase: ##   0:00:00  Checking assumptions in step 8..
+SBY 17:31:08 [/mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/reports/20260711-173107_formal/fsm_props] engine_0.basecase: ##   0:00:00  Checking assertions in step 8..
+SBY 17:31:08 [/mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/reports/20260711-173107_formal/fsm_props] engine_0.basecase: ##   0:00:00  Checking assumptions in step 9..
+SBY 17:31:08 [/mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/reports/20260711-173107_formal/fsm_props] engine_0.basecase: ##   0:00:00  Checking assertions in step 9..
+SBY 17:31:08 [/mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/reports/20260711-173107_formal/fsm_props] engine_0.basecase: ##   0:00:00  Checking assumptions in step 10..
+SBY 17:31:08 [/mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/reports/20260711-173107_formal/fsm_props] engine_0.basecase: ##   0:00:00  Checking assertions in step 10..
+SBY 17:31:08 [/mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/reports/20260711-173107_formal/fsm_props] engine_0.basecase: ##   0:00:00  Checking assumptions in step 11..
+SBY 17:31:08 [/mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/reports/20260711-173107_formal/fsm_props] engine_0.basecase: ##   0:00:00  Checking assertions in step 11..
+SBY 17:31:08 [/mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/reports/20260711-173107_formal/fsm_props] engine_0.basecase: ##   0:00:00  Status: passed
+SBY 17:31:08 [/mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/reports/20260711-173107_formal/fsm_props] engine_0.basecase: finished (returncode=0)
+SBY 17:31:08 [/mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/reports/20260711-173107_formal/fsm_props] engine_0.basecase: Status returned by engine for basecase: pass
+SBY 17:31:08 [/mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/reports/20260711-173107_formal/fsm_props] engine_0.induction: ##   0:00:00  Trying induction in step 11..
+SBY 17:31:08 [/mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/reports/20260711-173107_formal/fsm_props] engine_0.induction: ##   0:00:00  Trying induction in step 10..
+SBY 17:31:08 [/mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/reports/20260711-173107_formal/fsm_props] engine_0.induction: ##   0:00:00  Temporal induction successful.
+SBY 17:31:08 [/mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/reports/20260711-173107_formal/fsm_props] engine_0.induction: ##   0:00:00  Status: passed
+SBY 17:31:08 [/mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/reports/20260711-173107_formal/fsm_props] engine_0.induction: finished (returncode=0)
+SBY 17:31:08 [/mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/reports/20260711-173107_formal/fsm_props] engine_0.induction: Status returned by engine for induction: pass
+SBY 17:31:08 [/mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/reports/20260711-173107_formal/fsm_props] summary: Elapsed clock time [H:MM:SS (secs)]: 0:00:01 (1)
+SBY 17:31:08 [/mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/reports/20260711-173107_formal/fsm_props] summary: Elapsed process time [H:MM:SS (secs)]: 0:00:00 (0)
+SBY 17:31:08 [/mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/reports/20260711-173107_formal/fsm_props] summary: engine_0 (smtbmc z3) returned pass for basecase
+SBY 17:31:08 [/mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/reports/20260711-173107_formal/fsm_props] summary: engine_0 (smtbmc z3) returned pass for induction
+SBY 17:31:08 [/mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/reports/20260711-173107_formal/fsm_props] summary: engine_0 did not produce any traces
+SBY 17:31:08 [/mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/reports/20260711-173107_formal/fsm_props] summary: successful proof by k-induction.
+SBY 17:31:08 [/mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/reports/20260711-173107_formal/fsm_props] DONE (PASS, rc=0)
+</system-out>
+<system-err>
+</system-err>
+</testsuite>
+</testsuites>

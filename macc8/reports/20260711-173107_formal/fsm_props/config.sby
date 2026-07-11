@@ -1,0 +1,18 @@
+# SymbiYosys proof of the MACC-8 FSM properties (unbounded, k-induction).
+# Run:  sby -f fsm_props.sby     (from verif/formal/)
+[options]
+mode prove
+depth 12
+
+[engines]
+smtbmc z3
+
+[script]
+# read package + DUT + properties together so macc8_pkg:: resolves under vanilla Yosys
+read -formal macc8_pkg.sv macc8_fsm.sv macc8_props_fsm.sv
+prep -top macc8_props_fsm
+
+[files]
+../../rtl/macc8_pkg.sv
+../../rtl/macc8_fsm.sv
+macc8_props_fsm.sv

@@ -1,0 +1,8 @@
+# running in /mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/reports/20260711-173107_formal/handshake_props/src/
+read -formal macc8_pkg.sv macc8_serial_rx.sv macc8_props_rx.sv
+prep -top macc8_props_rx
+
+hierarchy -smtcheck
+rename -witness
+write_jny -no-connections ../model/design.json
+write_rtlil ../model/design.il

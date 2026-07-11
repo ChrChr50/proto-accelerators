@@ -1,0 +1,405 @@
+
+ /----------------------------------------------------------------------------\
+ |  yosys -- Yosys Open SYnthesis Suite                                       |
+ |  Copyright (C) 2012 - 2026  Claire Xenia Wolf <claire@yosyshq.com>         |
+ |  Distributed under an ISC-like license, type "license" to see terms        |
+ \----------------------------------------------------------------------------/
+ Yosys 0.67+24 (git sha1 0e82bbefe, Release, Clang /usr/bin/clang++ 18.1.8)
+
+-- Executing script file `../model/design.ys' --
+
+1. Executing Verilog-2005 frontend: macc8_pkg.sv
+Parsing formal SystemVerilog input from `macc8_pkg.sv' to AST representation.
+Successfully finished Verilog frontend.
+
+2. Executing Verilog-2005 frontend: macc8_fsm.sv
+Parsing formal SystemVerilog input from `macc8_fsm.sv' to AST representation.
+Storing AST representation for module `$abstract\macc8_fsm'.
+Successfully finished Verilog frontend.
+
+3. Executing Verilog-2005 frontend: macc8_props_fsm.sv
+Parsing formal SystemVerilog input from `macc8_props_fsm.sv' to AST representation.
+Storing AST representation for module `$abstract\macc8_props_fsm'.
+Successfully finished Verilog frontend.
+
+4. Executing PREP pass.
+
+4.1. Executing HIERARCHY pass (managing design hierarchy).
+
+4.2. Executing AST frontend in derive mode using pre-parsed AST for module `\macc8_props_fsm'.
+Generating RTLIL representation for module `\macc8_props_fsm'.
+
+4.2.1. Analyzing design hierarchy..
+Top module:  \macc8_props_fsm
+
+4.2.2. Executing AST frontend in derive mode using pre-parsed AST for module `\macc8_fsm'.
+Generating RTLIL representation for module `\macc8_fsm'.
+
+4.2.3. Analyzing design hierarchy..
+Top module:  \macc8_props_fsm
+Used module:     \macc8_fsm
+
+4.2.4. Analyzing design hierarchy..
+Top module:  \macc8_props_fsm
+Used module:     \macc8_fsm
+Removing unused module `$abstract\macc8_props_fsm'.
+Removing unused module `$abstract\macc8_fsm'.
+Removed 2 unused modules.
+Module macc8_props_fsm directly or indirectly contains formal properties -> setting "keep" attribute.
+
+4.3. Executing PROC pass (convert processes to netlists).
+
+4.3.1. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Cleaned up 0 empty switches.
+
+4.3.2. Executing PROC_RMDEAD pass (remove dead branches from decision trees).
+Removed 1 dead cases from process $proc$macc8_fsm.sv:45$59 in module macc8_fsm.
+Marked 1 switch rules as full_case in process $proc$macc8_fsm.sv:45$59 in module macc8_fsm.
+Marked 1 switch rules as full_case in process $proc$macc8_fsm.sv:39$57 in module macc8_fsm.
+Marked 1 switch rules as full_case in process $proc$macc8_props_fsm.sv:34$13 in module macc8_props_fsm.
+Removed a total of 1 dead cases.
+
+4.3.3. Executing PROC_PRUNE pass (remove redundant assignments in processes).
+Removed 1 redundant assignment.
+Promoted 18 assignments to connections.
+
+4.3.4. Executing PROC_INIT pass (extract init attributes).
+Found init rule in `\macc8_props_fsm.$proc$macc8_props_fsm.sv:31$54'.
+  Set init value: \past_valid = 1'0
+
+4.3.5. Executing PROC_ARST pass (detect async resets in processes).
+Found async reset \rst_n in `\macc8_fsm.$proc$macc8_fsm.sv:39$57'.
+
+4.3.6. Executing PROC_ROM pass (convert switches to ROMs).
+Converted 0 switches.
+<suppressed ~4 debug messages>
+
+4.3.7. Executing PROC_MUX pass (convert decision trees to multiplexers).
+Creating decoders for process `\macc8_fsm.$proc$macc8_fsm.sv:57$60'.
+Creating decoders for process `\macc8_fsm.$proc$macc8_fsm.sv:45$59'.
+     1/2: $2\state_d[1:0]
+     2/2: $1\state_d[1:0]
+Creating decoders for process `\macc8_fsm.$proc$macc8_fsm.sv:39$57'.
+     1/1: $0\state_q[1:0]
+Creating decoders for process `\macc8_props_fsm.$proc$macc8_props_fsm.sv:31$54'.
+Creating decoders for process `\macc8_props_fsm.$proc$macc8_props_fsm.sv:34$13'.
+     1/11: \a_stay_idle_EN
+     2/11: \a_mul_needs_go_EN
+     3/11: \a_done_after_adacc_EN
+     4/11: \a_done_to_idle_EN
+     5/11: \a_adacc_to_done_EN
+     6/11: \a_mul_to_adacc_EN
+     7/11: \a_consume_valid_EN
+     8/11: \a_done_is_phase_EN
+     9/11: \a_cap_excl_EN
+    10/11: \a_idle_xor_busy_EN
+    11/11: \a_reset_idle_EN
+Creating decoders for process `\macc8_props_fsm.$proc$macc8_props_fsm.sv:32$12'.
+
+4.3.8. Executing PROC_DLATCH pass (convert process syncs to latches).
+No latch inferred for signal `\macc8_fsm.\busy' from process `\macc8_fsm.$proc$macc8_fsm.sv:57$60'.
+No latch inferred for signal `\macc8_fsm.\done_pulse' from process `\macc8_fsm.$proc$macc8_fsm.sv:57$60'.
+No latch inferred for signal `\macc8_fsm.\mul_capture' from process `\macc8_fsm.$proc$macc8_fsm.sv:57$60'.
+No latch inferred for signal `\macc8_fsm.\acc_capture' from process `\macc8_fsm.$proc$macc8_fsm.sv:57$60'.
+No latch inferred for signal `\macc8_fsm.\consume' from process `\macc8_fsm.$proc$macc8_fsm.sv:57$60'.
+No latch inferred for signal `\macc8_fsm.\accept_en' from process `\macc8_fsm.$proc$macc8_fsm.sv:57$60'.
+No latch inferred for signal `\macc8_fsm.\state_d' from process `\macc8_fsm.$proc$macc8_fsm.sv:45$59'.
+
+4.3.9. Executing PROC_DFF pass (convert process syncs to FFs).
+Creating register for signal `\macc8_fsm.\state_q' using process `\macc8_fsm.$proc$macc8_fsm.sv:39$57'.
+  created $adff cell `$procdff$130' with positive edge clock and positive level reset.
+Creating register for signal `\macc8_props_fsm.$past$macc8_props_fsm.sv:46$1$0' using process `\macc8_props_fsm.$proc$macc8_props_fsm.sv:34$13'.
+  created $dff cell `$procdff$131' with positive edge clock.
+Creating register for signal `\macc8_props_fsm.$past$macc8_props_fsm.sv:48$2$0' using process `\macc8_props_fsm.$proc$macc8_props_fsm.sv:34$13'.
+  created $dff cell `$procdff$132' with positive edge clock.
+Creating register for signal `\macc8_props_fsm.$past$macc8_props_fsm.sv:49$3$0' using process `\macc8_props_fsm.$proc$macc8_props_fsm.sv:34$13'.
+  created $dff cell `$procdff$133' with positive edge clock.
+Creating register for signal `\macc8_props_fsm.$past$macc8_props_fsm.sv:50$4$0' using process `\macc8_props_fsm.$proc$macc8_props_fsm.sv:34$13'.
+  created $dff cell `$procdff$134' with positive edge clock.
+Creating register for signal `\macc8_props_fsm.$past$macc8_props_fsm.sv:53$5$0' using process `\macc8_props_fsm.$proc$macc8_props_fsm.sv:34$13'.
+  created $dff cell `$procdff$135' with positive edge clock.
+Creating register for signal `\macc8_props_fsm.$past$macc8_props_fsm.sv:54$6$0' using process `\macc8_props_fsm.$proc$macc8_props_fsm.sv:34$13'.
+  created $dff cell `$procdff$136' with positive edge clock.
+Creating register for signal `\macc8_props_fsm.$past$macc8_props_fsm.sv:54$7$0' using process `\macc8_props_fsm.$proc$macc8_props_fsm.sv:34$13'.
+  created $dff cell `$procdff$137' with positive edge clock.
+Creating register for signal `\macc8_props_fsm.$past$macc8_props_fsm.sv:57$8$0' using process `\macc8_props_fsm.$proc$macc8_props_fsm.sv:34$13'.
+  created $dff cell `$procdff$138' with positive edge clock.
+Creating register for signal `\macc8_props_fsm.$past$macc8_props_fsm.sv:57$9$0' using process `\macc8_props_fsm.$proc$macc8_props_fsm.sv:34$13'.
+  created $dff cell `$procdff$139' with positive edge clock.
+Creating register for signal `\macc8_props_fsm.\past_valid' using process `\macc8_props_fsm.$proc$macc8_props_fsm.sv:32$12'.
+  created $dff cell `$procdff$140' with positive edge clock.
+
+4.3.10. Executing PROC_MEMWR pass (convert process memory writes to cells).
+
+4.3.11. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Removing empty process `macc8_fsm.$proc$macc8_fsm.sv:57$60'.
+Found and cleaned up 2 empty switches in `\macc8_fsm.$proc$macc8_fsm.sv:45$59'.
+Removing empty process `macc8_fsm.$proc$macc8_fsm.sv:45$59'.
+Removing empty process `macc8_fsm.$proc$macc8_fsm.sv:39$57'.
+Removing empty process `macc8_props_fsm.$proc$macc8_props_fsm.sv:31$54'.
+Found and cleaned up 2 empty switches in `\macc8_props_fsm.$proc$macc8_props_fsm.sv:34$13'.
+Removing empty process `macc8_props_fsm.$proc$macc8_props_fsm.sv:34$13'.
+Removing empty process `macc8_props_fsm.$proc$macc8_props_fsm.sv:32$12'.
+Cleaned up 4 empty switches.
+
+4.3.12. Executing OPT_EXPR pass (perform const folding).
+Optimizing module macc8_fsm.
+<suppressed ~7 debug messages>
+Optimizing module macc8_props_fsm.
+<suppressed ~11 debug messages>
+
+4.4. Executing FUTURE pass.
+
+4.5. Executing OPT_EXPR pass (perform const folding).
+Optimizing module macc8_fsm.
+Optimizing module macc8_props_fsm.
+
+4.6. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \macc8_fsm..
+Finding unused cells or wires in module \macc8_props_fsm..
+Removed 3 unused cells and 63 unused wires.
+<suppressed ~5 debug messages>
+
+4.7. Executing CHECK pass (checking for obvious problems).
+Checking module macc8_fsm...
+Checking module macc8_props_fsm...
+Found and reported 0 problems.
+
+4.8. Executing OPT pass (performing simple optimizations).
+
+4.8.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module macc8_fsm.
+Optimizing module macc8_props_fsm.
+
+4.8.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\macc8_fsm'.
+Computing hashes of 18 cells of `\macc8_fsm'.
+Finding duplicate cells in `\macc8_fsm'.
+Computing hashes of 12 cells of `\macc8_fsm'.
+Finding duplicate cells in `\macc8_fsm'.
+<suppressed ~18 debug messages>
+Finding identical cells in module `\macc8_props_fsm'.
+Computing hashes of 71 cells of `\macc8_props_fsm'.
+Finding duplicate cells in `\macc8_props_fsm'.
+Computing hashes of 68 cells of `\macc8_props_fsm'.
+Finding duplicate cells in `\macc8_props_fsm'.
+<suppressed ~9 debug messages>
+Removed a total of 9 cells.
+
+4.8.3. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \macc8_fsm..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+    dead port 2/2 on $mux $procmux$74.
+Running muxtree optimizer on module \macc8_props_fsm..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 1 multiplexer ports.
+<suppressed ~32 debug messages>
+
+4.8.4. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \macc8_fsm.
+  Optimizing cells in module \macc8_props_fsm.
+Performed a total of 0 changes.
+
+4.8.5. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\macc8_fsm'.
+Computing hashes of 11 cells of `\macc8_fsm'.
+Finding duplicate cells in `\macc8_fsm'.
+Finding identical cells in module `\macc8_props_fsm'.
+Computing hashes of 68 cells of `\macc8_props_fsm'.
+Finding duplicate cells in `\macc8_props_fsm'.
+Computing hashes of 60 cells of `\macc8_props_fsm'.
+Finding duplicate cells in `\macc8_props_fsm'.
+Computing hashes of 55 cells of `\macc8_props_fsm'.
+Finding duplicate cells in `\macc8_props_fsm'.
+<suppressed ~39 debug messages>
+Removed a total of 13 cells.
+
+4.8.6. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \macc8_fsm..
+Finding unused cells or wires in module \macc8_props_fsm..
+Removed 0 unused cells and 15 unused wires.
+<suppressed ~2 debug messages>
+
+4.8.7. Executing OPT_EXPR pass (perform const folding).
+Optimizing module macc8_fsm.
+Optimizing module macc8_props_fsm.
+
+4.8.8. Rerunning OPT passes. (Maybe there is more to do..)
+
+4.8.9. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \macc8_fsm..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Running muxtree optimizer on module \macc8_props_fsm..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+<suppressed ~10 debug messages>
+
+4.8.10. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \macc8_fsm.
+  Optimizing cells in module \macc8_props_fsm.
+Performed a total of 0 changes.
+
+4.8.11. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\macc8_fsm'.
+Computing hashes of 11 cells of `\macc8_fsm'.
+Finding duplicate cells in `\macc8_fsm'.
+Finding identical cells in module `\macc8_props_fsm'.
+Computing hashes of 55 cells of `\macc8_props_fsm'.
+Finding duplicate cells in `\macc8_props_fsm'.
+Removed a total of 0 cells.
+
+4.8.12. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \macc8_fsm..
+Finding unused cells or wires in module \macc8_props_fsm..
+
+4.8.13. Executing OPT_EXPR pass (perform const folding).
+Optimizing module macc8_fsm.
+Optimizing module macc8_props_fsm.
+
+4.8.14. Finished fast OPT passes. (There is nothing left to do.)
+
+4.9. Executing WREDUCE pass (reducing word size of cells).
+Removed top 1 bits (of 2) from port B of cell macc8_fsm.$procmux$79_CMP0 ($eq).
+
+4.10. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \macc8_fsm..
+Finding unused cells or wires in module \macc8_props_fsm..
+
+4.11. Executing MEMORY_COLLECT pass (generating $mem cells).
+
+4.12. Executing OPT pass (performing simple optimizations).
+
+4.12.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module macc8_fsm.
+Optimizing module macc8_props_fsm.
+
+4.12.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\macc8_fsm'.
+Computing hashes of 11 cells of `\macc8_fsm'.
+Finding duplicate cells in `\macc8_fsm'.
+Finding identical cells in module `\macc8_props_fsm'.
+Computing hashes of 55 cells of `\macc8_props_fsm'.
+Finding duplicate cells in `\macc8_props_fsm'.
+Removed a total of 0 cells.
+
+4.12.3. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \macc8_fsm..
+Finding unused cells or wires in module \macc8_props_fsm..
+
+4.12.4. Finished fast OPT passes.
+
+4.13. Executing SORT pass.
+
+4.14. Printing statistics.
+
+=== macc8_fsm ===
+
+        +----------Local Count, excluding submodules.
+        | 
+       16 wires
+       19 wire bits
+       14 public wires
+       16 public wire bits
+       11 ports
+       11 port bits
+       11 cells
+        1   $adff
+        2   $and
+        3   $eq
+        1   $logic_not
+        1   $mux
+        1   $or
+        1   $pmux
+        1   $reduce_bool
+
+=== macc8_props_fsm ===
+
+        +----------Local Count, excluding submodules.
+        | 
+       62 wires
+       62 wire bits
+       24 public wires
+       24 public wire bits
+        5 ports
+        5 port bits
+       54 cells
+        1   $and
+       11   $check
+       10   $dff
+        1   $eq
+        7   $logic_and
+       11   $logic_not
+        8   $logic_or
+        4   $mux
+        1   $or
+        1 submodules
+        1   macc8_fsm
+
+=== design hierarchy ===
+
+        +----------Count including submodules.
+        | 
+       65 macc8_props_fsm
+       11 macc8_fsm
+
+        +----------Count including submodules.
+        | 
+       78 wires
+       81 wire bits
+       38 public wires
+       40 public wire bits
+       16 ports
+       16 port bits
+        - memories
+        - memory bits
+        - processes
+       65 cells
+        1   $adff
+        3   $and
+       11   $check
+       10   $dff
+        4   $eq
+        7   $logic_and
+       12   $logic_not
+        8   $logic_or
+        5   $mux
+        2   $or
+        1   $pmux
+        1   $reduce_bool
+        1 submodules
+        1   macc8_fsm
+
+4.15. Executing CHECK pass (checking for obvious problems).
+Checking module macc8_fsm...
+Checking module macc8_props_fsm...
+Found and reported 0 problems.
+
+5. Executing HIERARCHY pass (managing design hierarchy).
+Attribute `top' found on module `macc8_props_fsm'. Setting top module to macc8_props_fsm.
+
+5.1. Analyzing design hierarchy..
+Top module:  \macc8_props_fsm
+Used module:     \macc8_fsm
+
+5.2. Analyzing design hierarchy..
+Top module:  \macc8_props_fsm
+Used module:     \macc8_fsm
+Removed 0 unused modules.
+Module macc8_props_fsm directly or indirectly contains formal properties -> setting "keep" attribute.
+
+6. Executing jny backend.
+
+7. Executing RTLIL backend.
+Output filename: ../model/design.il
+
+End of script. Logfile hash: 50fe549422, time: 0.09s, user: 0.01s, system: 0.03s, MEM: 19.95 MB peak
+Yosys 0.67+24 (git sha1 0e82bbefe, Release, Clang /usr/bin/clang++ 18.1.8)
+Time spent: 15% 4x read_verilog (0 sec), 13% 2x hierarchy (0 sec), ...

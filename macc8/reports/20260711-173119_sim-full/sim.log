@@ -1,0 +1,91 @@
+make[1]: Entering directory '/mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/verif/cocotb'
+rm -f results.xml
+"make" -f Makefile results.xml
+make[2]: Entering directory '/mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/verif/cocotb'
+rm -f results.xml
+MODULE=test_macc8 TESTCASE= TOPLEVEL=macc8_top TOPLEVEL_LANG=verilog \
+         sim_build/Vtop  -Wno-DECLFILENAME -Wno-UNUSEDSIGNAL  
+     -.--ns INFO     gpi                                ..mbed/gpi_embed.cpp:108  in set_program_name_in_venv        Using Python virtual environment interpreter at /home/cchoilee/tools/macc8-venv/bin/python
+     -.--ns INFO     gpi                                ../gpi/GpiCommon.cpp:101  in gpi_print_registered_impl       VPI registered
+     0.00ns INFO     cocotb                             Running on Verilator version 5.051 devel
+     0.00ns INFO     cocotb                             Running tests with cocotb v1.9.2 from /home/cchoilee/tools/macc8-venv/lib/python3.10/site-packages/cocotb
+     0.00ns INFO     cocotb                             Seeding Python random module with 1783812684
+     0.00ns INFO     cocotb.regression                  Found test test_macc8.test_reset_behavior
+     0.00ns INFO     cocotb.regression                  Found test test_macc8.test_simple_known_dot
+     0.00ns INFO     cocotb.regression                  Found test test_macc8.test_all_zero
+     0.00ns INFO     cocotb.regression                  Found test test_macc8.test_all_positive
+     0.00ns INFO     cocotb.regression                  Found test test_macc8.test_mixed_signed
+     0.00ns INFO     cocotb.regression                  Found test test_macc8.test_max_positive_int8
+     0.00ns INFO     cocotb.regression                  Found test test_macc8.test_max_negative_int8
+     0.00ns INFO     cocotb.regression                  Found test test_macc8.test_overflow_boundary_wrap
+     0.00ns INFO     cocotb.regression                  Found test test_macc8.test_overflow_boundary_saturate
+     0.00ns INFO     cocotb.regression                  Found test test_macc8.test_repeated_operations
+     0.00ns INFO     cocotb.regression                  Found test test_macc8.test_back_to_back_auto
+     0.00ns INFO     cocotb.regression                  Found test test_macc8.test_invalid_command_handling
+     0.00ns INFO     cocotb.regression                  Found test test_macc8.test_random_1000
+     0.00ns INFO     cocotb.regression                  Found test test_macc8.test_start_before_load
+     0.00ns INFO     cocotb.regression                  Found test test_macc8.test_read_before_done
+     0.00ns INFO     cocotb.regression                  Found test test_macc8.test_reset_during_operation
+     0.00ns INFO     cocotb.regression                  Found test test_macc8.test_model_boundary_selfcheck
+     0.00ns INFO     cocotb.regression                  running test_reset_behavior (1/17)
+   155.00ns INFO     cocotb.regression                  test_reset_behavior passed
+   155.00ns INFO     cocotb.regression                  running test_simple_known_dot (2/17)
+   450.00ns INFO     cocotb.regression                  test_simple_known_dot passed
+   450.00ns INFO     cocotb.regression                  running test_all_zero (3/17)
+   745.00ns INFO     cocotb.regression                  test_all_zero passed
+   745.00ns INFO     cocotb.regression                  running test_all_positive (4/17)
+  1040.00ns INFO     cocotb.regression                  test_all_positive passed
+  1040.00ns INFO     cocotb.regression                  running test_mixed_signed (5/17)
+  1335.01ns INFO     cocotb.regression                  test_mixed_signed passed
+  1335.01ns INFO     cocotb.regression                  running test_max_positive_int8 (6/17)
+  1630.01ns INFO     cocotb.regression                  test_max_positive_int8 passed
+  1630.01ns INFO     cocotb.regression                  running test_max_negative_int8 (7/17)
+  2155.01ns INFO     cocotb.regression                  test_max_negative_int8 passed
+  2155.01ns INFO     cocotb.regression                  running test_overflow_boundary_wrap (8/17)
+2166090.01ns INFO     cocotb.regression                  test_overflow_boundary_wrap passed
+2166090.01ns INFO     cocotb.regression                  running test_overflow_boundary_saturate (9/17)
+4330025.01ns INFO     cocotb.regression                  test_overflow_boundary_saturate passed
+4330025.01ns INFO     cocotb.regression                  running test_repeated_operations (10/17)
+4337690.01ns INFO     cocotb.regression                  test_repeated_operations passed
+4337690.01ns INFO     cocotb.regression                  running test_back_to_back_auto (11/17)
+4340655.01ns INFO     cocotb.regression                  test_back_to_back_auto passed
+4340655.01ns INFO     cocotb.regression                  running test_invalid_command_handling (12/17)
+4341290.01ns INFO     cocotb.regression                  test_invalid_command_handling passed
+4341290.01ns INFO     cocotb.regression                  running test_random_1000 (13/17)
+4478355.01ns INFO     cocotb.macc8_top                   random test completed 1000 checked passes
+4478355.01ns INFO     cocotb.regression                  test_random_1000 passed
+4478355.01ns INFO     cocotb.regression                  running test_start_before_load (14/17)
+4478790.01ns INFO     cocotb.regression                  test_start_before_load passed
+4478790.01ns INFO     cocotb.regression                  running test_read_before_done (15/17)
+4479245.01ns INFO     cocotb.regression                  test_read_before_done passed
+4479245.01ns INFO     cocotb.regression                  running test_reset_during_operation (16/17)
+4480000.02ns INFO     cocotb.regression                  test_reset_during_operation passed
+4480000.02ns INFO     cocotb.regression                  running test_model_boundary_selfcheck (17/17)
+4480070.02ns INFO     cocotb.regression                  test_model_boundary_selfcheck passed
+4480070.02ns INFO     cocotb.regression                  ****************************************************************************************************
+                                                         ** TEST                                        STATUS  SIM TIME (ns)  REAL TIME (s)  RATIO (ns/s) **
+                                                         ****************************************************************************************************
+                                                         ** test_macc8.test_reset_behavior               PASS         155.00           0.00      55718.32  **
+                                                         ** test_macc8.test_simple_known_dot             PASS         295.00           0.00      72655.54  **
+                                                         ** test_macc8.test_all_zero                     PASS         295.00           0.00      75313.40  **
+                                                         ** test_macc8.test_all_positive                 PASS         295.00           0.00      83114.39  **
+                                                         ** test_macc8.test_mixed_signed                 PASS         295.00           0.00      74077.94  **
+                                                         ** test_macc8.test_max_positive_int8            PASS         295.00           0.00      73619.56  **
+                                                         ** test_macc8.test_max_negative_int8            PASS         525.00           0.01      79951.12  **
+                                                         ** test_macc8.test_overflow_boundary_wrap       PASS     2163935.00          27.41      78938.18  **
+                                                         ** test_macc8.test_overflow_boundary_saturate   PASS     2163935.00          27.49      78717.93  **
+                                                         ** test_macc8.test_repeated_operations          PASS        7665.00           0.09      83128.66  **
+                                                         ** test_macc8.test_back_to_back_auto            PASS        2965.00           0.04      79560.08  **
+                                                         ** test_macc8.test_invalid_command_handling     PASS         635.00           0.01      81401.85  **
+                                                         ** test_macc8.test_random_1000                  PASS      137065.00           1.86      73647.84  **
+                                                         ** test_macc8.test_start_before_load            PASS         435.00           0.01      86038.22  **
+                                                         ** test_macc8.test_read_before_done             PASS         455.00           0.01      83032.22  **
+                                                         ** test_macc8.test_reset_during_operation       PASS         755.00           0.01      88052.04  **
+                                                         ** test_macc8.test_model_boundary_selfcheck     PASS          70.00           0.00      70173.39  **
+                                                         ****************************************************************************************************
+                                                         ** TESTS=17 PASS=17 FAIL=0 SKIP=0                        4480070.02          57.17      78368.99  **
+                                                         ****************************************************************************************************
+                                                         
+- :0: Verilog $finish
+make[2]: Leaving directory '/mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/verif/cocotb'
+make[1]: Leaving directory '/mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/verif/cocotb'

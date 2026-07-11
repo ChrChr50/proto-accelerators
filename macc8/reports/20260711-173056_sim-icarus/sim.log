@@ -1,0 +1,76 @@
+make[1]: Entering directory '/mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/verif/cocotb'
+rm -f results.xml
+"make" -f Makefile results.xml
+make[2]: Entering directory '/mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/verif/cocotb'
+/home/cchoilee/tools/oss-cad-suite/lib/python3.11/site-packages/cocotb-2.1.0.dev0+41564633-py3.11-linux-x64.egg/cocotb_tools/makefiles/simulators/Makefile.icarus:66: Using MODULE is deprecated, please use COCOTB_TEST_MODULES instead.
+rm -f results.xml
+COCOTB_TEST_MODULES=test_macc8 COCOTB_TESTCASE= COCOTB_TEST_FILTER= COCOTB_TOPLEVEL=macc8_top TOPLEVEL_LANG=verilog \
+         /home/cchoilee/tools/oss-cad-suite/bin/vvp -M /home/cchoilee/tools/oss-cad-suite/lib/python3.11/site-packages/cocotb-2.1.0.dev0+41564633-py3.11-linux-x64.egg/cocotb/libs -m libcocotbvpi_icarus   sim_build/sim.vvp   
+     -.--ns INFO     gpi                                ../gpi/GpiCommon.cpp:216  in gpi_load_users                  Running entry func 'initialize' from loaded library '/home/cchoilee/tools/oss-cad-suite/lib/python3.11/site-packages/cocotb-2.1.0.dev0+41564633-py3.11-linux-x64.egg/cocotb/libs/libcocotb.so'
+     -.--ns INFO     gpi                                ..mbed/gpi_embed.cpp:96   in initialize                      Using Python 3.11.6 interpreter at /home/cchoilee/tools/oss-cad-suite/bin/tabbypy3
+     0.00ns INFO     cocotb                             Running on Icarus Verilog version 14.0 (devel)
+     0.00ns INFO     cocotb                             Seeding Python random module with 1783812659
+     0.00ns INFO     cocotb                             Initialized cocotb v2.1.0.dev0+41564633 from /home/cchoilee/tools/oss-cad-suite/lib/python3.11/site-packages/cocotb-2.1.0.dev0+41564633-py3.11-linux-x64.egg/cocotb
+     0.00ns INFO     cocotb                             Running tests
+     0.00ns INFO     cocotb.regression                  running test_macc8.test_reset_behavior (1/17)
+     0.00ns WARNING  py.warnings                        /mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/verif/cocotb/macc8_env.py:44: DeprecationWarning: The 'units' argument has been renamed to 'unit'.
+                                                          clk = Clock(self.dut.clk, 10, units="ns")
+   155.00ns INFO     cocotb.regression                  test_macc8.test_reset_behavior passed
+   155.00ns INFO     cocotb.regression                  running test_macc8.test_simple_known_dot (2/17)
+   450.00ns INFO     cocotb.regression                  test_macc8.test_simple_known_dot passed
+   450.00ns INFO     cocotb.regression                  running test_macc8.test_all_zero (3/17)
+   745.00ns INFO     cocotb.regression                  test_macc8.test_all_zero passed
+   745.00ns INFO     cocotb.regression                  running test_macc8.test_all_positive (4/17)
+  1040.00ns INFO     cocotb.regression                  test_macc8.test_all_positive passed
+  1040.00ns INFO     cocotb.regression                  running test_macc8.test_mixed_signed (5/17)
+  1335.00ns INFO     cocotb.regression                  test_macc8.test_mixed_signed passed
+  1335.00ns INFO     cocotb.regression                  running test_macc8.test_max_positive_int8 (6/17)
+  1630.01ns INFO     cocotb.regression                  test_macc8.test_max_positive_int8 passed
+  1630.01ns INFO     cocotb.regression                  running test_macc8.test_max_negative_int8 (7/17)
+  2155.01ns INFO     cocotb.regression                  test_macc8.test_max_negative_int8 passed
+  2155.01ns INFO     cocotb.regression                  running test_macc8.test_overflow_boundary_wrap (8/17)
+  5590.01ns INFO     cocotb.regression                  test_macc8.test_overflow_boundary_wrap passed
+  5590.01ns INFO     cocotb.regression                  running test_macc8.test_overflow_boundary_saturate (9/17)
+  9000.01ns INFO     cocotb.regression                  test_macc8.test_overflow_boundary_saturate passed
+  9000.01ns INFO     cocotb.regression                  running test_macc8.test_repeated_operations (10/17)
+ 16675.01ns INFO     cocotb.regression                  test_macc8.test_repeated_operations passed
+ 16675.01ns INFO     cocotb.regression                  running test_macc8.test_back_to_back_auto (11/17)
+ 19640.01ns INFO     cocotb.regression                  test_macc8.test_back_to_back_auto passed
+ 19640.01ns INFO     cocotb.regression                  running test_macc8.test_invalid_command_handling (12/17)
+ 20275.01ns INFO     cocotb.regression                  test_macc8.test_invalid_command_handling passed
+ 20275.01ns INFO     cocotb.regression                  running test_macc8.test_random_1000 (13/17)
+157340.01ns INFO     cocotb.macc8_top                   random test completed 1000 checked passes
+157340.01ns INFO     cocotb.regression                  test_macc8.test_random_1000 passed
+157340.01ns INFO     cocotb.regression                  running test_macc8.test_start_before_load (14/17)
+157775.01ns INFO     cocotb.regression                  test_macc8.test_start_before_load passed
+157775.01ns INFO     cocotb.regression                  running test_macc8.test_read_before_done (15/17)
+158230.01ns INFO     cocotb.regression                  test_macc8.test_read_before_done passed
+158230.01ns INFO     cocotb.regression                  running test_macc8.test_reset_during_operation (16/17)
+158985.02ns INFO     cocotb.regression                  test_macc8.test_reset_during_operation passed
+158985.02ns INFO     cocotb.regression                  running test_macc8.test_model_boundary_selfcheck (17/17)
+159055.02ns INFO     cocotb.regression                  test_macc8.test_model_boundary_selfcheck passed
+159055.02ns INFO     cocotb.regression                  ****************************************************************************************************
+                                                        ** TEST                                        STATUS  SIM TIME (ns)  REAL TIME (s)  RATIO (ns/s) **
+                                                        ****************************************************************************************************
+                                                        ** test_macc8.test_reset_behavior               PASS         155.00           0.01      23132.55  **
+                                                        ** test_macc8.test_simple_known_dot             PASS         295.00           0.00     107818.03  **
+                                                        ** test_macc8.test_all_zero                     PASS         295.00           0.00     142630.51  **
+                                                        ** test_macc8.test_all_positive                 PASS         295.00           0.00     134025.10  **
+                                                        ** test_macc8.test_mixed_signed                 PASS         295.00           0.00     141910.73  **
+                                                        ** test_macc8.test_max_positive_int8            PASS         295.00           0.00     115475.47  **
+                                                        ** test_macc8.test_max_negative_int8            PASS         525.00           0.00     125671.13  **
+                                                        ** test_macc8.test_overflow_boundary_wrap       PASS        3435.00           0.02     152692.30  **
+                                                        ** test_macc8.test_overflow_boundary_saturate   PASS        3410.00           0.02     146479.76  **
+                                                        ** test_macc8.test_repeated_operations          PASS        7675.00           0.05     151844.96  **
+                                                        ** test_macc8.test_back_to_back_auto            PASS        2965.00           0.02     149540.79  **
+                                                        ** test_macc8.test_invalid_command_handling     PASS         635.00           0.00     158704.75  **
+                                                        ** test_macc8.test_random_1000                  PASS      137065.00           0.95     144139.45  **
+                                                        ** test_macc8.test_start_before_load            PASS         435.00           0.00     152462.79  **
+                                                        ** test_macc8.test_read_before_done             PASS         455.00           0.00     118963.24  **
+                                                        ** test_macc8.test_reset_during_operation       PASS         755.00           0.01     146939.79  **
+                                                        ** test_macc8.test_model_boundary_selfcheck     PASS          70.00           0.00     140143.81  **
+                                                        ****************************************************************************************************
+                                                        ** TESTS=17 PASS=17 FAIL=0 SKIP=0                         159055.02           1.18     134978.35  **
+                                                        ****************************************************************************************************
+make[2]: Leaving directory '/mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/verif/cocotb'
+make[1]: Leaving directory '/mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/verif/cocotb'

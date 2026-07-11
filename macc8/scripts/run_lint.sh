@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
+# Thin wrapper: `make lint` is the source of truth (and writes a timestamped,
+# committed report to reports/ -- see reports/README.md).
 set -euo pipefail
 source env/setup.sh
-verible-verilog-lint --rules_config lint/.rules.verible_lint $(cat rtl/macc8.f | grep -v '^#')
-verilator --lint-only -Wall -f rtl/macc8.f
+make lint

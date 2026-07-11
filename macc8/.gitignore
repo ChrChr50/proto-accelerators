@@ -1,6 +1,5 @@
 # tool outputs
 build/
-reports/
 pd/openlane/runs/
 pdk/
 verif/vectors/*
@@ -10,9 +9,12 @@ obj_dir/
 *.vcd
 *.fst
 *.log
+!reports/**/*.log
 __pycache__/
 .venv/
-# cocotb / SymbiYosys run artifacts
+# cocotb / SymbiYosys scratch runs (verif/formal/<task>/, from manually running
+# run_formal.sh directly) -- the committed record lives under reports/, see
+# reports/README.md and the Makefile's lint/sim*/formal targets.
 verif/cocotb/results.xml
 verif/formal/*/
 # PDK / big binaries

@@ -1,0 +1,86 @@
+
+ /----------------------------------------------------------------------------\
+ |  yosys -- Yosys Open SYnthesis Suite                                       |
+ |  Copyright (C) 2012 - 2026  Claire Xenia Wolf <claire@yosyshq.com>         |
+ |  Distributed under an ISC-like license, type "license" to see terms        |
+ \----------------------------------------------------------------------------/
+ Yosys 0.67+24 (git sha1 0e82bbefe, Release, Clang /usr/bin/clang++ 18.1.8)
+
+-- Executing script file `design_prep.ys' --
+
+1. Executing RTLIL frontend.
+Input filename: design.il
+
+2. Executing SCC pass (detecting logic loops).
+Found 0 SCCs in module macc8_fsm.
+Found 0 SCCs in module macc8_props_fsm.
+Found 0 SCCs.
+
+3. Executing SIMPLEMAP pass (map simple cells to gate primitives).
+
+4. Executing MEMORY_NORDFF pass (extracting $dff cells from memories).
+
+5. Executing ASYNC2SYNC pass.
+Replacing macc8_fsm.$procdff$130 ($adff): ARST=\rst_n, D=\state_d, Q=\state_q
+
+6. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \macc8_fsm..
+Finding unused cells or wires in module \macc8_props_fsm..
+Removed 33 unused cells and 33 unused wires.
+<suppressed ~34 debug messages>
+
+7. Executing FORMALFF pass.
+
+8. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \macc8_fsm..
+Finding unused cells or wires in module \macc8_props_fsm..
+Removed 2 unused cells and 2 unused wires.
+<suppressed ~4 debug messages>
+
+9. Executing CHECK pass (checking for obvious problems).
+Checking module macc8_fsm...
+Checking module macc8_props_fsm...
+Found and reported 0 problems.
+
+10. Executing SETUNDEF pass (replace undef values with defined constants).
+
+11. Executing OPT pass (performing simple optimizations).
+
+11.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module macc8_fsm.
+Optimizing module macc8_props_fsm.
+
+11.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\macc8_fsm'.
+Computing hashes of 14 cells of `\macc8_fsm'.
+Finding duplicate cells in `\macc8_fsm'.
+Finding identical cells in module `\macc8_props_fsm'.
+Computing hashes of 77 cells of `\macc8_props_fsm'.
+Finding duplicate cells in `\macc8_props_fsm'.
+Computing hashes of 69 cells of `\macc8_props_fsm'.
+Finding duplicate cells in `\macc8_props_fsm'.
+<suppressed ~24 debug messages>
+Removed a total of 8 cells.
+
+11.3. Executing OPT_DFF pass (perform DFF optimizations).
+
+11.4. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \macc8_fsm..
+Finding unused cells or wires in module \macc8_props_fsm..
+Removed 0 unused cells and 8 unused wires.
+<suppressed ~1 debug messages>
+
+11.5. Finished fast OPT passes.
+
+12. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \macc8_fsm..
+Finding unused cells or wires in module \macc8_props_fsm..
+Removed 0 unused cells and 11 unused wires.
+<suppressed ~2 debug messages>
+
+13. Executing RTLIL backend.
+Output filename: ../model/design_prep.il
+
+End of script. Logfile hash: aab4ee6d98, time: 0.04s, user: 0.01s, system: 0.01s, MEM: 18.15 MB peak
+Yosys 0.67+24 (git sha1 0e82bbefe, Release, Clang /usr/bin/clang++ 18.1.8)
+Time spent: 30% 4x opt_clean (0 sec), 15% 2x read_rtlil (0 sec), ...

@@ -1,0 +1,129 @@
+
+ /----------------------------------------------------------------------------\
+ |  yosys -- Yosys Open SYnthesis Suite                                       |
+ |  Copyright (C) 2012 - 2026  Claire Xenia Wolf <claire@yosyshq.com>         |
+ |  Distributed under an ISC-like license, type "license" to see terms        |
+ \----------------------------------------------------------------------------/
+ Yosys 0.67+24 (git sha1 0e82bbefe, Release, Clang /usr/bin/clang++ 18.1.8)
+
+-- Executing script file `design_smt2.ys' --
+
+1. Executing RTLIL frontend.
+Input filename: design_prep.il
+
+2. Executing HIERARCHY pass (managing design hierarchy).
+Attribute `top' found on module `macc8_props_fsm'. Setting top module to macc8_props_fsm.
+
+2.1. Analyzing design hierarchy..
+Top module:  \macc8_props_fsm
+Used module:     \macc8_fsm
+
+2.2. Analyzing design hierarchy..
+Top module:  \macc8_props_fsm
+Used module:     \macc8_fsm
+Removed 0 unused modules.
+Module macc8_props_fsm directly or indirectly contains formal properties -> setting "keep" attribute.
+
+3. Executing FORMALFF pass.
+
+4. Executing DFFUNMAP pass (unmap clock enable and synchronous reset from FFs).
+
+5. Printing statistics.
+
+=== macc8_fsm ===
+
+        +----------Local Count, excluding submodules.
+        | 
+       20 wires
+       26 wire bits
+       16 public wires
+       20 public wire bits
+       11 ports
+       11 port bits
+       16 cells
+        2   $and
+        1   $anyinit
+        1   $anyseq
+        1   $assume
+        3   $eq
+        1   $logic_not
+        3   $mux
+        1   $not
+        1   $or
+        1   $pmux
+        1   $reduce_bool
+
+=== macc8_props_fsm ===
+
+        +----------Local Count, excluding submodules.
+        | 
+       77 wires
+       77 wire bits
+       33 public wires
+       33 public wire bits
+        5 ports
+        5 port bits
+       70 cells
+        1   $and
+        9   $anyinit
+       11   $assert
+        1   $assume
+        1   $eq
+       15   $ff
+        7   $logic_and
+       11   $logic_not
+        8   $logic_or
+        4   $mux
+        1   $not
+        1   $or
+        1 submodules
+        1   macc8_fsm
+
+=== design hierarchy ===
+
+        +----------Count including submodules.
+        | 
+       86 macc8_props_fsm
+       16 macc8_fsm
+
+        +----------Count including submodules.
+        | 
+       97 wires
+      103 wire bits
+       49 public wires
+       53 public wire bits
+       16 ports
+       16 port bits
+        - memories
+        - memory bits
+        - processes
+       86 cells
+        3   $and
+       10   $anyinit
+        1   $anyseq
+       11   $assert
+        2   $assume
+        4   $eq
+       15   $ff
+        7   $logic_and
+       12   $logic_not
+        8   $logic_or
+        7   $mux
+        2   $not
+        2   $or
+        1   $pmux
+        1   $reduce_bool
+        1 submodules
+        1   macc8_fsm
+
+6. Executing SMT2 backend.
+
+6.1. Executing BMUXMAP pass.
+
+6.2. Executing DEMUXMAP pass.
+Creating SMT-LIBv2 representation of module macc8_fsm.
+Creating SMT-LIBv2 representation of module macc8_props_fsm.
+
+End of script. Logfile hash: 5a4c5b18c3, time: 0.03s, user: 0.01s, system: 0.01s, MEM: 17.76 MB peak
+Yosys 0.67+24 (git sha1 0e82bbefe, Release, Clang /usr/bin/clang++ 18.1.8)
+Time spent: 41% 2x write_smt2 (0 sec), 31% 2x read_rtlil (0 sec), ...

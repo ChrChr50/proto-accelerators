@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+<testsuite timestamp="2026-07-11T17:31:09" hostname="Chris" package="handshake_props" id="0" name="default" tests="5" errors="0" failures="0" time="0" skipped="0">
+<properties>
+<property name="os" value="Linux"/>
+<property name="expect" value="PASS"/>
+<property name="status" value="PASS"/>
+</properties>
+<testcase classname="default" name="build execution" time="0">
+</testcase>
+<testcase classname="default" name="Property ASSERT in macc8_props_rx at macc8_props_rx.sv:42.9-42.64" time="0" type="ASSERT" location="macc8_props_rx.sv:42.9-42.64" id="a_consume_clears">
+</testcase>
+<testcase classname="default" name="Property ASSERT in macc8_props_rx at macc8_props_rx.sv:39.7-39.58" time="0" type="ASSERT" location="macc8_props_rx.sv:39.7-39.58" id="a_full_blocks">
+</testcase>
+<testcase classname="default" name="Property ASSERT in macc8_props_rx at macc8_props_rx.sv:38.7-38.72" time="0" type="ASSERT" location="macc8_props_rx.sv:38.7-38.72" id="a_ready_def">
+</testcase>
+<testcase classname="default" name="Property ASSERT in macc8_props_rx at macc8_props_rx.sv:40.7-40.58" time="0" type="ASSERT" location="macc8_props_rx.sv:40.7-40.58" id="a_ready_needs_en">
+</testcase>
+<testcase classname="default" name="Property ASSERT in macc8_props_rx at macc8_props_rx.sv:36.7-36.40" time="0" type="ASSERT" location="macc8_props_rx.sv:36.7-36.40" id="a_reset_empty">
+</testcase>
+<system-out>SBY 17:31:08 [/mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/reports/20260711-173107_formal/handshake_props] Removing directory '/mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/reports/20260711-173107_formal/handshake_props'.
+SBY 17:31:08 [/mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/reports/20260711-173107_formal/handshake_props] Copy '/mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/verif/formal/../../rtl/macc8_pkg.sv' to '/mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/reports/20260711-173107_formal/handshake_props/src/macc8_pkg.sv'.
+SBY 17:31:08 [/mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/reports/20260711-173107_formal/handshake_props] Copy '/mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/verif/formal/../../rtl/macc8_serial_rx.sv' to '/mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/reports/20260711-173107_formal/handshake_props/src/macc8_serial_rx.sv'.
+SBY 17:31:08 [/mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/reports/20260711-173107_formal/handshake_props] Copy '/mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/verif/formal/macc8_props_rx.sv' to '/mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/reports/20260711-173107_formal/handshake_props/src/macc8_props_rx.sv'.
+SBY 17:31:08 [/mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/reports/20260711-173107_formal/handshake_props] engine_0: smtbmc z3
+SBY 17:31:08 [/mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/reports/20260711-173107_formal/handshake_props] base: starting process &quot;cd /mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/reports/20260711-173107_formal/handshake_props/src; yosys -ql ../model/design.log ../model/design.ys&quot;
+SBY 17:31:08 [/mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/reports/20260711-173107_formal/handshake_props] base: finished (returncode=0)
+SBY 17:31:08 [/mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/reports/20260711-173107_formal/handshake_props] prep: starting process &quot;cd /mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/reports/20260711-173107_formal/handshake_props/model; yosys -ql design_prep.log design_prep.ys&quot;
+SBY 17:31:08 [/mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/reports/20260711-173107_formal/handshake_props] prep: finished (returncode=0)
+SBY 17:31:08 [/mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/reports/20260711-173107_formal/handshake_props] smt2: starting process &quot;cd /mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/reports/20260711-173107_formal/handshake_props/model; yosys -ql design_smt2.log design_smt2.ys&quot;
+SBY 17:31:09 [/mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/reports/20260711-173107_formal/handshake_props] smt2: finished (returncode=0)
+SBY 17:31:09 [/mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/reports/20260711-173107_formal/handshake_props] engine_0.basecase: starting process &quot;cd /mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/reports/20260711-173107_formal/handshake_props; yosys-smtbmc -s z3 --presat --noprogress -t 12  --append 0 --dump-vcd engine_0/trace.vcd --dump-yw engine_0/trace.yw --dump-vlogtb engine_0/trace_tb.v --dump-smtc engine_0/trace.smtc model/design_smt2.smt2&quot;
+SBY 17:31:09 [/mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/reports/20260711-173107_formal/handshake_props] engine_0.induction: starting process &quot;cd /mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/reports/20260711-173107_formal/handshake_props; yosys-smtbmc -s z3 --presat -i --noprogress -t 12  --append 0 --dump-vcd engine_0/trace_induct.vcd --dump-yw engine_0/trace_induct.yw --dump-vlogtb engine_0/trace_induct_tb.v --dump-smtc engine_0/trace_induct.smtc model/design_smt2.smt2&quot;
+SBY 17:31:09 [/mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/reports/20260711-173107_formal/handshake_props] engine_0.basecase: ##   0:00:00  Solver: z3
+SBY 17:31:09 [/mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/reports/20260711-173107_formal/handshake_props] engine_0.basecase: ##   0:00:00  Checking assumptions in step 0..
+SBY 17:31:09 [/mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/reports/20260711-173107_formal/handshake_props] engine_0.induction: ##   0:00:00  Solver: z3
+SBY 17:31:09 [/mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/reports/20260711-173107_formal/handshake_props] engine_0.induction: ##   0:00:00  Trying induction in step 12..
+SBY 17:31:09 [/mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/reports/20260711-173107_formal/handshake_props] engine_0.basecase: ##   0:00:00  Checking assertions in step 0..
+SBY 17:31:09 [/mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/reports/20260711-173107_formal/handshake_props] engine_0.basecase: ##   0:00:00  Checking assumptions in step 1..
+SBY 17:31:09 [/mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/reports/20260711-173107_formal/handshake_props] engine_0.basecase: ##   0:00:00  Checking assertions in step 1..
+SBY 17:31:09 [/mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/reports/20260711-173107_formal/handshake_props] engine_0.basecase: ##   0:00:00  Checking assumptions in step 2..
+SBY 17:31:09 [/mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/reports/20260711-173107_formal/handshake_props] engine_0.basecase: ##   0:00:00  Checking assertions in step 2..
+SBY 17:31:09 [/mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/reports/20260711-173107_formal/handshake_props] engine_0.basecase: ##   0:00:00  Checking assumptions in step 3..
+SBY 17:31:09 [/mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/reports/20260711-173107_formal/handshake_props] engine_0.basecase: ##   0:00:00  Checking assertions in step 3..
+SBY 17:31:09 [/mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/reports/20260711-173107_formal/handshake_props] engine_0.basecase: ##   0:00:00  Checking assumptions in step 4..
+SBY 17:31:09 [/mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/reports/20260711-173107_formal/handshake_props] engine_0.basecase: ##   0:00:00  Checking assertions in step 4..
+SBY 17:31:09 [/mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/reports/20260711-173107_formal/handshake_props] engine_0.basecase: ##   0:00:00  Checking assumptions in step 5..
+SBY 17:31:09 [/mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/reports/20260711-173107_formal/handshake_props] engine_0.basecase: ##   0:00:00  Checking assertions in step 5..
+SBY 17:31:09 [/mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/reports/20260711-173107_formal/handshake_props] engine_0.basecase: ##   0:00:00  Checking assumptions in step 6..
+SBY 17:31:09 [/mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/reports/20260711-173107_formal/handshake_props] engine_0.basecase: ##   0:00:00  Checking assertions in step 6..
+SBY 17:31:09 [/mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/reports/20260711-173107_formal/handshake_props] engine_0.basecase: ##   0:00:00  Checking assumptions in step 7..
+SBY 17:31:09 [/mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/reports/20260711-173107_formal/handshake_props] engine_0.basecase: ##   0:00:00  Checking assertions in step 7..
+SBY 17:31:09 [/mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/reports/20260711-173107_formal/handshake_props] engine_0.basecase: ##   0:00:00  Checking assumptions in step 8..
+SBY 17:31:09 [/mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/reports/20260711-173107_formal/handshake_props] engine_0.basecase: ##   0:00:00  Checking assertions in step 8..
+SBY 17:31:09 [/mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/reports/20260711-173107_formal/handshake_props] engine_0.basecase: ##   0:00:00  Checking assumptions in step 9..
+SBY 17:31:09 [/mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/reports/20260711-173107_formal/handshake_props] engine_0.basecase: ##   0:00:00  Checking assertions in step 9..
+SBY 17:31:09 [/mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/reports/20260711-173107_formal/handshake_props] engine_0.basecase: ##   0:00:00  Checking assumptions in step 10..
+SBY 17:31:09 [/mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/reports/20260711-173107_formal/handshake_props] engine_0.basecase: ##   0:00:00  Checking assertions in step 10..
+SBY 17:31:09 [/mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/reports/20260711-173107_formal/handshake_props] engine_0.basecase: ##   0:00:00  Checking assumptions in step 11..
+SBY 17:31:09 [/mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/reports/20260711-173107_formal/handshake_props] engine_0.basecase: ##   0:00:00  Checking assertions in step 11..
+SBY 17:31:09 [/mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/reports/20260711-173107_formal/handshake_props] engine_0.basecase: ##   0:00:00  Status: passed
+SBY 17:31:09 [/mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/reports/20260711-173107_formal/handshake_props] engine_0.basecase: finished (returncode=0)
+SBY 17:31:09 [/mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/reports/20260711-173107_formal/handshake_props] engine_0.basecase: Status returned by engine for basecase: pass
+SBY 17:31:09 [/mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/reports/20260711-173107_formal/handshake_props] engine_0.induction: ##   0:00:00  Trying induction in step 11..
+SBY 17:31:09 [/mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/reports/20260711-173107_formal/handshake_props] engine_0.induction: ##   0:00:00  Trying induction in step 10..
+SBY 17:31:09 [/mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/reports/20260711-173107_formal/handshake_props] engine_0.induction: ##   0:00:00  Temporal induction successful.
+SBY 17:31:09 [/mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/reports/20260711-173107_formal/handshake_props] engine_0.induction: ##   0:00:00  Status: passed
+SBY 17:31:09 [/mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/reports/20260711-173107_formal/handshake_props] engine_0.induction: finished (returncode=0)
+SBY 17:31:09 [/mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/reports/20260711-173107_formal/handshake_props] engine_0.induction: Status returned by engine for induction: pass
+SBY 17:31:09 [/mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/reports/20260711-173107_formal/handshake_props] summary: Elapsed clock time [H:MM:SS (secs)]: 0:00:00 (0)
+SBY 17:31:09 [/mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/reports/20260711-173107_formal/handshake_props] summary: Elapsed process time [H:MM:SS (secs)]: 0:00:00 (0)
+SBY 17:31:09 [/mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/reports/20260711-173107_formal/handshake_props] summary: engine_0 (smtbmc z3) returned pass for basecase
+SBY 17:31:09 [/mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/reports/20260711-173107_formal/handshake_props] summary: engine_0 (smtbmc z3) returned pass for induction
+SBY 17:31:09 [/mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/reports/20260711-173107_formal/handshake_props] summary: engine_0 did not produce any traces
+SBY 17:31:09 [/mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/reports/20260711-173107_formal/handshake_props] summary: successful proof by k-induction.
+SBY 17:31:09 [/mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/reports/20260711-173107_formal/handshake_props] DONE (PASS, rc=0)
+</system-out>
+<system-err>
+</system-err>
+</testsuite>
+</testsuites>
