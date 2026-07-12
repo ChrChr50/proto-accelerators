@@ -1,5 +1,7 @@
 # proto-accelerators
 
+[![CI](https://github.com/ChrChr50/proto-accelerators/actions/workflows/ci.yml/badge.svg)](https://github.com/ChrChr50/proto-accelerators/actions/workflows/ci.yml)
+
 A monorepo for prototype hardware accelerator projects — RTL through GDSII on
 open-source tooling and open PDKs.
 
