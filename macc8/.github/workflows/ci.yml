@@ -1,35 +1,166 @@
+# MACC-8 CI
+#
+# Design notes:
+# - Toolchain versions are pinned exactly to what's validated locally (see
+#   env/tool-versions.md and scripts/ci_install_toolchain.sh) -- not
+#   "latest", since OSS-CAD-Suite cuts new builds very frequently and CI
+#   reproducibility matters more than always chasing the newest nightly.
+# - Each job writes a timestamped reports/<ts>_<target>/ (same convention as
+#   local runs -- see reports/README.md) and uploads it as a CI artifact, but
+#   CI does NOT commit those reports back to the repo. An auto-commit step
+#   here would risk an infinite trigger loop (CI's own commit re-triggering
+#   CI) and adds bot-authored noise; the committed reports/ history stays
+#   "what a human deliberately ran," matching local practice so far.
+# - The Icarus job deliberately does NOT use the pinned cocotb venv -- see
+#   the comment on that job and env/tool-versions.md for why.
 name: CI
 
 on:
   push:
   pull_request:
 
+env:
+  MACC8_TOOLS_ROOT: /home/runner/tools
+
 jobs:
-  lint-sim-formal:
+  lint:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - name: Cache toolchain
+        uses: actions/cache@v4
         with:
-          python-version: "3.11"
+          path: ${{ env.MACC8_TOOLS_ROOT }}
+          key: macc8-toolchain-oss-cad-suite-2026-07-11-verible-v0.0-4080-ga0a8d8eb
 
-      - name: Install Python deps
-        run: pip install -r env/requirements.txt
-
-      - name: Install OSS-CAD-Suite tools
-        run: echo "TODO: install verible, verilator, sby via oss-cad-suite"
+      - name: Install toolchain (Yosys, Verilator, Verible)
+        run: bash scripts/ci_install_toolchain.sh
 
       - name: Lint
-        run: make lint
+        working-directory: .
+        run: source env/setup.sh && make lint
 
-      - name: Simulate
-        run: make sim
+      - name: Upload report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: reports-lint
+          path: reports/*_lint/
+
+  sim:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Cache toolchain
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.MACC8_TOOLS_ROOT }}
+          key: macc8-toolchain-oss-cad-suite-2026-07-11-verible-v0.0-4080-ga0a8d8eb
+
+      - name: Install toolchain (Yosys, Verilator)
+        run: bash scripts/ci_install_toolchain.sh oss-cad-suite
+
+      - name: Set up pinned cocotb venv
+        run: |
+          python3 -m venv $MACC8_TOOLS_ROOT/macc8-venv
+          source $MACC8_TOOLS_ROOT/macc8-venv/bin/activate
+          pip install --upgrade pip -q
+          pip install "cocotb==1.9.*" cocotb-bus numpy pytest -q
+
+      - name: Simulate (fast, Verilator) -- full make sim runs on a schedule instead
+        run: source env/setup.sh && make sim-fast
+
+      - name: Upload report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: reports-sim-fast
+          path: reports/*_sim-fast/
+
+  sim-icarus:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Cache toolchain
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.MACC8_TOOLS_ROOT }}
+          key: macc8-toolchain-oss-cad-suite-2026-07-11-verible-v0.0-4080-ga0a8d8eb
+
+      - name: Install toolchain (Icarus, via OSS-CAD-Suite)
+        run: bash scripts/ci_install_toolchain.sh oss-cad-suite
+
+      # Deliberately NOT sourcing env/setup.sh / activating the pinned venv
+      # here. OSS-CAD-Suite's `vvp` wrapper hardcodes PYTHONHOME to its own
+      # tree before exec-ing the real binary, which crashes a separate venv's
+      # differently-versioned Python when cocotb's VPI shim tries to embed it.
+      # Icarus can only cleanly run against OSS-CAD-Suite's own bundled
+      # cocotb -- see env/tool-versions.md for the full explanation.
+      - name: Simulate (Icarus, OSS-CAD-Suite's bundled cocotb)
+        run: source $MACC8_TOOLS_ROOT/oss-cad-suite/environment && make sim-icarus
+
+      - name: Upload report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: reports-sim-icarus
+          path: reports/*_sim-icarus/
+
+  formal:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Cache toolchain
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.MACC8_TOOLS_ROOT }}
+          key: macc8-toolchain-oss-cad-suite-2026-07-11-verible-v0.0-4080-ga0a8d8eb
+
+      - name: Install toolchain (Yosys, sby, z3)
+        run: bash scripts/ci_install_toolchain.sh oss-cad-suite
 
       - name: Formal
-        run: make formal
+        run: source env/setup.sh && make formal
 
+      - name: Upload report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: reports-formal
+          path: reports/*_formal/
+
+  synth-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Cache toolchain
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.MACC8_TOOLS_ROOT }}
+          key: macc8-toolchain-oss-cad-suite-2026-07-11-verible-v0.0-4080-ga0a8d8eb
+
+      - name: Install toolchain (Yosys)
+        run: bash scripts/ci_install_toolchain.sh oss-cad-suite
+
+      - name: Synthesis check
+        run: source env/setup.sh && make synth-check
+
+      - name: Upload report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: reports-synth-check
+          path: reports/*_synth-check/
+
+  # Inert by design, not by accident: needs BOTH a `schedule:` trigger added
+  # to `on:` above, AND Phase 7 (Docker + OpenLane + Sky130 PDK) actually
+  # working. Neither is true yet. Left in place so the intended shape of a
+  # future nightly full-harden job is visible, without pretending it runs.
   synth-nightly:
     if: github.event_name == 'schedule'
     runs-on: ubuntu-latest
