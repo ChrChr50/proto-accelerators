@@ -10,7 +10,7 @@ export PDK_ROOT   ?= $(CURDIR)/pdk
 # stay git-ignored scratch space.
 TS := $(shell date +%Y%m%d-%H%M%S)
 
-.PHONY: all lint sim sim-fast sim-icarus formal synth gds drc lvs signoff vectors clean help
+.PHONY: all lint sim sim-fast sim-icarus formal synth-check synth gds drc lvs signoff vectors clean help
 
 help:            ## list targets
 	@grep -E '^[a-z].*:.*##' $(MAKEFILE_LIST) | sed 's/:.*##/ -/'
@@ -36,6 +36,16 @@ formal:          ## SymbiYosys property checks (report: reports/<ts>_formal/)
 	@mkdir -p reports/$(TS)_formal
 	cd verif/formal && sby -f fsm_props.sby -d $(CURDIR)/reports/$(TS)_formal/fsm_props > $(CURDIR)/reports/$(TS)_formal/fsm_props.log 2>&1; ec=$$?; cat $(CURDIR)/reports/$(TS)_formal/fsm_props.log; test $$ec -eq 0 || exit $$ec
 	cd verif/formal && sby -f handshake_props.sby -d $(CURDIR)/reports/$(TS)_formal/handshake_props > $(CURDIR)/reports/$(TS)_formal/handshake_props.log 2>&1; ec=$$?; cat $(CURDIR)/reports/$(TS)_formal/handshake_props.log; test $$ec -eq 0 || exit $$ec
+
+synth-check:     ## Yosys generic synthesizability + area proxy, no PDK (report: reports/<ts>_synth-check/)
+	@mkdir -p reports/$(TS)_synth-check
+	MACC8_REPORT_DIR=$(CURDIR)/reports/$(TS)_synth-check yosys -c syn/yosys_area.tcl > reports/$(TS)_synth-check/yosys.log 2>&1; ec=$$?; \
+	cat reports/$(TS)_synth-check/yosys.log; \
+	if [ $$ec -eq 0 ]; then \
+	  bash scripts/parse_yosys_stat.sh reports/$(TS)_synth-check/yosys.log reports/$(TS)_synth-check/yosys_stat.log reports/$(TS)_synth-check/summary.md; \
+	  cp reports/$(TS)_synth-check/summary.md docs/synthesis_summary.md; \
+	fi; \
+	exit $$ec
 
 pdk:             ## fetch Sky130 via Volare
 	bash scripts/install_pdk.sh

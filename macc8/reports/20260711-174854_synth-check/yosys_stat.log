@@ -1,0 +1,29 @@
+
+14. Printing statistics.
+
+=== macc8_top ===
+
+        +----------Local Count, excluding submodules.
+        | 
+     4657 wires
+     6325 wire bits
+      128 public wires
+     1796 public wire bits
+       11 ports
+       87 port bits
+     5050 cells
+      102   $_ANDNOT_
+      921   $_AND_
+      299   $_DFFE_PN0P_
+        3   $_DFFE_PN1P_
+       34   $_DFF_PN0_
+      127   $_MUX_
+     1954   $_NAND_
+       16   $_NOR_
+       18   $_NOT_
+       52   $_ORNOT_
+      179   $_OR_
+      290   $_XNOR_
+     1040   $_XOR_
+       15   $scopeinfo
+

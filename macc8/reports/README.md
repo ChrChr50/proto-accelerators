@@ -1,9 +1,9 @@
 # reports/
 
-Every `make lint`, `make sim` / `sim-fast` / `sim-icarus`, and `make formal`
-run writes its output here, under a timestamped subdirectory, and that
-subdirectory is committed to the repo — this is the project's actual,
-reproducible verification record, not a throwaway log.
+Every `make lint`, `make sim` / `sim-fast` / `sim-icarus`, `make formal`, and
+`make synth-check` run writes its output here, under a timestamped
+subdirectory, and that subdirectory is committed to the repo — this is the
+project's actual, reproducible verification record, not a throwaway log.
 
 ## Naming convention
 
@@ -21,6 +21,7 @@ run gets one consistent timestamp even though it touches multiple files).
 | `_sim-fast` | `make sim-fast` | same as above, but with `MACC8_FAST=1` (capped overflow loop, for quick iteration) |
 | `_sim-icarus` | `make sim-icarus` | same as `_sim-fast`, run under Icarus Verilog instead of Verilator (see `env/tool-versions.md` for a cocotb-version caveat specific to this path) |
 | `_formal` | `make formal` | `fsm_props.log` / `handshake_props.log`, plus the full SymbiYosys work directories (`fsm_props/`, `handshake_props/` — SMT2 models, per-engine logs, `PASS`/`FAIL` marker files) |
+| `_synth-check` | `make synth-check` | `yosys.log` (full run), `yosys_stat.log` (raw `stat` output), `summary.md` (curated cell/FF counts + checklist — also copied to `docs/synthesis_summary.md` as the latest snapshot). Technology-independent, no PDK required; real Sky130 area comes from OpenLane in Phase 7. |
 
 ## Why timestamped and committed, not overwritten in place
 

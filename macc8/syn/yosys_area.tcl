@@ -2,16 +2,25 @@
 # yosys_area.tcl — technology-independent complexity/area proxy AND a
 # synthesizability smoke check, WITHOUT a PDK.
 #
-#   yosys -c syn/yosys_area.tcl        (run from workspace root)
+#   yosys -c syn/yosys_area.tcl                         (writes to reports/)
+#   MACC8_REPORT_DIR=<dir> yosys -c syn/yosys_area.tcl  (writes to <dir>)
+#
+# `make synth-check` sets MACC8_REPORT_DIR to a timestamped
+# reports/<ts>_synth-check/ directory automatically -- see the Makefile and
+# reports/README.md.
 #
 # Fails (nonzero exit) if the design has undriven nets, multiply-driven nets,
 # unsynthesizable constructs (yosys 'check -assert'), or inferred latches.
-# Raw stat output is captured to reports/synth_yosys.log (git-ignored,
-# regenerable) — see docs/synthesis_summary.md for the curated, committed
-# summary template to fill in from that output.
 #
 # For real Sky130 area/timing/power, use OpenLane (scripts/run_gds.sh).
 # -----------------------------------------------------------------------------
+if {[info exists ::env(MACC8_REPORT_DIR)]} {
+  set report_dir $::env(MACC8_REPORT_DIR)
+} else {
+  set report_dir "reports"
+}
+file mkdir $report_dir
+
 set rtl {
   rtl/macc8_pkg.sv
   rtl/macc8_reset_sync.sv
@@ -29,21 +38,19 @@ yosys hierarchy -top macc8_top
 yosys synth -top macc8_top -flatten
 
 # ---- synthesizability checks: fail loudly instead of just warning ----------
+# NOTE: this is a Tcl script (run via `yosys -c`), so a literal "$" in a cell
+# type glob (e.g. $_DLATCH_*) must be brace-quoted -- otherwise Tcl treats it
+# as a variable reference and errors with "can't read '_DLATCH_': no such
+# variable" before Yosys ever sees the argument. Learned the hard way 2026-07-11.
 yosys check -assert
-yosys select -assert-none t:$_DLATCH_*
-yosys select -assert-none t:$_DLATCHSR_*
+yosys select -assert-none {t:$_DLATCH_*}
+yosys select -assert-none {t:$_DLATCHSR_*}
 
 # ---- reports -----------------------------------------------------------------
-file mkdir reports
-yosys tee -o reports/synth_yosys.log stat
+yosys tee -o $report_dir/yosys_stat.log stat
 
-puts "NOTE: counts above are technology-independent. Flip-flops approximate"
-puts "state footprint (~336: 128 product-pipe + 64 weights + 64 act regs +"
-puts "32 accumulator + 32 read-data + config/counter/FSM/reset-sync)."
-puts "XOR/XNOR/AOI-heavy combinational cells reflect the 8 signed multipliers"
-puts "and the adder tree. Real Sky130 area/timing come from OpenLane."
-puts ""
+puts "NOTE: counts above are technology-independent. Real Sky130 area/timing"
+puts "come from OpenLane (scripts/run_gds.sh) once the PDK is available."
 puts "Checks passed: no undriven/multi-driven nets, no unsynthesizable"
 puts "constructs (yosys 'check -assert'), no inferred latches."
-puts "Raw stat output: reports/synth_yosys.log"
-puts "Fill in docs/synthesis_summary.md with these numbers after this run."
+puts "Raw stat output: $report_dir/yosys_stat.log"

@@ -1,0 +1,1303 @@
+
+ /----------------------------------------------------------------------------\
+ |  yosys -- Yosys Open SYnthesis Suite                                       |
+ |  Copyright (C) 2012 - 2026  Claire Xenia Wolf <claire@yosyshq.com>         |
+ |  Distributed under an ISC-like license, type "license" to see terms        |
+ \----------------------------------------------------------------------------/
+ Yosys 0.67+24 (git sha1 0e82bbefe, Release, Clang /usr/bin/clang++ 18.1.8)
+
+1. Executing Verilog-2005 frontend: rtl/macc8_pkg.sv
+Parsing SystemVerilog input from `rtl/macc8_pkg.sv' to AST representation.
+Successfully finished Verilog frontend.
+
+2. Executing Verilog-2005 frontend: rtl/macc8_reset_sync.sv
+Parsing SystemVerilog input from `rtl/macc8_reset_sync.sv' to AST representation.
+Generating RTLIL representation for module `\macc8_reset_sync'.
+Successfully finished Verilog frontend.
+
+3. Executing Verilog-2005 frontend: rtl/macc8_mac_lane.sv
+Parsing SystemVerilog input from `rtl/macc8_mac_lane.sv' to AST representation.
+Generating RTLIL representation for module `\macc8_mac_lane'.
+Successfully finished Verilog frontend.
+
+4. Executing Verilog-2005 frontend: rtl/macc8_adder_tree.sv
+Parsing SystemVerilog input from `rtl/macc8_adder_tree.sv' to AST representation.
+Generating RTLIL representation for module `\macc8_adder_tree'.
+Successfully finished Verilog frontend.
+
+5. Executing Verilog-2005 frontend: rtl/macc8_accumulator.sv
+Parsing SystemVerilog input from `rtl/macc8_accumulator.sv' to AST representation.
+Generating RTLIL representation for module `\macc8_accumulator'.
+Successfully finished Verilog frontend.
+
+6. Executing Verilog-2005 frontend: rtl/macc8_datapath.sv
+Parsing SystemVerilog input from `rtl/macc8_datapath.sv' to AST representation.
+Generating RTLIL representation for module `\macc8_datapath'.
+Successfully finished Verilog frontend.
+
+7. Executing Verilog-2005 frontend: rtl/macc8_serial_rx.sv
+Parsing SystemVerilog input from `rtl/macc8_serial_rx.sv' to AST representation.
+Generating RTLIL representation for module `\macc8_serial_rx'.
+Successfully finished Verilog frontend.
+
+8. Executing Verilog-2005 frontend: rtl/macc8_fsm.sv
+Parsing SystemVerilog input from `rtl/macc8_fsm.sv' to AST representation.
+Generating RTLIL representation for module `\macc8_fsm'.
+Successfully finished Verilog frontend.
+
+9. Executing Verilog-2005 frontend: rtl/macc8_regfile.sv
+Parsing SystemVerilog input from `rtl/macc8_regfile.sv' to AST representation.
+Generating RTLIL representation for module `\macc8_regfile'.
+Successfully finished Verilog frontend.
+
+10. Executing Verilog-2005 frontend: rtl/macc8_top.sv
+Parsing SystemVerilog input from `rtl/macc8_top.sv' to AST representation.
+Generating RTLIL representation for module `\macc8_top'.
+Successfully finished Verilog frontend.
+
+11. Executing HIERARCHY pass (managing design hierarchy).
+
+11.1. Analyzing design hierarchy..
+Top module:  \macc8_top
+Used module:     \macc8_datapath
+Used module:         \macc8_mac_lane
+Used module:         \macc8_accumulator
+Used module:         \macc8_adder_tree
+Used module:     \macc8_fsm
+Used module:     \macc8_serial_rx
+Used module:     \macc8_regfile
+Used module:     \macc8_reset_sync
+Parameter \ACT_W = 8
+Parameter \WT_W = 8
+Parameter \PROD_W = 16
+
+11.2. Executing AST frontend in derive mode using pre-parsed AST for module `\macc8_mac_lane'.
+Parameter \ACT_W = 8
+Parameter \WT_W = 8
+Parameter \PROD_W = 16
+Generating RTLIL representation for module `$paramod$8209cd294300caec48ecc3edd4d23f0ab7778529\macc8_mac_lane'.
+Parameter \ACT_W = 8
+Parameter \WT_W = 8
+Parameter \PROD_W = 16
+Found cached RTLIL representation for module `$paramod$8209cd294300caec48ecc3edd4d23f0ab7778529\macc8_mac_lane'.
+Parameter \ACT_W = 8
+Parameter \WT_W = 8
+Parameter \PROD_W = 16
+Found cached RTLIL representation for module `$paramod$8209cd294300caec48ecc3edd4d23f0ab7778529\macc8_mac_lane'.
+Parameter \ACT_W = 8
+Parameter \WT_W = 8
+Parameter \PROD_W = 16
+Found cached RTLIL representation for module `$paramod$8209cd294300caec48ecc3edd4d23f0ab7778529\macc8_mac_lane'.
+Parameter \ACT_W = 8
+Parameter \WT_W = 8
+Parameter \PROD_W = 16
+Found cached RTLIL representation for module `$paramod$8209cd294300caec48ecc3edd4d23f0ab7778529\macc8_mac_lane'.
+Parameter \ACT_W = 8
+Parameter \WT_W = 8
+Parameter \PROD_W = 16
+Found cached RTLIL representation for module `$paramod$8209cd294300caec48ecc3edd4d23f0ab7778529\macc8_mac_lane'.
+Parameter \ACT_W = 8
+Parameter \WT_W = 8
+Parameter \PROD_W = 16
+Found cached RTLIL representation for module `$paramod$8209cd294300caec48ecc3edd4d23f0ab7778529\macc8_mac_lane'.
+Parameter \ACT_W = 8
+Parameter \WT_W = 8
+Parameter \PROD_W = 16
+Found cached RTLIL representation for module `$paramod$8209cd294300caec48ecc3edd4d23f0ab7778529\macc8_mac_lane'.
+Parameter \SUM_W = 20
+Parameter \ACC_W = 32
+
+11.3. Executing AST frontend in derive mode using pre-parsed AST for module `\macc8_accumulator'.
+Parameter \SUM_W = 20
+Parameter \ACC_W = 32
+Generating RTLIL representation for module `$paramod$e8a620748bcdef8dbbc833a61035a5e190b82975\macc8_accumulator'.
+Parameter \LANES = 8
+Parameter \PROD_W = 16
+Parameter \SUM_W = 20
+
+11.4. Executing AST frontend in derive mode using pre-parsed AST for module `\macc8_adder_tree'.
+Parameter \LANES = 8
+Parameter \PROD_W = 16
+Parameter \SUM_W = 20
+Generating RTLIL representation for module `$paramod$710c93fe3552924af94e428c8ad57fa0cbf01238\macc8_adder_tree'.
+
+11.5. Analyzing design hierarchy..
+Top module:  \macc8_top
+Used module:     \macc8_datapath
+Used module:         $paramod$8209cd294300caec48ecc3edd4d23f0ab7778529\macc8_mac_lane
+Used module:         $paramod$e8a620748bcdef8dbbc833a61035a5e190b82975\macc8_accumulator
+Used module:         $paramod$710c93fe3552924af94e428c8ad57fa0cbf01238\macc8_adder_tree
+Used module:     \macc8_fsm
+Used module:     \macc8_serial_rx
+Used module:     \macc8_regfile
+Used module:     \macc8_reset_sync
+
+11.6. Analyzing design hierarchy..
+Top module:  \macc8_top
+Used module:     \macc8_datapath
+Used module:         $paramod$8209cd294300caec48ecc3edd4d23f0ab7778529\macc8_mac_lane
+Used module:         $paramod$e8a620748bcdef8dbbc833a61035a5e190b82975\macc8_accumulator
+Used module:         $paramod$710c93fe3552924af94e428c8ad57fa0cbf01238\macc8_adder_tree
+Used module:     \macc8_fsm
+Used module:     \macc8_serial_rx
+Used module:     \macc8_regfile
+Used module:     \macc8_reset_sync
+Removing unused module `\macc8_accumulator'.
+Removing unused module `\macc8_adder_tree'.
+Removing unused module `\macc8_mac_lane'.
+Removed 3 unused modules.
+
+12. Executing SYNTH pass.
+
+12.1. Executing HIERARCHY pass (managing design hierarchy).
+
+12.1.1. Analyzing design hierarchy..
+Top module:  \macc8_top
+Used module:     \macc8_datapath
+Used module:         $paramod$8209cd294300caec48ecc3edd4d23f0ab7778529\macc8_mac_lane
+Used module:         $paramod$e8a620748bcdef8dbbc833a61035a5e190b82975\macc8_accumulator
+Used module:         $paramod$710c93fe3552924af94e428c8ad57fa0cbf01238\macc8_adder_tree
+Used module:     \macc8_fsm
+Used module:     \macc8_serial_rx
+Used module:     \macc8_regfile
+Used module:     \macc8_reset_sync
+
+12.1.2. Analyzing design hierarchy..
+Top module:  \macc8_top
+Used module:     \macc8_datapath
+Used module:         $paramod$8209cd294300caec48ecc3edd4d23f0ab7778529\macc8_mac_lane
+Used module:         $paramod$e8a620748bcdef8dbbc833a61035a5e190b82975\macc8_accumulator
+Used module:         $paramod$710c93fe3552924af94e428c8ad57fa0cbf01238\macc8_adder_tree
+Used module:     \macc8_fsm
+Used module:     \macc8_serial_rx
+Used module:     \macc8_regfile
+Used module:     \macc8_reset_sync
+Removed 0 unused modules.
+
+12.2. Executing PROC pass (convert processes to netlists).
+
+12.2.1. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Cleaned up 0 empty switches.
+
+12.2.2. Executing PROC_RMDEAD pass (remove dead branches from decision trees).
+Marked 1 switch rules as full_case in process $proc$rtl/macc8_regfile.sv:131$111 in module macc8_regfile.
+Marked 2 switch rules as full_case in process $proc$rtl/macc8_regfile.sv:84$107 in module macc8_regfile.
+Removed 1 dead cases from process $proc$rtl/macc8_fsm.sv:45$85 in module macc8_fsm.
+Marked 1 switch rules as full_case in process $proc$rtl/macc8_fsm.sv:45$85 in module macc8_fsm.
+Marked 1 switch rules as full_case in process $proc$rtl/macc8_fsm.sv:39$83 in module macc8_fsm.
+Marked 3 switch rules as full_case in process $proc$rtl/macc8_serial_rx.sv:33$60 in module macc8_serial_rx.
+Marked 1 switch rules as full_case in process $proc$rtl/macc8_datapath.sv:67$29 in module macc8_datapath.
+Marked 2 switch rules as full_case in process $proc$rtl/macc8_accumulator.sv:48$122 in module $paramod$e8a620748bcdef8dbbc833a61035a5e190b82975\macc8_accumulator.
+Marked 1 switch rules as full_case in process $proc$rtl/macc8_accumulator.sv:36$117 in module $paramod$e8a620748bcdef8dbbc833a61035a5e190b82975\macc8_accumulator.
+Marked 1 switch rules as full_case in process $proc$rtl/macc8_reset_sync.sv:14$1 in module macc8_reset_sync.
+Removed a total of 1 dead cases.
+
+12.2.3. Executing PROC_PRUNE pass (remove redundant assignments in processes).
+Removed 4 redundant assignments.
+Promoted 22 assignments to connections.
+
+12.2.4. Executing PROC_INIT pass (extract init attributes).
+
+12.2.5. Executing PROC_ARST pass (detect async resets in processes).
+Found async reset \rst_n in `\macc8_regfile.$proc$rtl/macc8_regfile.sv:131$111'.
+Found async reset \rst_n in `\macc8_regfile.$proc$rtl/macc8_regfile.sv:84$107'.
+Found async reset \rst_n in `\macc8_fsm.$proc$rtl/macc8_fsm.sv:39$83'.
+Found async reset \rst_n in `\macc8_serial_rx.$proc$rtl/macc8_serial_rx.sv:33$60'.
+Found async reset \rst_n in `\macc8_datapath.$proc$rtl/macc8_datapath.sv:67$29'.
+Found async reset \rst_n in `$paramod$e8a620748bcdef8dbbc833a61035a5e190b82975\macc8_accumulator.$proc$rtl/macc8_accumulator.sv:48$122'.
+Found async reset \arst_n in `\macc8_reset_sync.$proc$rtl/macc8_reset_sync.sv:14$1'.
+
+12.2.6. Executing PROC_ROM pass (convert switches to ROMs).
+Converted 0 switches.
+<suppressed ~15 debug messages>
+
+12.2.7. Executing PROC_MUX pass (convert decision trees to multiplexers).
+Creating decoders for process `\macc8_regfile.$proc$rtl/macc8_regfile.sv:131$111'.
+     1/1: $0\reg_rdata[31:0]
+Creating decoders for process `\macc8_regfile.$proc$rtl/macc8_regfile.sv:116$110'.
+     1/1: $1\rdata_c[31:0]
+Creating decoders for process `\macc8_regfile.$proc$rtl/macc8_regfile.sv:84$107'.
+     1/9: $0\wt_q[63:0] [63:32]
+     2/9: $0\wt_q[63:0] [31:0]
+     3/9: $0\done_sticky_q[0:0]
+     4/9: $0\cfg_wt_signed_q[0:0]
+     5/9: $0\cfg_act_signed_q[0:0]
+     6/9: $0\cfg_acc_sat_q[0:0]
+     7/9: $0\ctrl_lane_sel_q[0:0]
+     8/9: $0\ctrl_acc_en_q[0:0]
+     9/9: $0\ctrl_auto_start_q[0:0]
+Creating decoders for process `\macc8_fsm.$proc$rtl/macc8_fsm.sv:57$86'.
+Creating decoders for process `\macc8_fsm.$proc$rtl/macc8_fsm.sv:45$85'.
+     1/2: $2\state_d[1:0]
+     2/2: $1\state_d[1:0]
+Creating decoders for process `\macc8_fsm.$proc$rtl/macc8_fsm.sv:39$83'.
+     1/1: $0\state_q[1:0]
+Creating decoders for process `\macc8_serial_rx.$proc$rtl/macc8_serial_rx.sv:33$60'.
+     1/7: $3$lookahead\act_regs_q$59[63:0]$70
+     2/7: $3$bitselwrite$pos$rtl/macc8_serial_rx.sv:40$55[31:0]$69
+     3/7: $2$lookahead\act_regs_q$59[63:0]$67
+     4/7: $2$bitselwrite$pos$rtl/macc8_serial_rx.sv:40$55[31:0]$66
+     5/7: $1$lookahead\act_regs_q$59[63:0]$65
+     6/7: $1$bitselwrite$pos$rtl/macc8_serial_rx.sv:40$55[31:0]$64
+     7/7: $0\cnt_q[3:0]
+Creating decoders for process `\macc8_datapath.$proc$rtl/macc8_datapath.sv:67$29'.
+     1/1: $0\prod_q[127:0]
+Creating decoders for process `$paramod$710c93fe3552924af94e428c8ad57fa0cbf01238\macc8_adder_tree.$proc$rtl/macc8_adder_tree.sv:20$128'.
+Creating decoders for process `$paramod$e8a620748bcdef8dbbc833a61035a5e190b82975\macc8_accumulator.$proc$rtl/macc8_accumulator.sv:48$122'.
+     1/2: $0\ovf_q[0:0]
+     2/2: $0\acc_q[31:0]
+Creating decoders for process `$paramod$e8a620748bcdef8dbbc833a61035a5e190b82975\macc8_accumulator.$proc$rtl/macc8_accumulator.sv:36$117'.
+     1/1: $1\res_sat_c[31:0]
+Creating decoders for process `$paramod$8209cd294300caec48ecc3edd4d23f0ab7778529\macc8_mac_lane.$proc$rtl/macc8_mac_lane.sv:20$114'.
+Creating decoders for process `\macc8_reset_sync.$proc$rtl/macc8_reset_sync.sv:14$1'.
+     1/2: $0\srst_n[0:0]
+     2/2: $0\meta_q[0:0]
+
+12.2.8. Executing PROC_DLATCH pass (convert process syncs to latches).
+No latch inferred for signal `\macc8_regfile.\rdata_c' from process `\macc8_regfile.$proc$rtl/macc8_regfile.sv:116$110'.
+No latch inferred for signal `\macc8_fsm.\acc_capture' from process `\macc8_fsm.$proc$rtl/macc8_fsm.sv:57$86'.
+No latch inferred for signal `\macc8_fsm.\mul_capture' from process `\macc8_fsm.$proc$rtl/macc8_fsm.sv:57$86'.
+No latch inferred for signal `\macc8_fsm.\accept_en' from process `\macc8_fsm.$proc$rtl/macc8_fsm.sv:57$86'.
+No latch inferred for signal `\macc8_fsm.\consume' from process `\macc8_fsm.$proc$rtl/macc8_fsm.sv:57$86'.
+No latch inferred for signal `\macc8_fsm.\busy' from process `\macc8_fsm.$proc$rtl/macc8_fsm.sv:57$86'.
+No latch inferred for signal `\macc8_fsm.\done_pulse' from process `\macc8_fsm.$proc$rtl/macc8_fsm.sv:57$86'.
+No latch inferred for signal `\macc8_fsm.\state_d' from process `\macc8_fsm.$proc$rtl/macc8_fsm.sv:45$85'.
+No latch inferred for signal `$paramod$710c93fe3552924af94e428c8ad57fa0cbf01238\macc8_adder_tree.\sum' from process `$paramod$710c93fe3552924af94e428c8ad57fa0cbf01238\macc8_adder_tree.$proc$rtl/macc8_adder_tree.sv:20$128'.
+No latch inferred for signal `$paramod$710c93fe3552924af94e428c8ad57fa0cbf01238\macc8_adder_tree.\acc_c' from process `$paramod$710c93fe3552924af94e428c8ad57fa0cbf01238\macc8_adder_tree.$proc$rtl/macc8_adder_tree.sv:20$128'.
+No latch inferred for signal `$paramod$710c93fe3552924af94e428c8ad57fa0cbf01238\macc8_adder_tree.\p_c' from process `$paramod$710c93fe3552924af94e428c8ad57fa0cbf01238\macc8_adder_tree.$proc$rtl/macc8_adder_tree.sv:20$128'.
+No latch inferred for signal `$paramod$e8a620748bcdef8dbbc833a61035a5e190b82975\macc8_accumulator.\acc_ext_c' from process `$paramod$e8a620748bcdef8dbbc833a61035a5e190b82975\macc8_accumulator.$proc$rtl/macc8_accumulator.sv:36$117'.
+No latch inferred for signal `$paramod$e8a620748bcdef8dbbc833a61035a5e190b82975\macc8_accumulator.\sum_ext_c' from process `$paramod$e8a620748bcdef8dbbc833a61035a5e190b82975\macc8_accumulator.$proc$rtl/macc8_accumulator.sv:36$117'.
+No latch inferred for signal `$paramod$e8a620748bcdef8dbbc833a61035a5e190b82975\macc8_accumulator.\res_ext_c' from process `$paramod$e8a620748bcdef8dbbc833a61035a5e190b82975\macc8_accumulator.$proc$rtl/macc8_accumulator.sv:36$117'.
+No latch inferred for signal `$paramod$e8a620748bcdef8dbbc833a61035a5e190b82975\macc8_accumulator.\res_sat_c' from process `$paramod$e8a620748bcdef8dbbc833a61035a5e190b82975\macc8_accumulator.$proc$rtl/macc8_accumulator.sv:36$117'.
+No latch inferred for signal `$paramod$e8a620748bcdef8dbbc833a61035a5e190b82975\macc8_accumulator.\res_ovf_c' from process `$paramod$e8a620748bcdef8dbbc833a61035a5e190b82975\macc8_accumulator.$proc$rtl/macc8_accumulator.sv:36$117'.
+No latch inferred for signal `$paramod$8209cd294300caec48ecc3edd4d23f0ab7778529\macc8_mac_lane.\prod' from process `$paramod$8209cd294300caec48ecc3edd4d23f0ab7778529\macc8_mac_lane.$proc$rtl/macc8_mac_lane.sv:20$114'.
+No latch inferred for signal `$paramod$8209cd294300caec48ecc3edd4d23f0ab7778529\macc8_mac_lane.\mult_c' from process `$paramod$8209cd294300caec48ecc3edd4d23f0ab7778529\macc8_mac_lane.$proc$rtl/macc8_mac_lane.sv:20$114'.
+
+12.2.9. Executing PROC_DFF pass (convert process syncs to FFs).
+Creating register for signal `\macc8_regfile.\reg_rdata' using process `\macc8_regfile.$proc$rtl/macc8_regfile.sv:131$111'.
+  created $adff cell `$procdff$224' with positive edge clock and positive level reset.
+Creating register for signal `\macc8_regfile.\ctrl_auto_start_q' using process `\macc8_regfile.$proc$rtl/macc8_regfile.sv:84$107'.
+  created $adff cell `$procdff$229' with positive edge clock and positive level reset.
+Creating register for signal `\macc8_regfile.\ctrl_acc_en_q' using process `\macc8_regfile.$proc$rtl/macc8_regfile.sv:84$107'.
+  created $adff cell `$procdff$234' with positive edge clock and positive level reset.
+Creating register for signal `\macc8_regfile.\ctrl_lane_sel_q' using process `\macc8_regfile.$proc$rtl/macc8_regfile.sv:84$107'.
+  created $adff cell `$procdff$239' with positive edge clock and positive level reset.
+Creating register for signal `\macc8_regfile.\cfg_acc_sat_q' using process `\macc8_regfile.$proc$rtl/macc8_regfile.sv:84$107'.
+  created $adff cell `$procdff$244' with positive edge clock and positive level reset.
+Creating register for signal `\macc8_regfile.\cfg_act_signed_q' using process `\macc8_regfile.$proc$rtl/macc8_regfile.sv:84$107'.
+  created $adff cell `$procdff$249' with positive edge clock and positive level reset.
+Creating register for signal `\macc8_regfile.\cfg_wt_signed_q' using process `\macc8_regfile.$proc$rtl/macc8_regfile.sv:84$107'.
+  created $adff cell `$procdff$254' with positive edge clock and positive level reset.
+Creating register for signal `\macc8_regfile.\wt_q' using process `\macc8_regfile.$proc$rtl/macc8_regfile.sv:84$107'.
+  created $adff cell `$procdff$259' with positive edge clock and positive level reset.
+Creating register for signal `\macc8_regfile.\done_sticky_q' using process `\macc8_regfile.$proc$rtl/macc8_regfile.sv:84$107'.
+  created $adff cell `$procdff$264' with positive edge clock and positive level reset.
+Creating register for signal `\macc8_fsm.\state_q' using process `\macc8_fsm.$proc$rtl/macc8_fsm.sv:39$83'.
+  created $adff cell `$procdff$269' with positive edge clock and positive level reset.
+Creating register for signal `\macc8_serial_rx.\cnt_q' using process `\macc8_serial_rx.$proc$rtl/macc8_serial_rx.sv:33$60'.
+  created $adff cell `$procdff$274' with positive edge clock and positive level reset.
+Creating register for signal `\macc8_serial_rx.\act_regs_q' using process `\macc8_serial_rx.$proc$rtl/macc8_serial_rx.sv:33$60'.
+  created $adff cell `$procdff$279' with positive edge clock and positive level reset.
+Creating register for signal `\macc8_serial_rx.$bitselwrite$pos$rtl/macc8_serial_rx.sv:40$55' using process `\macc8_serial_rx.$proc$rtl/macc8_serial_rx.sv:33$60'.
+  created $adff cell `$procdff$284' with positive edge clock and positive level reset.
+Creating register for signal `\macc8_serial_rx.$lookahead\act_regs_q$59' using process `\macc8_serial_rx.$proc$rtl/macc8_serial_rx.sv:33$60'.
+  created $adff cell `$procdff$289' with positive edge clock and positive level reset.
+Creating register for signal `\macc8_datapath.\prod_q' using process `\macc8_datapath.$proc$rtl/macc8_datapath.sv:67$29'.
+  created $adff cell `$procdff$294' with positive edge clock and positive level reset.
+Creating register for signal `$paramod$e8a620748bcdef8dbbc833a61035a5e190b82975\macc8_accumulator.\acc_q' using process `$paramod$e8a620748bcdef8dbbc833a61035a5e190b82975\macc8_accumulator.$proc$rtl/macc8_accumulator.sv:48$122'.
+  created $adff cell `$procdff$299' with positive edge clock and positive level reset.
+Creating register for signal `$paramod$e8a620748bcdef8dbbc833a61035a5e190b82975\macc8_accumulator.\ovf_q' using process `$paramod$e8a620748bcdef8dbbc833a61035a5e190b82975\macc8_accumulator.$proc$rtl/macc8_accumulator.sv:48$122'.
+  created $adff cell `$procdff$304' with positive edge clock and positive level reset.
+Creating register for signal `\macc8_reset_sync.\srst_n' using process `\macc8_reset_sync.$proc$rtl/macc8_reset_sync.sv:14$1'.
+  created $adff cell `$procdff$309' with positive edge clock and positive level reset.
+Creating register for signal `\macc8_reset_sync.\meta_q' using process `\macc8_reset_sync.$proc$rtl/macc8_reset_sync.sv:14$1'.
+  created $adff cell `$procdff$314' with positive edge clock and positive level reset.
+
+12.2.10. Executing PROC_MEMWR pass (convert process memory writes to cells).
+
+12.2.11. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Removing empty process `macc8_regfile.$proc$rtl/macc8_regfile.sv:131$111'.
+Found and cleaned up 1 empty switch in `\macc8_regfile.$proc$rtl/macc8_regfile.sv:116$110'.
+Removing empty process `macc8_regfile.$proc$rtl/macc8_regfile.sv:116$110'.
+Found and cleaned up 6 empty switches in `\macc8_regfile.$proc$rtl/macc8_regfile.sv:84$107'.
+Removing empty process `macc8_regfile.$proc$rtl/macc8_regfile.sv:84$107'.
+Removing empty process `macc8_fsm.$proc$rtl/macc8_fsm.sv:57$86'.
+Found and cleaned up 2 empty switches in `\macc8_fsm.$proc$rtl/macc8_fsm.sv:45$85'.
+Removing empty process `macc8_fsm.$proc$rtl/macc8_fsm.sv:45$85'.
+Removing empty process `macc8_fsm.$proc$rtl/macc8_fsm.sv:39$83'.
+Found and cleaned up 2 empty switches in `\macc8_serial_rx.$proc$rtl/macc8_serial_rx.sv:33$60'.
+Removing empty process `macc8_serial_rx.$proc$rtl/macc8_serial_rx.sv:33$60'.
+Found and cleaned up 1 empty switch in `\macc8_datapath.$proc$rtl/macc8_datapath.sv:67$29'.
+Removing empty process `macc8_datapath.$proc$rtl/macc8_datapath.sv:67$29'.
+Removing empty process `$paramod$710c93fe3552924af94e428c8ad57fa0cbf01238\macc8_adder_tree.$proc$rtl/macc8_adder_tree.sv:20$128'.
+Found and cleaned up 2 empty switches in `$paramod$e8a620748bcdef8dbbc833a61035a5e190b82975\macc8_accumulator.$proc$rtl/macc8_accumulator.sv:48$122'.
+Removing empty process `$paramod$e8a620748bcdef8dbbc833a61035a5e190b82975\macc8_accumulator.$proc$rtl/macc8_accumulator.sv:48$122'.
+Found and cleaned up 1 empty switch in `$paramod$e8a620748bcdef8dbbc833a61035a5e190b82975\macc8_accumulator.$proc$rtl/macc8_accumulator.sv:36$117'.
+Removing empty process `$paramod$e8a620748bcdef8dbbc833a61035a5e190b82975\macc8_accumulator.$proc$rtl/macc8_accumulator.sv:36$117'.
+Removing empty process `$paramod$8209cd294300caec48ecc3edd4d23f0ab7778529\macc8_mac_lane.$proc$rtl/macc8_mac_lane.sv:20$114'.
+Removing empty process `macc8_reset_sync.$proc$rtl/macc8_reset_sync.sv:14$1'.
+Cleaned up 15 empty switches.
+
+12.2.12. Executing OPT_EXPR pass (perform const folding).
+Optimizing module macc8_top.
+Optimizing module macc8_regfile.
+<suppressed ~20 debug messages>
+Optimizing module macc8_fsm.
+<suppressed ~7 debug messages>
+Optimizing module macc8_serial_rx.
+<suppressed ~8 debug messages>
+Optimizing module macc8_datapath.
+<suppressed ~2 debug messages>
+Optimizing module $paramod$710c93fe3552924af94e428c8ad57fa0cbf01238\macc8_adder_tree.
+Optimizing module $paramod$e8a620748bcdef8dbbc833a61035a5e190b82975\macc8_accumulator.
+<suppressed ~4 debug messages>
+Optimizing module $paramod$8209cd294300caec48ecc3edd4d23f0ab7778529\macc8_mac_lane.
+Optimizing module macc8_reset_sync.
+<suppressed ~4 debug messages>
+
+12.3. Executing CHECK pass (checking for obvious problems).
+Checking module macc8_top...
+Checking module macc8_regfile...
+Checking module macc8_fsm...
+Checking module macc8_serial_rx...
+Checking module macc8_datapath...
+Checking module $paramod$710c93fe3552924af94e428c8ad57fa0cbf01238\macc8_adder_tree...
+Checking module $paramod$e8a620748bcdef8dbbc833a61035a5e190b82975\macc8_accumulator...
+Checking module $paramod$8209cd294300caec48ecc3edd4d23f0ab7778529\macc8_mac_lane...
+Checking module macc8_reset_sync...
+Found and reported 0 problems.
+
+12.4. Executing FLATTEN pass (flatten design).
+Deleting now unused module macc8_regfile.
+Deleting now unused module macc8_fsm.
+Deleting now unused module macc8_serial_rx.
+Deleting now unused module macc8_datapath.
+Deleting now unused module $paramod$710c93fe3552924af94e428c8ad57fa0cbf01238\macc8_adder_tree.
+Deleting now unused module $paramod$e8a620748bcdef8dbbc833a61035a5e190b82975\macc8_accumulator.
+Deleting now unused module $paramod$8209cd294300caec48ecc3edd4d23f0ab7778529\macc8_mac_lane.
+Deleting now unused module macc8_reset_sync.
+<suppressed ~15 debug messages>
+
+12.5. Executing OPT_EXPR pass (perform const folding).
+Optimizing module macc8_top.
+<suppressed ~4 debug messages>
+
+12.6. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \macc8_top..
+Removed 31 unused cells and 207 unused wires.
+<suppressed ~34 debug messages>
+
+12.7. Executing CHECK pass (checking for obvious problems).
+Checking module macc8_top...
+Found and reported 0 problems.
+
+12.8. Executing OPT pass (performing simple optimizations).
+
+12.8.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module macc8_top.
+
+12.8.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\macc8_top'.
+Computing hashes of 144 cells of `\macc8_top'.
+Finding duplicate cells in `\macc8_top'.
+Computing hashes of 133 cells of `\macc8_top'.
+Finding duplicate cells in `\macc8_top'.
+<suppressed ~33 debug messages>
+Removed a total of 11 cells.
+
+12.8.3. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \macc8_top..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+    dead port 2/2 on $mux $flatten\u_fsm.$procmux$174.
+    dead port 1/2 on $mux $flatten\u_serial_rx.$procmux$185.
+Removed 2 multiplexer ports.
+<suppressed ~55 debug messages>
+
+12.8.4. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \macc8_top.
+Performed a total of 0 changes.
+
+12.8.5. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\macc8_top'.
+Computing hashes of 131 cells of `\macc8_top'.
+Finding duplicate cells in `\macc8_top'.
+Removed a total of 0 cells.
+
+12.8.6. Executing OPT_DFF pass (perform DFF optimizations).
+
+12.8.7. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \macc8_top..
+Removed 0 unused cells and 13 unused wires.
+<suppressed ~1 debug messages>
+
+12.8.8. Executing OPT_EXPR pass (perform const folding).
+Optimizing module macc8_top.
+
+12.8.9. Rerunning OPT passes. (Maybe there is more to do..)
+
+12.8.10. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \macc8_top..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+<suppressed ~53 debug messages>
+
+12.8.11. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \macc8_top.
+Performed a total of 0 changes.
+
+12.8.12. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\macc8_top'.
+Computing hashes of 131 cells of `\macc8_top'.
+Finding duplicate cells in `\macc8_top'.
+Removed a total of 0 cells.
+
+12.8.13. Executing OPT_DFF pass (perform DFF optimizations).
+
+12.8.14. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \macc8_top..
+
+12.8.15. Executing OPT_EXPR pass (perform const folding).
+Optimizing module macc8_top.
+
+12.8.16. Finished fast OPT passes. (There is nothing left to do.)
+
+12.9. Executing FSM pass (extract and optimize FSM).
+
+12.9.1. Executing FSM_DETECT pass (finding FSMs in design).
+Not marking macc8_top.u_fsm.state_q as FSM state register:
+    Users of register don't seem to benefit from recoding.
+
+12.9.2. Executing FSM_EXTRACT pass (extracting FSM from design).
+
+12.9.3. Executing FSM_OPT pass (simple optimizations of FSMs).
+
+12.9.4. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \macc8_top..
+
+12.9.5. Executing FSM_OPT pass (simple optimizations of FSMs).
+
+12.9.6. Executing FSM_RECODE pass (re-assigning FSM state encoding).
+
+12.9.7. Executing FSM_INFO pass (dumping all available information on FSM cells).
+
+12.9.8. Executing FSM_MAP pass (mapping FSMs to basic logic).
+
+12.10. Executing OPT pass (performing simple optimizations).
+
+12.10.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module macc8_top.
+
+12.10.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\macc8_top'.
+Computing hashes of 131 cells of `\macc8_top'.
+Finding duplicate cells in `\macc8_top'.
+Removed a total of 0 cells.
+
+12.10.3. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \macc8_top..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+<suppressed ~53 debug messages>
+
+12.10.4. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \macc8_top.
+Performed a total of 0 changes.
+
+12.10.5. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\macc8_top'.
+Computing hashes of 131 cells of `\macc8_top'.
+Finding duplicate cells in `\macc8_top'.
+Removed a total of 0 cells.
+
+12.10.6. Executing OPT_DFF pass (perform DFF optimizations).
+Adding EN signal on $flatten\u_datapath.\u_acc.$procdff$299 ($adff) from module macc8_top (D = $flatten\u_datapath.\u_acc.$0\acc_q[31:0], Q = \u_datapath.u_acc.acc_q).
+Adding EN signal on $flatten\u_regfile.$procdff$249 ($adff) from module macc8_top (D = \reg_wdata [0], Q = \u_regfile.cfg_act_signed_q).
+Adding EN signal on $flatten\u_regfile.$procdff$259 ($adff) from module macc8_top (D = \reg_wdata, Q = \u_regfile.wt_q [63:32]).
+Adding EN signal on $flatten\u_regfile.$procdff$259 ($adff) from module macc8_top (D = \reg_wdata, Q = \u_regfile.wt_q [31:0]).
+Adding EN signal on $flatten\u_regfile.$procdff$244 ($adff) from module macc8_top (D = \reg_wdata [2], Q = \u_regfile.cfg_acc_sat_q).
+Adding EN signal on $flatten\u_regfile.$procdff$264 ($adff) from module macc8_top (D = $flatten\u_regfile.$0\done_sticky_q[0:0], Q = \u_regfile.done_sticky_q).
+Adding EN signal on $flatten\u_regfile.$procdff$239 ($adff) from module macc8_top (D = \reg_wdata [6], Q = \u_regfile.ctrl_lane_sel_q).
+Adding EN signal on $flatten\u_regfile.$procdff$234 ($adff) from module macc8_top (D = \reg_wdata [2], Q = \u_regfile.ctrl_acc_en_q).
+Adding EN signal on $flatten\u_regfile.$procdff$254 ($adff) from module macc8_top (D = \reg_wdata [1], Q = \u_regfile.cfg_wt_signed_q).
+Adding EN signal on $flatten\u_regfile.$procdff$229 ($adff) from module macc8_top (D = \reg_wdata [3], Q = \u_regfile.ctrl_auto_start_q).
+Adding EN signal on $flatten\u_serial_rx.$procdff$279 ($adff) from module macc8_top (D = $flatten\u_serial_rx.$or$rtl/macc8_serial_rx.sv:40$79_Y, Q = \u_serial_rx.act_regs_q).
+Adding EN signal on $flatten\u_datapath.\u_acc.$procdff$304 ($adff) from module macc8_top (D = $flatten\u_datapath.\u_acc.$0\ovf_q[0:0], Q = \u_datapath.u_acc.ovf_q).
+Adding EN signal on $flatten\u_serial_rx.$procdff$274 ($adff) from module macc8_top (D = $flatten\u_serial_rx.$0\cnt_q[3:0], Q = \u_serial_rx.cnt_q).
+Adding EN signal on $flatten\u_datapath.$procdff$294 ($adff) from module macc8_top (D = { \u_datapath.g_lane[7].p_lane \u_datapath.g_lane[6].p_lane \u_datapath.g_lane[5].p_lane \u_datapath.g_lane[4].p_lane \u_datapath.g_lane[3].p_lane \u_datapath.g_lane[2].p_lane \u_datapath.g_lane[1].p_lane \u_datapath.g_lane[0].p_lane }, Q = \u_datapath.prod_q).
+Adding EN signal on $flatten\u_fsm.$procdff$269 ($adff) from module macc8_top (D = \u_fsm.state_d, Q = \u_fsm.state_q).
+
+12.10.7. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \macc8_top..
+Removed 11 unused cells and 10 unused wires.
+<suppressed ~12 debug messages>
+
+12.10.8. Executing OPT_EXPR pass (perform const folding).
+Optimizing module macc8_top.
+<suppressed ~4 debug messages>
+
+12.10.9. Rerunning OPT passes. (Maybe there is more to do..)
+
+12.10.10. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \macc8_top..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+<suppressed ~40 debug messages>
+
+12.10.11. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \macc8_top.
+Performed a total of 0 changes.
+
+12.10.12. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\macc8_top'.
+Computing hashes of 128 cells of `\macc8_top'.
+Finding duplicate cells in `\macc8_top'.
+Computing hashes of 127 cells of `\macc8_top'.
+Finding duplicate cells in `\macc8_top'.
+<suppressed ~3 debug messages>
+Removed a total of 1 cells.
+
+12.10.13. Executing OPT_DFF pass (perform DFF optimizations).
+
+12.10.14. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \macc8_top..
+Removed 0 unused cells and 1 unused wires.
+<suppressed ~1 debug messages>
+
+12.10.15. Executing OPT_EXPR pass (perform const folding).
+Optimizing module macc8_top.
+
+12.10.16. Rerunning OPT passes. (Maybe there is more to do..)
+
+12.10.17. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \macc8_top..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+<suppressed ~40 debug messages>
+
+12.10.18. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \macc8_top.
+Performed a total of 0 changes.
+
+12.10.19. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\macc8_top'.
+Computing hashes of 127 cells of `\macc8_top'.
+Finding duplicate cells in `\macc8_top'.
+Removed a total of 0 cells.
+
+12.10.20. Executing OPT_DFF pass (perform DFF optimizations).
+
+12.10.21. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \macc8_top..
+
+12.10.22. Executing OPT_EXPR pass (perform const folding).
+Optimizing module macc8_top.
+
+12.10.23. Finished fast OPT passes. (There is nothing left to do.)
+
+12.11. Executing WREDUCE pass (reducing word size of cells).
+Removed top 1 bits (of 2) from port B of cell macc8_top.$auto$opt_dff.cc:320:make_patterns_logic$358 ($ne).
+Removed top 5 bits (of 8) from port B of cell macc8_top.$flatten\u_regfile.$procmux$145_CMP0 ($eq).
+Removed top 3 bits (of 8) from port B of cell macc8_top.$flatten\u_regfile.$procmux$141_CMP0 ($eq).
+Removed top 3 bits (of 8) from port B of cell macc8_top.$flatten\u_regfile.$procmux$140_CMP0 ($eq).
+Removed top 3 bits (of 8) from port B of cell macc8_top.$flatten\u_regfile.$eq$rtl/macc8_regfile.sv:68$100 ($eq).
+Removed top 4 bits (of 8) from port B of cell macc8_top.$flatten\u_regfile.$eq$rtl/macc8_regfile.sv:67$98 ($eq).
+Removed top 4 bits (of 8) from port B of cell macc8_top.$flatten\u_regfile.$eq$rtl/macc8_regfile.sv:66$96 ($eq).
+Removed top 3 bits (of 4) from port B of cell macc8_top.$flatten\u_serial_rx.$add$rtl/macc8_serial_rx.sv:41$80 ($add).
+Removed top 25 bits (of 33) from port A of cell macc8_top.$flatten\u_serial_rx.$neg$rtl/macc8_serial_rx.sv:40$73 ($neg).
+Converting cell macc8_top.$flatten\u_serial_rx.$neg$rtl/macc8_serial_rx.sv:40$73 ($neg) from signed to unsigned.
+Removed top 1 bits (of 8) from port A of cell macc8_top.$flatten\u_serial_rx.$neg$rtl/macc8_serial_rx.sv:40$73 ($neg).
+Removed top 1 bits (of 2) from port B of cell macc8_top.$flatten\u_fsm.$eq$rtl/macc8_fsm.sv:60$89 ($eq).
+Converting cell macc8_top.$flatten\u_datapath.\u_tree.$add$rtl/macc8_adder_tree.sv:24$131 ($add) from unsigned to signed.
+Removed top 4 bits (of 20) from port A of cell macc8_top.$flatten\u_datapath.\u_tree.$add$rtl/macc8_adder_tree.sv:24$131 ($add).
+Removed top 4 bits (of 20) from port B of cell macc8_top.$flatten\u_datapath.\u_tree.$add$rtl/macc8_adder_tree.sv:24$131 ($add).
+Removed top 3 bits (of 20) from port Y of cell macc8_top.$flatten\u_datapath.\u_tree.$add$rtl/macc8_adder_tree.sv:24$131 ($add).
+Converting cell macc8_top.$flatten\u_datapath.\u_tree.$add$rtl/macc8_adder_tree.sv:24$132 ($add) from unsigned to signed.
+Removed top 3 bits (of 20) from port A of cell macc8_top.$flatten\u_datapath.\u_tree.$add$rtl/macc8_adder_tree.sv:24$132 ($add).
+Removed top 4 bits (of 20) from port B of cell macc8_top.$flatten\u_datapath.\u_tree.$add$rtl/macc8_adder_tree.sv:24$132 ($add).
+Removed top 2 bits (of 20) from port Y of cell macc8_top.$flatten\u_datapath.\u_tree.$add$rtl/macc8_adder_tree.sv:24$132 ($add).
+Converting cell macc8_top.$flatten\u_datapath.\u_tree.$add$rtl/macc8_adder_tree.sv:24$133 ($add) from unsigned to signed.
+Removed top 2 bits (of 20) from port A of cell macc8_top.$flatten\u_datapath.\u_tree.$add$rtl/macc8_adder_tree.sv:24$133 ($add).
+Removed top 4 bits (of 20) from port B of cell macc8_top.$flatten\u_datapath.\u_tree.$add$rtl/macc8_adder_tree.sv:24$133 ($add).
+Removed top 1 bits (of 20) from port Y of cell macc8_top.$flatten\u_datapath.\u_tree.$add$rtl/macc8_adder_tree.sv:24$133 ($add).
+Converting cell macc8_top.$flatten\u_datapath.\u_tree.$add$rtl/macc8_adder_tree.sv:24$134 ($add) from unsigned to signed.
+Removed top 1 bits (of 20) from port A of cell macc8_top.$flatten\u_datapath.\u_tree.$add$rtl/macc8_adder_tree.sv:24$134 ($add).
+Removed top 4 bits (of 20) from port B of cell macc8_top.$flatten\u_datapath.\u_tree.$add$rtl/macc8_adder_tree.sv:24$134 ($add).
+Removed top 4 bits (of 20) from port B of cell macc8_top.$flatten\u_datapath.\u_tree.$add$rtl/macc8_adder_tree.sv:24$135 ($add).
+Removed top 4 bits (of 20) from port B of cell macc8_top.$flatten\u_datapath.\u_tree.$add$rtl/macc8_adder_tree.sv:24$136 ($add).
+Removed top 4 bits (of 20) from port B of cell macc8_top.$flatten\u_datapath.\u_tree.$add$rtl/macc8_adder_tree.sv:24$137 ($add).
+Removed top 29 bits (of 32) from port A of cell macc8_top.$flatten\u_datapath.$lt$rtl/macc8_datapath.sv:49$52 ($lt).
+Removed top 29 bits (of 32) from port A of cell macc8_top.$flatten\u_datapath.$lt$rtl/macc8_datapath.sv:49$49 ($lt).
+Removed top 29 bits (of 32) from port A of cell macc8_top.$flatten\u_datapath.$lt$rtl/macc8_datapath.sv:49$46 ($lt).
+Removed top 29 bits (of 32) from port A of cell macc8_top.$flatten\u_datapath.$lt$rtl/macc8_datapath.sv:49$43 ($lt).
+Removed top 30 bits (of 32) from port A of cell macc8_top.$flatten\u_datapath.$lt$rtl/macc8_datapath.sv:49$40 ($lt).
+Removed top 30 bits (of 32) from port A of cell macc8_top.$flatten\u_datapath.$lt$rtl/macc8_datapath.sv:49$37 ($lt).
+Removed top 31 bits (of 32) from port A of cell macc8_top.$flatten\u_datapath.$lt$rtl/macc8_datapath.sv:49$34 ($lt).
+Removed top 31 bits (of 32) from port A of cell macc8_top.$flatten\u_datapath.$lt$rtl/macc8_datapath.sv:49$31 ($lt).
+Converting cell macc8_top.$flatten\u_datapath.\u_acc.$add$rtl/macc8_accumulator.sv:39$118 ($add) from unsigned to signed.
+Removed top 1 bits (of 33) from port A of cell macc8_top.$flatten\u_datapath.\u_acc.$add$rtl/macc8_accumulator.sv:39$118 ($add).
+Removed top 13 bits (of 33) from port B of cell macc8_top.$flatten\u_datapath.\u_acc.$add$rtl/macc8_accumulator.sv:39$118 ($add).
+
+12.12. Executing PEEPOPT pass (run peephole optimizers).
+
+12.13. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \macc8_top..
+
+12.14. Executing ALUMACC pass (create $alu and $macc cells).
+Extracting $alu and $macc cells in module macc8_top:
+  creating $macc model for $flatten\u_datapath.\u_tree.$add$rtl/macc8_adder_tree.sv:24$131 ($add).
+  creating $macc model for $flatten\u_datapath.\u_tree.$add$rtl/macc8_adder_tree.sv:24$132 ($add).
+  creating $macc model for $flatten\u_datapath.\u_tree.$add$rtl/macc8_adder_tree.sv:24$133 ($add).
+  creating $macc model for $flatten\u_datapath.\u_acc.$add$rtl/macc8_accumulator.sv:39$118 ($add).
+  creating $macc model for $flatten\u_serial_rx.$neg$rtl/macc8_serial_rx.sv:40$73 ($neg).
+  creating $macc model for $flatten\u_serial_rx.$add$rtl/macc8_serial_rx.sv:41$80 ($add).
+  creating $macc model for $flatten\u_datapath.\u_tree.$add$rtl/macc8_adder_tree.sv:24$134 ($add).
+  creating $macc model for $flatten\u_datapath.\u_tree.$add$rtl/macc8_adder_tree.sv:24$135 ($add).
+  creating $macc model for $flatten\u_datapath.\u_tree.$add$rtl/macc8_adder_tree.sv:24$136 ($add).
+  creating $macc model for $flatten\u_datapath.\u_tree.$add$rtl/macc8_adder_tree.sv:24$137 ($add).
+  creating $macc model for $flatten\u_datapath.\g_lane[7].u_lane.$mul$rtl/macc8_mac_lane.sv:21$115 ($mul).
+  creating $macc model for $flatten\u_datapath.\g_lane[6].u_lane.$mul$rtl/macc8_mac_lane.sv:21$115 ($mul).
+  creating $macc model for $flatten\u_datapath.\g_lane[5].u_lane.$mul$rtl/macc8_mac_lane.sv:21$115 ($mul).
+  creating $macc model for $flatten\u_datapath.\g_lane[4].u_lane.$mul$rtl/macc8_mac_lane.sv:21$115 ($mul).
+  creating $macc model for $flatten\u_datapath.\g_lane[3].u_lane.$mul$rtl/macc8_mac_lane.sv:21$115 ($mul).
+  creating $macc model for $flatten\u_datapath.\g_lane[2].u_lane.$mul$rtl/macc8_mac_lane.sv:21$115 ($mul).
+  creating $macc model for $flatten\u_datapath.\g_lane[1].u_lane.$mul$rtl/macc8_mac_lane.sv:21$115 ($mul).
+  creating $macc model for $flatten\u_datapath.\g_lane[0].u_lane.$mul$rtl/macc8_mac_lane.sv:21$115 ($mul).
+  merging $macc model for $flatten\u_datapath.\u_tree.$add$rtl/macc8_adder_tree.sv:24$136 into $flatten\u_datapath.\u_tree.$add$rtl/macc8_adder_tree.sv:24$137.
+  merging $macc model for $flatten\u_datapath.\u_tree.$add$rtl/macc8_adder_tree.sv:24$135 into $flatten\u_datapath.\u_tree.$add$rtl/macc8_adder_tree.sv:24$137.
+  merging $macc model for $flatten\u_datapath.\u_tree.$add$rtl/macc8_adder_tree.sv:24$134 into $flatten\u_datapath.\u_tree.$add$rtl/macc8_adder_tree.sv:24$137.
+  merging $macc model for $flatten\u_datapath.\u_tree.$add$rtl/macc8_adder_tree.sv:24$133 into $flatten\u_datapath.\u_tree.$add$rtl/macc8_adder_tree.sv:24$137.
+  merging $macc model for $flatten\u_datapath.\u_tree.$add$rtl/macc8_adder_tree.sv:24$132 into $flatten\u_datapath.\u_tree.$add$rtl/macc8_adder_tree.sv:24$137.
+  merging $macc model for $flatten\u_datapath.\u_tree.$add$rtl/macc8_adder_tree.sv:24$131 into $flatten\u_datapath.\u_tree.$add$rtl/macc8_adder_tree.sv:24$137.
+  creating $alu model for $macc $flatten\u_serial_rx.$add$rtl/macc8_serial_rx.sv:41$80.
+  creating $alu model for $macc $flatten\u_serial_rx.$neg$rtl/macc8_serial_rx.sv:40$73.
+  creating $alu model for $macc $flatten\u_datapath.\u_acc.$add$rtl/macc8_accumulator.sv:39$118.
+  creating $macc cell for $flatten\u_datapath.\g_lane[5].u_lane.$mul$rtl/macc8_mac_lane.sv:21$115: $auto$alumacc.cc:382:replace_macc$359
+  creating $macc cell for $flatten\u_datapath.\g_lane[4].u_lane.$mul$rtl/macc8_mac_lane.sv:21$115: $auto$alumacc.cc:382:replace_macc$360
+  creating $macc cell for $flatten\u_datapath.\g_lane[3].u_lane.$mul$rtl/macc8_mac_lane.sv:21$115: $auto$alumacc.cc:382:replace_macc$361
+  creating $macc cell for $flatten\u_datapath.\u_tree.$add$rtl/macc8_adder_tree.sv:24$137: $auto$alumacc.cc:382:replace_macc$362
+  creating $macc cell for $flatten\u_datapath.\g_lane[7].u_lane.$mul$rtl/macc8_mac_lane.sv:21$115: $auto$alumacc.cc:382:replace_macc$363
+  creating $macc cell for $flatten\u_datapath.\g_lane[6].u_lane.$mul$rtl/macc8_mac_lane.sv:21$115: $auto$alumacc.cc:382:replace_macc$364
+  creating $macc cell for $flatten\u_datapath.\g_lane[2].u_lane.$mul$rtl/macc8_mac_lane.sv:21$115: $auto$alumacc.cc:382:replace_macc$365
+  creating $macc cell for $flatten\u_datapath.\g_lane[1].u_lane.$mul$rtl/macc8_mac_lane.sv:21$115: $auto$alumacc.cc:382:replace_macc$366
+  creating $macc cell for $flatten\u_datapath.\g_lane[0].u_lane.$mul$rtl/macc8_mac_lane.sv:21$115: $auto$alumacc.cc:382:replace_macc$367
+  creating $alu model for $flatten\u_datapath.$lt$rtl/macc8_datapath.sv:49$52 ($lt): new $alu
+  creating $alu model for $flatten\u_datapath.$lt$rtl/macc8_datapath.sv:49$49 ($lt): new $alu
+  creating $alu model for $flatten\u_datapath.$lt$rtl/macc8_datapath.sv:49$46 ($lt): new $alu
+  creating $alu model for $flatten\u_datapath.$lt$rtl/macc8_datapath.sv:49$43 ($lt): new $alu
+  creating $alu model for $flatten\u_datapath.$lt$rtl/macc8_datapath.sv:49$40 ($lt): new $alu
+  creating $alu model for $flatten\u_datapath.$lt$rtl/macc8_datapath.sv:49$37 ($lt): new $alu
+  creating $alu model for $flatten\u_datapath.$lt$rtl/macc8_datapath.sv:49$31 ($lt): new $alu
+  creating $alu model for $flatten\u_serial_rx.$ge$rtl/macc8_serial_rx.sv:29$56 ($ge): new $alu
+  creating $alu model for $flatten\u_datapath.$lt$rtl/macc8_datapath.sv:49$34 ($lt): new $alu
+  creating $alu cell for $flatten\u_datapath.$lt$rtl/macc8_datapath.sv:49$34: $auto$alumacc.cc:512:replace_alu$377
+  creating $alu cell for $flatten\u_serial_rx.$ge$rtl/macc8_serial_rx.sv:29$56: $auto$alumacc.cc:512:replace_alu$382
+  creating $alu cell for $flatten\u_datapath.$lt$rtl/macc8_datapath.sv:49$31: $auto$alumacc.cc:512:replace_alu$395
+  creating $alu cell for $flatten\u_datapath.$lt$rtl/macc8_datapath.sv:49$37: $auto$alumacc.cc:512:replace_alu$400
+  creating $alu cell for $flatten\u_datapath.$lt$rtl/macc8_datapath.sv:49$40: $auto$alumacc.cc:512:replace_alu$405
+  creating $alu cell for $flatten\u_datapath.$lt$rtl/macc8_datapath.sv:49$43: $auto$alumacc.cc:512:replace_alu$410
+  creating $alu cell for $flatten\u_datapath.$lt$rtl/macc8_datapath.sv:49$46: $auto$alumacc.cc:512:replace_alu$415
+  creating $alu cell for $flatten\u_datapath.$lt$rtl/macc8_datapath.sv:49$49: $auto$alumacc.cc:512:replace_alu$420
+  creating $alu cell for $flatten\u_datapath.$lt$rtl/macc8_datapath.sv:49$52: $auto$alumacc.cc:512:replace_alu$425
+  creating $alu cell for $flatten\u_datapath.\u_acc.$add$rtl/macc8_accumulator.sv:39$118: $auto$alumacc.cc:512:replace_alu$430
+  creating $alu cell for $flatten\u_serial_rx.$neg$rtl/macc8_serial_rx.sv:40$73: $auto$alumacc.cc:512:replace_alu$433
+  creating $alu cell for $flatten\u_serial_rx.$add$rtl/macc8_serial_rx.sv:41$80: $auto$alumacc.cc:512:replace_alu$436
+  created 12 $alu and 9 $macc cells.
+
+12.15. Executing SHARE pass (SAT-based resource sharing).
+
+12.16. Executing OPT pass (performing simple optimizations).
+
+12.16.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module macc8_top.
+<suppressed ~8 debug messages>
+
+12.16.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\macc8_top'.
+Computing hashes of 140 cells of `\macc8_top'.
+Finding duplicate cells in `\macc8_top'.
+Removed a total of 0 cells.
+
+12.16.3. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \macc8_top..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+<suppressed ~40 debug messages>
+
+12.16.4. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \macc8_top.
+Performed a total of 0 changes.
+
+12.16.5. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\macc8_top'.
+Computing hashes of 140 cells of `\macc8_top'.
+Finding duplicate cells in `\macc8_top'.
+Removed a total of 0 cells.
+
+12.16.6. Executing OPT_DFF pass (perform DFF optimizations).
+
+12.16.7. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \macc8_top..
+Removed 14 unused cells and 31 unused wires.
+<suppressed ~31 debug messages>
+
+12.16.8. Executing OPT_EXPR pass (perform const folding).
+Optimizing module macc8_top.
+
+12.16.9. Rerunning OPT passes. (Maybe there is more to do..)
+
+12.16.10. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \macc8_top..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+<suppressed ~40 debug messages>
+
+12.16.11. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \macc8_top.
+Performed a total of 0 changes.
+
+12.16.12. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\macc8_top'.
+Computing hashes of 126 cells of `\macc8_top'.
+Finding duplicate cells in `\macc8_top'.
+Removed a total of 0 cells.
+
+12.16.13. Executing OPT_DFF pass (perform DFF optimizations).
+
+12.16.14. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \macc8_top..
+
+12.16.15. Executing OPT_EXPR pass (perform const folding).
+Optimizing module macc8_top.
+
+12.16.16. Finished fast OPT passes. (There is nothing left to do.)
+
+12.17. Executing MEMORY pass.
+
+12.17.1. Executing OPT_MEM pass (optimize memories).
+Performed a total of 0 transformations.
+
+12.17.2. Executing OPT_MEM_PRIORITY pass (removing unnecessary memory write priority relations).
+Performed a total of 0 transformations.
+
+12.17.3. Executing OPT_MEM_FEEDBACK pass (finding memory read-to-write feedback paths).
+
+12.17.4. Executing MEMORY_BMUX2ROM pass (converting muxes to ROMs).
+
+12.17.5. Executing MEMORY_DFF pass (merging $dff cells to $memrd).
+
+12.17.6. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \macc8_top..
+
+12.17.7. Executing MEMORY_SHARE pass (consolidating $memrd/$memwr cells).
+
+12.17.8. Executing OPT_MEM_WIDEN pass (optimize memories where all ports are wide).
+Performed a total of 0 transformations.
+
+12.17.9. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \macc8_top..
+
+12.17.10. Executing MEMORY_COLLECT pass (generating $mem cells).
+
+12.18. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \macc8_top..
+
+12.19. Executing OPT pass (performing simple optimizations).
+
+12.19.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module macc8_top.
+<suppressed ~10 debug messages>
+
+12.19.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\macc8_top'.
+Computing hashes of 128 cells of `\macc8_top'.
+Finding duplicate cells in `\macc8_top'.
+Computing hashes of 124 cells of `\macc8_top'.
+Finding duplicate cells in `\macc8_top'.
+<suppressed ~12 debug messages>
+Removed a total of 4 cells.
+
+12.19.3. Executing OPT_DFF pass (perform DFF optimizations).
+
+12.19.4. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \macc8_top..
+Removed 3 unused cells and 12 unused wires.
+<suppressed ~4 debug messages>
+
+12.19.5. Finished fast OPT passes.
+
+12.20. Executing MEMORY_MAP pass (converting memories to logic and flip-flops).
+
+12.21. Executing OPT pass (performing simple optimizations).
+
+12.21.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module macc8_top.
+<suppressed ~1 debug messages>
+
+12.21.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\macc8_top'.
+Computing hashes of 121 cells of `\macc8_top'.
+Finding duplicate cells in `\macc8_top'.
+Removed a total of 0 cells.
+
+12.21.3. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \macc8_top..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+<suppressed ~33 debug messages>
+
+12.21.4. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \macc8_top.
+    Consolidated identical input bits for $mux cell $flatten\u_regfile.$ternary$rtl/macc8_regfile.sv:80$106:
+      Old ports: A=4'0100, B=4'1000, Y=\u_datapath.active_lanes
+      New ports: A=2'01, B=2'10, Y=\u_datapath.active_lanes [3:2]
+      New connections: \u_datapath.active_lanes [1:0] = 2'00
+    Consolidated identical input bits for $mux cell $flatten\u_datapath.\u_acc.$ternary$rtl/macc8_accumulator.sv:44$121:
+      Old ports: A=2147483647, B=32'10000000000000000000000000000000, Y=$flatten\u_datapath.\u_acc.$ternary$rtl/macc8_accumulator.sv:44$121_Y
+      New ports: A=2'01, B=2'10, Y={ $flatten\u_datapath.\u_acc.$ternary$rtl/macc8_accumulator.sv:44$121_Y [31] $flatten\u_datapath.\u_acc.$ternary$rtl/macc8_accumulator.sv:44$121_Y [0] }
+      New connections: $flatten\u_datapath.\u_acc.$ternary$rtl/macc8_accumulator.sv:44$121_Y [30:1] = { $flatten\u_datapath.\u_acc.$ternary$rtl/macc8_accumulator.sv:44$121_Y [0] $flatten\u_datapath.\u_acc.$ternary$rtl/macc8_accumulator.sv:44$121_Y [0] $flatten\u_datapath.\u_acc.$ternary$rtl/macc8_accumulator.sv:44$121_Y [0] $flatten\u_datapath.\u_acc.$ternary$rtl/macc8_accumulator.sv:44$121_Y [0] $flatten\u_datapath.\u_acc.$ternary$rtl/macc8_accumulator.sv:44$121_Y [0] $flatten\u_datapath.\u_acc.$ternary$rtl/macc8_accumulator.sv:44$121_Y [0] $flatten\u_datapath.\u_acc.$ternary$rtl/macc8_accumulator.sv:44$121_Y [0] $flatten\u_datapath.\u_acc.$ternary$rtl/macc8_accumulator.sv:44$121_Y [0] $flatten\u_datapath.\u_acc.$ternary$rtl/macc8_accumulator.sv:44$121_Y [0] $flatten\u_datapath.\u_acc.$ternary$rtl/macc8_accumulator.sv:44$121_Y [0] $flatten\u_datapath.\u_acc.$ternary$rtl/macc8_accumulator.sv:44$121_Y [0] $flatten\u_datapath.\u_acc.$ternary$rtl/macc8_accumulator.sv:44$121_Y [0] $flatten\u_datapath.\u_acc.$ternary$rtl/macc8_accumulator.sv:44$121_Y [0] $flatten\u_datapath.\u_acc.$ternary$rtl/macc8_accumulator.sv:44$121_Y [0] $flatten\u_datapath.\u_acc.$ternary$rtl/macc8_accumulator.sv:44$121_Y [0] $flatten\u_datapath.\u_acc.$ternary$rtl/macc8_accumulator.sv:44$121_Y [0] $flatten\u_datapath.\u_acc.$ternary$rtl/macc8_accumulator.sv:44$121_Y [0] $flatten\u_datapath.\u_acc.$ternary$rtl/macc8_accumulator.sv:44$121_Y [0] $flatten\u_datapath.\u_acc.$ternary$rtl/macc8_accumulator.sv:44$121_Y [0] $flatten\u_datapath.\u_acc.$ternary$rtl/macc8_accumulator.sv:44$121_Y [0] $flatten\u_datapath.\u_acc.$ternary$rtl/macc8_accumulator.sv:44$121_Y [0] $flatten\u_datapath.\u_acc.$ternary$rtl/macc8_accumulator.sv:44$121_Y [0] $flatten\u_datapath.\u_acc.$ternary$rtl/macc8_accumulator.sv:44$121_Y [0] $flatten\u_datapath.\u_acc.$ternary$rtl/macc8_accumulator.sv:44$121_Y [0] $flatten\u_datapath.\u_acc.$ternary$rtl/macc8_accumulator.sv:44$121_Y [0] $flatten\u_datapath.\u_acc.$ternary$rtl/macc8_accumulator.sv:44$121_Y [0] $flatten\u_datapath.\u_acc.$ternary$rtl/macc8_accumulator.sv:44$121_Y [0] $flatten\u_datapath.\u_acc.$ternary$rtl/macc8_accumulator.sv:44$121_Y [0] $flatten\u_datapath.\u_acc.$ternary$rtl/macc8_accumulator.sv:44$121_Y [0] $flatten\u_datapath.\u_acc.$ternary$rtl/macc8_accumulator.sv:44$121_Y [0] }
+  Optimizing cells in module \macc8_top.
+Performed a total of 2 changes.
+
+12.21.5. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\macc8_top'.
+Computing hashes of 121 cells of `\macc8_top'.
+Finding duplicate cells in `\macc8_top'.
+Removed a total of 0 cells.
+
+12.21.6. Executing OPT_SHARE pass.
+
+12.21.7. Executing OPT_DFF pass (perform DFF optimizations).
+
+12.21.8. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \macc8_top..
+
+12.21.9. Executing OPT_EXPR pass (perform const folding).
+Optimizing module macc8_top.
+<suppressed ~14 debug messages>
+
+12.21.10. Rerunning OPT passes. (Maybe there is more to do..)
+
+12.21.11. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \macc8_top..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+<suppressed ~33 debug messages>
+
+12.21.12. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \macc8_top.
+Performed a total of 0 changes.
+
+12.21.13. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\macc8_top'.
+Computing hashes of 126 cells of `\macc8_top'.
+Finding duplicate cells in `\macc8_top'.
+Computing hashes of 119 cells of `\macc8_top'.
+Finding duplicate cells in `\macc8_top'.
+<suppressed ~31 debug messages>
+Removed a total of 7 cells.
+
+12.21.14. Executing OPT_SHARE pass.
+
+12.21.15. Executing OPT_DFF pass (perform DFF optimizations).
+
+12.21.16. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \macc8_top..
+Removed 1 unused cells and 28 unused wires.
+<suppressed ~2 debug messages>
+
+12.21.17. Executing OPT_EXPR pass (perform const folding).
+Optimizing module macc8_top.
+
+12.21.18. Rerunning OPT passes. (Maybe there is more to do..)
+
+12.21.19. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \macc8_top..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+<suppressed ~33 debug messages>
+
+12.21.20. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \macc8_top.
+Performed a total of 0 changes.
+
+12.21.21. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\macc8_top'.
+Computing hashes of 118 cells of `\macc8_top'.
+Finding duplicate cells in `\macc8_top'.
+Removed a total of 0 cells.
+
+12.21.22. Executing OPT_SHARE pass.
+
+12.21.23. Executing OPT_DFF pass (perform DFF optimizations).
+
+12.21.24. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \macc8_top..
+
+12.21.25. Executing OPT_EXPR pass (perform const folding).
+Optimizing module macc8_top.
+
+12.21.26. Finished fast OPT passes. (There is nothing left to do.)
+
+12.22. Executing TECHMAP pass (map to technology primitives).
+
+12.22.1. Executing Verilog-2005 frontend: /home/cchoilee/tools/oss-cad-suite/lib/../share/yosys/techmap.v
+Parsing Verilog input from `/home/cchoilee/tools/oss-cad-suite/lib/../share/yosys/techmap.v' to AST representation.
+Generating RTLIL representation for module `\_90_simplemap_bool_ops'.
+Generating RTLIL representation for module `\_90_simplemap_reduce_ops'.
+Generating RTLIL representation for module `\_90_simplemap_logic_ops'.
+Generating RTLIL representation for module `\_90_simplemap_compare_ops'.
+Generating RTLIL representation for module `\_90_simplemap_various'.
+Generating RTLIL representation for module `\_90_simplemap_registers'.
+Generating RTLIL representation for module `\_90_shift_ops_shr_shl_sshl_sshr'.
+Generating RTLIL representation for module `\_90_shift_shiftx'.
+Generating RTLIL representation for module `\_90_fa'.
+Generating RTLIL representation for module `\_90_lcu_brent_kung'.
+Generating RTLIL representation for module `\_90_alu'.
+Generating RTLIL representation for module `\_90_macc'.
+Generating RTLIL representation for module `\_90_alumacc'.
+Generating RTLIL representation for module `$__div_mod_u'.
+Generating RTLIL representation for module `$__div_mod_trunc'.
+Generating RTLIL representation for module `\_90_div'.
+Generating RTLIL representation for module `\_90_mod'.
+Generating RTLIL representation for module `$__div_mod_floor'.
+Generating RTLIL representation for module `\_90_divfloor'.
+Generating RTLIL representation for module `\_90_modfloor'.
+Generating RTLIL representation for module `\_90_pow'.
+Generating RTLIL representation for module `\_90_demux'.
+Generating RTLIL representation for module `\_90_lut'.
+Generating RTLIL representation for module `$connect'.
+Generating RTLIL representation for module `$input_port'.
+Successfully finished Verilog frontend.
+
+12.22.2. Continuing TECHMAP pass.
+Using extmapper simplemap for cells of type $not.
+Using template $paramod$32a7b7b86c07519b7537abc18e96f0331f97914d\_90_alu for cells of type $alu.
+Using template $paramod$3e2546d640bb80c4407ce51aec1dbdbdc5bff143\_90_alu for cells of type $alu.
+Using template $paramod$f41cc8e2b43dd7883fe0eee875001638efa7c412\_90_alu for cells of type $alu.
+Using template $paramod$adbaf76fa5a3091a329503792521395f8ff4d1a4\_90_alu for cells of type $alu.
+Using template $paramod$d1615bf4e5e328245ffd1550e5fe105901cda77b\_90_alu for cells of type $alu.
+Using extmapper simplemap for cells of type $reduce_or.
+Using extmapper simplemap for cells of type $or.
+Using extmapper simplemap for cells of type $reduce_and.
+Using template $paramod$7e708ae28ab761f11d0fb59d3ffc72f6a4baf5d9\_90_alu for cells of type $alu.
+Using template $paramod$7af24cf7f572852703f08ef7a936c59efa2c57af\_90_alu for cells of type $alu.
+Using extmapper maccmap for cells of type $macc_v2.
+  add \u_serial_rx.act_regs_q [7:0] * \u_regfile.wt_q [7:0] (8x8 bits, signed)
+  add \u_serial_rx.act_regs_q [15:8] * \u_regfile.wt_q [15:8] (8x8 bits, signed)
+  add \u_serial_rx.act_regs_q [23:16] * \u_regfile.wt_q [23:16] (8x8 bits, signed)
+  add \u_serial_rx.act_regs_q [55:48] * \u_regfile.wt_q [55:48] (8x8 bits, signed)
+  add \u_serial_rx.act_regs_q [63:56] * \u_regfile.wt_q [63:56] (8x8 bits, signed)
+  add \u_datapath.prod_q [15:0] (16 bits, signed)
+  add \u_datapath.prod_q [127:112] (16 bits, signed)
+  add \u_datapath.prod_q [111:96] (16 bits, signed)
+  add \u_datapath.prod_q [95:80] (16 bits, signed)
+  add \u_datapath.prod_q [79:64] (16 bits, signed)
+  add \u_datapath.prod_q [63:48] (16 bits, signed)
+  add \u_datapath.prod_q [47:32] (16 bits, signed)
+  add \u_datapath.prod_q [31:16] (16 bits, signed)
+  add \u_serial_rx.act_regs_q [31:24] * \u_regfile.wt_q [31:24] (8x8 bits, signed)
+  add \u_serial_rx.act_regs_q [39:32] * \u_regfile.wt_q [39:32] (8x8 bits, signed)
+  add \u_serial_rx.act_regs_q [47:40] * \u_regfile.wt_q [47:40] (8x8 bits, signed)
+Using extmapper simplemap for cells of type $ne.
+Using extmapper simplemap for cells of type $adffe.
+Using extmapper simplemap for cells of type $reduce_bool.
+Using extmapper simplemap for cells of type $adff.
+Using extmapper simplemap for cells of type $logic_not.
+Using extmapper simplemap for cells of type $eq.
+Using extmapper simplemap for cells of type $pmux.
+Using extmapper simplemap for cells of type $mux.
+Using extmapper simplemap for cells of type $and.
+Using template $paramod$constmap:f559a679ff835ab881c809a3c11cd4b7ac7c221b$paramod$409781814c91f00d9cc7cbbb6c4394c1e0dab276\_90_shift_shiftx for cells of type $shift.
+Analyzing pattern of constant bits for this cell:
+  Constant input on bit 0 of port A: 1'1
+  Constant input on bit 1 of port A: 1'1
+  Constant input on bit 2 of port A: 1'1
+  Constant input on bit 3 of port A: 1'1
+  Constant input on bit 4 of port A: 1'1
+  Constant input on bit 5 of port A: 1'1
+  Constant input on bit 6 of port A: 1'1
+  Constant input on bit 7 of port A: 1'1
+Creating constmapped module `$paramod$constmap:27fc41eec160220305c22e2c40782fd680a452dd$paramod$409781814c91f00d9cc7cbbb6c4394c1e0dab276\_90_shift_shiftx'.
+
+12.22.22. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module $paramod$constmap:27fc41eec160220305c22e2c40782fd680a452dd$paramod$409781814c91f00d9cc7cbbb6c4394c1e0dab276\_90_shift_shiftx..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+    dead port 2/2 on $mux $procmux$2342.
+    dead port 2/2 on $mux $procmux$2348.
+    dead port 2/2 on $mux $procmux$2354.
+    dead port 2/2 on $mux $procmux$2360.
+    dead port 2/2 on $mux $procmux$2366.
+    dead port 2/2 on $mux $procmux$2372.
+    dead port 2/2 on $mux $procmux$2378.
+Removed 7 multiplexer ports.
+<suppressed ~809 debug messages>
+
+12.22.23. Executing OPT_EXPR pass (perform const folding).
+Optimizing module $paramod$constmap:27fc41eec160220305c22e2c40782fd680a452dd$paramod$409781814c91f00d9cc7cbbb6c4394c1e0dab276\_90_shift_shiftx.
+<suppressed ~27 debug messages>
+Removed 0 unused cells and 12 unused wires.
+Using template $paramod$constmap:27fc41eec160220305c22e2c40782fd680a452dd$paramod$409781814c91f00d9cc7cbbb6c4394c1e0dab276\_90_shift_shiftx for cells of type $shift.
+Using template $paramod\_90_fa\WIDTH=32'00000000000000000000000000010000 for cells of type $fa.
+Using template $paramod$6df0329addda9228fcc2546de2aaf14ad26c98e1\_90_alu for cells of type $alu.
+Using template $paramod\_90_fa\WIDTH=32'00000000000000000000000000010100 for cells of type $fa.
+Using template $paramod$6fc37af1c109ae54e8aed83fcd995c12d378ce93\_90_alu for cells of type $alu.
+Using extmapper simplemap for cells of type $pos.
+Using template $paramod\_90_fa\WIDTH=32'00000000000000000000000000000011 for cells of type $fa.
+Using template $paramod\_90_lcu_brent_kung\WIDTH=32'00000000000000000000000000000011 for cells of type $lcu.
+Using extmapper simplemap for cells of type $xor.
+Using template $paramod\_90_fa\WIDTH=32'00000000000000000000000000000010 for cells of type $fa.
+Using template $paramod\_90_lcu_brent_kung\WIDTH=32'00000000000000000000000000000010 for cells of type $lcu.
+Using template $paramod\_90_fa\WIDTH=32'00000000000000000000000000000001 for cells of type $fa.
+Using template $paramod\_90_lcu_brent_kung\WIDTH=32'00000000000000000000000000000001 for cells of type $lcu.
+Using template $paramod\_90_fa\WIDTH=32'00000000000000000000000000100001 for cells of type $fa.
+Using template $paramod\_90_lcu_brent_kung\WIDTH=32'00000000000000000000000000100001 for cells of type $lcu.
+Using template $paramod\_90_fa\WIDTH=32'00000000000000000000000000000100 for cells of type $fa.
+Using template $paramod\_90_lcu_brent_kung\WIDTH=32'00000000000000000000000000000100 for cells of type $lcu.
+Using template $paramod\_90_lcu_brent_kung\WIDTH=32'00000000000000000000000000010000 for cells of type $lcu.
+Using template $paramod\_90_lcu_brent_kung\WIDTH=32'00000000000000000000000000010100 for cells of type $lcu.
+No more expansions possible.
+<suppressed ~2652 debug messages>
+
+12.23. Executing OPT pass (performing simple optimizations).
+
+12.23.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module macc8_top.
+<suppressed ~6563 debug messages>
+
+12.23.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\macc8_top'.
+Computing hashes of 7516 cells of `\macc8_top'.
+Finding duplicate cells in `\macc8_top'.
+Computing hashes of 7115 cells of `\macc8_top'.
+Finding duplicate cells in `\macc8_top'.
+Computing hashes of 6866 cells of `\macc8_top'.
+Finding duplicate cells in `\macc8_top'.
+Computing hashes of 6752 cells of `\macc8_top'.
+Finding duplicate cells in `\macc8_top'.
+Computing hashes of 6656 cells of `\macc8_top'.
+Finding duplicate cells in `\macc8_top'.
+Computing hashes of 6524 cells of `\macc8_top'.
+Finding duplicate cells in `\macc8_top'.
+Computing hashes of 6350 cells of `\macc8_top'.
+Finding duplicate cells in `\macc8_top'.
+Computing hashes of 6265 cells of `\macc8_top'.
+Finding duplicate cells in `\macc8_top'.
+Computing hashes of 6260 cells of `\macc8_top'.
+Finding duplicate cells in `\macc8_top'.
+Computing hashes of 6257 cells of `\macc8_top'.
+Finding duplicate cells in `\macc8_top'.
+Computing hashes of 6254 cells of `\macc8_top'.
+Finding duplicate cells in `\macc8_top'.
+Computing hashes of 6251 cells of `\macc8_top'.
+Finding duplicate cells in `\macc8_top'.
+Computing hashes of 6249 cells of `\macc8_top'.
+Finding duplicate cells in `\macc8_top'.
+Computing hashes of 6248 cells of `\macc8_top'.
+Finding duplicate cells in `\macc8_top'.
+Computing hashes of 6247 cells of `\macc8_top'.
+Finding duplicate cells in `\macc8_top'.
+Computing hashes of 6246 cells of `\macc8_top'.
+Finding duplicate cells in `\macc8_top'.
+Computing hashes of 6245 cells of `\macc8_top'.
+Finding duplicate cells in `\macc8_top'.
+Computing hashes of 6244 cells of `\macc8_top'.
+Finding duplicate cells in `\macc8_top'.
+Computing hashes of 6243 cells of `\macc8_top'.
+Finding duplicate cells in `\macc8_top'.
+Computing hashes of 6242 cells of `\macc8_top'.
+Finding duplicate cells in `\macc8_top'.
+Computing hashes of 6241 cells of `\macc8_top'.
+Finding duplicate cells in `\macc8_top'.
+Computing hashes of 6240 cells of `\macc8_top'.
+Finding duplicate cells in `\macc8_top'.
+Computing hashes of 6239 cells of `\macc8_top'.
+Finding duplicate cells in `\macc8_top'.
+Computing hashes of 6238 cells of `\macc8_top'.
+Finding duplicate cells in `\macc8_top'.
+Computing hashes of 6237 cells of `\macc8_top'.
+Finding duplicate cells in `\macc8_top'.
+Computing hashes of 6236 cells of `\macc8_top'.
+Finding duplicate cells in `\macc8_top'.
+<suppressed ~3840 debug messages>
+Removed a total of 1280 cells.
+
+12.23.3. Executing OPT_DFF pass (perform DFF optimizations).
+
+12.23.4. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \macc8_top..
+Removed 445 unused cells and 2006 unused wires.
+<suppressed ~446 debug messages>
+
+12.23.5. Finished fast OPT passes.
+
+12.24. Executing ABC pass (technology mapping using ABC).
+
+12.24.1. Extracting gate netlist of module `\macc8_top' to `<abc-temp-dir>/input.blif'..
+
+12.24.1.1. Executed ABC.
+Extracted 5440 gates and 5766 wires to a netlist network with 324 inputs and 277 outputs.
+Running ABC script: <abc-temp-dir>/abc.script
+ABC: UC Berkeley, ABC 1.01 (compiled Jul 11 2026 03:57:20)
+ABC: abc 01> empty
+ABC: abc 01> source <abc-temp-dir>/abc.script
+ABC: + read_blif <abc-temp-dir>/input.blif 
+ABC: + read_library <abc-temp-dir>/stdcells.genlib 
+ABC: + strash 
+ABC: + &get -n 
+ABC: + &fraig -x 
+ABC: + &put 
+ABC: + scorr 
+ABC: Warning: The network is combinational (run "fraig" or "fraig_sweep").
+ABC: + dc2 
+ABC: + dretime 
+ABC: + strash 
+ABC: + &get -n 
+ABC: + &dch -f 
+ABC: + &nf 
+ABC: + &put 
+ABC: + write_blif <abc-temp-dir>/output.blif 
+ABC: 
+ABC: YOSYS_ABC_DONE 
+
+12.24.1.2. Re-integrating ABC results.
+ABC RESULTS:               AND cells:      921
+ABC RESULTS:            ANDNOT cells:      102
+ABC RESULTS:               MUX cells:      127
+ABC RESULTS:              NAND cells:     1954
+ABC RESULTS:               NOR cells:       16
+ABC RESULTS:               NOT cells:       18
+ABC RESULTS:                OR cells:      179
+ABC RESULTS:             ORNOT cells:       52
+ABC RESULTS:              XNOR cells:      290
+ABC RESULTS:               XOR cells:     1040
+ABC RESULTS:        internal signals:     5165
+ABC RESULTS:           input signals:      324
+ABC RESULTS:          output signals:      277
+Removing temp directory.
+Removing global temp directory.
+
+12.25. Executing OPT pass (performing simple optimizations).
+
+12.25.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module macc8_top.
+<suppressed ~1 debug messages>
+
+12.25.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\macc8_top'.
+Computing hashes of 5050 cells of `\macc8_top'.
+Finding duplicate cells in `\macc8_top'.
+Removed a total of 0 cells.
+
+12.25.3. Executing OPT_DFF pass (perform DFF optimizations).
+
+12.25.4. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \macc8_top..
+Removed 0 unused cells and 1570 unused wires.
+<suppressed ~39 debug messages>
+
+12.25.5. Finished fast OPT passes.
+
+12.26. Executing HIERARCHY pass (managing design hierarchy).
+Attribute `top' found on module `macc8_top'. Setting top module to macc8_top.
+
+12.26.1. Analyzing design hierarchy..
+Top module:  \macc8_top
+
+12.26.2. Analyzing design hierarchy..
+Top module:  \macc8_top
+Removed 0 unused modules.
+
+12.27. Printing statistics.
+
+=== macc8_top ===
+
+        +----------Local Count, excluding submodules.
+        | 
+     4657 wires
+     6325 wire bits
+      128 public wires
+     1796 public wire bits
+       11 ports
+       87 port bits
+     5050 cells
+      102   $_ANDNOT_
+      921   $_AND_
+      299   $_DFFE_PN0P_
+        3   $_DFFE_PN1P_
+       34   $_DFF_PN0_
+      127   $_MUX_
+     1954   $_NAND_
+       16   $_NOR_
+       18   $_NOT_
+       52   $_ORNOT_
+      179   $_OR_
+      290   $_XNOR_
+     1040   $_XOR_
+       15   $scopeinfo
+
+12.28. Executing CHECK pass (checking for obvious problems).
+Checking module macc8_top...
+Found and reported 0 problems.
+
+13. Executing CHECK pass (checking for obvious problems).
+Checking module macc8_top...
+Found and reported 0 problems.
+
+14. Printing statistics.
+NOTE: counts above are technology-independent. Real Sky130 area/timing
+come from OpenLane (scripts/run_gds.sh) once the PDK is available.
+Checks passed: no undriven/multi-driven nets, no unsynthesizable
+constructs (yosys 'check -assert'), no inferred latches.
+Raw stat output: /mnt/c/Users/skywa/OneDrive/Documents/accelerator_design/macc8/reports/20260711-174854_synth-check/yosys_stat.log
+
+=== macc8_top ===
+
+        +----------Local Count, excluding submodules.
+        | 
+     4657 wires
+     6325 wire bits
+      128 public wires
+     1796 public wire bits
+       11 ports
+       87 port bits
+     5050 cells
+      102   $_ANDNOT_
+      921   $_AND_
+      299   $_DFFE_PN0P_
+        3   $_DFFE_PN1P_
+       34   $_DFF_PN0_
+      127   $_MUX_
+     1954   $_NAND_
+       16   $_NOR_
+       18   $_NOT_
+       52   $_ORNOT_
+      179   $_OR_
+      290   $_XNOR_
+     1040   $_XOR_
+       15   $scopeinfo
+
+End of script. Logfile hash: 36e532cc15, time: 1.29s, user: 0.70s, system: 0.11s, MEM: 53.14 MB peak
+Yosys 0.67+24 (git sha1 0e82bbefe, Release, Clang /usr/bin/clang++ 18.1.8)
+Time spent: 38% 1x abc (0 sec), 14% 36x opt_expr (0 sec), ...
