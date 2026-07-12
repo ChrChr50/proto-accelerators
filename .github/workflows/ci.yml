@@ -1,23 +1,41 @@
 # MACC-8 CI
 #
+# Lives at the repo root (.github/workflows/) because that's the only place
+# GitHub Actions ever discovers workflow files -- it does not scan
+# subdirectories. macc8/ is one project inside the proto-accelerators
+# monorepo, not the repo root, so every step below runs with
+# `working-directory: macc8` (see `defaults:`) and the `paths:` filters below
+# scope this workflow to only trigger on changes actually under macc8/.
+#
 # Design notes:
 # - Toolchain versions are pinned exactly to what's validated locally (see
-#   env/tool-versions.md and scripts/ci_install_toolchain.sh) -- not
-#   "latest", since OSS-CAD-Suite cuts new builds very frequently and CI
+#   macc8/env/tool-versions.md and macc8/scripts/ci_install_toolchain.sh) --
+#   not "latest", since OSS-CAD-Suite cuts new builds very frequently and CI
 #   reproducibility matters more than always chasing the newest nightly.
 # - Each job writes a timestamped reports/<ts>_<target>/ (same convention as
-#   local runs -- see reports/README.md) and uploads it as a CI artifact, but
-#   CI does NOT commit those reports back to the repo. An auto-commit step
-#   here would risk an infinite trigger loop (CI's own commit re-triggering
-#   CI) and adds bot-authored noise; the committed reports/ history stays
-#   "what a human deliberately ran," matching local practice so far.
+#   local runs -- see macc8/reports/README.md) and uploads it as a CI
+#   artifact, but CI does NOT commit those reports back to the repo. An
+#   auto-commit step here would risk an infinite trigger loop (CI's own
+#   commit re-triggering CI) and adds bot-authored noise; the committed
+#   reports/ history stays "what a human deliberately ran," matching local
+#   practice so far.
 # - The Icarus job deliberately does NOT use the pinned cocotb venv -- see
-#   the comment on that job and env/tool-versions.md for why.
+#   the comment on that job and macc8/env/tool-versions.md for why.
 name: CI
 
 on:
   push:
+    paths:
+      - "macc8/**"
+      - ".github/workflows/ci.yml"
   pull_request:
+    paths:
+      - "macc8/**"
+      - ".github/workflows/ci.yml"
+
+defaults:
+  run:
+    working-directory: macc8
 
 env:
   MACC8_TOOLS_ROOT: /home/runner/tools
@@ -38,7 +56,6 @@ jobs:
         run: bash scripts/ci_install_toolchain.sh
 
       - name: Lint
-        working-directory: .
         run: source env/setup.sh && make lint
 
       - name: Upload report
@@ -46,7 +63,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: reports-lint
-          path: reports/*_lint/
+          path: macc8/reports/*_lint/
 
   sim:
     runs-on: ubuntu-latest
@@ -64,6 +81,8 @@ jobs:
 
       - name: Set up pinned cocotb venv
         run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq python3-dev python3-venv
           python3 -m venv $MACC8_TOOLS_ROOT/macc8-venv
           source $MACC8_TOOLS_ROOT/macc8-venv/bin/activate
           pip install --upgrade pip -q
@@ -77,7 +96,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: reports-sim-fast
-          path: reports/*_sim-fast/
+          path: macc8/reports/*_sim-fast/
 
   sim-icarus:
     runs-on: ubuntu-latest
@@ -107,7 +126,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: reports-sim-icarus
-          path: reports/*_sim-icarus/
+          path: macc8/reports/*_sim-icarus/
 
   formal:
     runs-on: ubuntu-latest
@@ -131,7 +150,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: reports-formal
-          path: reports/*_formal/
+          path: macc8/reports/*_formal/
 
   synth-check:
     runs-on: ubuntu-latest
@@ -155,7 +174,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: reports-synth-check
-          path: reports/*_synth-check/
+          path: macc8/reports/*_synth-check/
 
   # Inert by design, not by accident: needs BOTH a `schedule:` trigger added
   # to `on:` above, AND Phase 7 (Docker + OpenLane + Sky130 PDK) actually
