@@ -20,11 +20,12 @@ the repo; see `env/setup.sh`.
 | GTKWave | 3.4.0 | |
 | OpenLane | v2.3.10 | installed 2026-07-12 via pip into `~/tools/macc8-venv`; needs system `python3-tk` (see note below) |
 | Volare | v0.20.6 | installed 2026-07-12 via pip into `~/tools/macc8-venv` |
-| OpenROAD | TBD | bundled with OpenLane, pulled as its own Docker image on first real run |
-| Magic | TBD | bundled with OpenLane |
-| KLayout | TBD | bundled with OpenLane |
-| Netgen | TBD | bundled with OpenLane |
-| Sky130 PDK (Volare) | TBD | `volare ls-remote --pdk sky130` — not yet fetched |
+| OpenROAD | TBD | bundled with OpenLane's own Docker image (see `--dockerized` note below) |
+| Magic | TBD | bundled with OpenLane's own Docker image |
+| KLayout | TBD | bundled with OpenLane's own Docker image |
+| Netgen | TBD | bundled with OpenLane's own Docker image |
+| Sky130 PDK (Volare, via `scripts/install_pdk.sh`) | `c6d73a35f524070e85faff4a6a9eef49553ebc2b` | fetched 2026-07-12, "latest" per `volare ls-remote`, ~2.1G under `macc8/pdk/` |
+| Sky130 PDK (Volare, via OpenLane's own pin) | `0fe599b2afb6708d281543108caf8310912f54af` | **different from the above** — OpenLane 2.3.10 auto-fetched its own pinned-compatible version on first run, separate from whatever `scripts/install_pdk.sh` grabbed as "latest." Both now coexist under `macc8/pdk/volare/sky130/versions/`. Harmless (just extra disk), but a design mismatch worth resolving later: `scripts/install_pdk.sh` could instead read OpenLane's expected version rather than blindly grabbing "latest." |
 
 **OpenLane install note (2026-07-12):** `pip install openlane` alone isn't enough --
 its `TclUtils` module imports Python's `tkinter`, which Ubuntu packages
@@ -33,6 +34,21 @@ package, `openlane --version` fails with `ModuleNotFoundError: No module
 named 'tkinter'`. Fix: `sudo apt-get install -y python3-tk` (system-level,
 not pip -- venvs share access to the base interpreter's stdlib once it's
 installed at the OS level, no need to recreate the venv).
+
+**OpenLane needs `--dockerized` (found 2026-07-13):** several OpenLane 2.x
+steps (e.g. Generate JSON Header) run Yosys via `-y <script.py>`, which
+requires **pyosys** (Yosys built with embedded Python scripting). Our local
+OSS-CAD-Suite Yosys (0.67+24, used for `make lint`/`make formal`/
+`make synth-check`) was not built with pyosys support -- confirmed via
+`yosys --help` showing no `-y` flag at all. Running OpenLane against it fails
+with `Error parsing options: Option 'y' does not exist`. Fix: pass
+`--dockerized` to every `openlane` invocation (`scripts/run_synth.sh`,
+`scripts/run_gds.sh`) so it runs inside OpenLane's own official Docker image
+(which has a properly-built pyosys) instead of using the local toolchain.
+This means Phase 7's actual harden uses a *different* Yosys/OpenROAD/Magic/
+Netgen than Phases 4-5's lint/formal/synth-check -- the local OSS-CAD-Suite
+install and the Dockerized OpenLane image are two separate, non-overlapping
+toolchains serving different phases of this flow.
 
 **Version drift warning:** the delivery notes for this RTL/testbench were
 validated against **Yosys 0.33** and **Verilator 5.020** — both dramatically
