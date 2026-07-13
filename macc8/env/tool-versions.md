@@ -18,12 +18,21 @@ the repo; see `env/setup.sh`.
 | Yosys | 0.67+24 (git sha1 0e82bbefe, Release, Clang) | |
 | z3 | 4.15.5 - 64 bit | SymbiYosys solver backend |
 | GTKWave | 3.4.0 | |
-| OpenLane | TBD | 2.x — not yet installed (Phase 7, needs Docker) |
-| OpenROAD | TBD | bundled with OpenLane |
+| OpenLane | v2.3.10 | installed 2026-07-12 via pip into `~/tools/macc8-venv`; needs system `python3-tk` (see note below) |
+| Volare | v0.20.6 | installed 2026-07-12 via pip into `~/tools/macc8-venv` |
+| OpenROAD | TBD | bundled with OpenLane, pulled as its own Docker image on first real run |
 | Magic | TBD | bundled with OpenLane |
 | KLayout | TBD | bundled with OpenLane |
 | Netgen | TBD | bundled with OpenLane |
-| Sky130 PDK (Volare) | TBD | `volare ls-remote --pdk sky130` — not yet fetched (Phase 7) |
+| Sky130 PDK (Volare) | TBD | `volare ls-remote --pdk sky130` — not yet fetched |
+
+**OpenLane install note (2026-07-12):** `pip install openlane` alone isn't enough --
+its `TclUtils` module imports Python's `tkinter`, which Ubuntu packages
+separately from the base `python3` install. Without the system `python3-tk`
+package, `openlane --version` fails with `ModuleNotFoundError: No module
+named 'tkinter'`. Fix: `sudo apt-get install -y python3-tk` (system-level,
+not pip -- venvs share access to the base interpreter's stdlib once it's
+installed at the OS level, no need to recreate the venv).
 
 **Version drift warning:** the delivery notes for this RTL/testbench were
 validated against **Yosys 0.33** and **Verilator 5.020** — both dramatically
