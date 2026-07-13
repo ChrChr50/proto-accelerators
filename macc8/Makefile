@@ -10,7 +10,7 @@ export PDK_ROOT   ?= $(CURDIR)/pdk
 # stay git-ignored scratch space.
 TS := $(shell date +%Y%m%d-%H%M%S)
 
-.PHONY: all lint sim sim-fast sim-icarus formal synth-check synth gds drc lvs signoff vectors clean help
+.PHONY: all lint sim sim-fast sim-icarus formal synth-check pdk synth gds drc lvs signoff vectors clean help
 
 help:            ## list targets
 	@grep -E '^[a-z].*:.*##' $(MAKEFILE_LIST) | sed 's/:.*##/ -/'
