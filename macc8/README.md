@@ -53,5 +53,3 @@ make signoff                 # DRC + LVS
 - `reports/` — collected area/timing/power/DRC summaries (git-ignored)
 - `docs/` — design spec, block diagram, flow notes
 - `caravel/` — optional Caravel user-project integration
-
-See `CLAUDE.md` for the authoritative build/verify order of work.
