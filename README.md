@@ -13,7 +13,7 @@ open-source tooling and open PDKs.
   [macc8/README.md](macc8/README.md) for its own quickstart and toolchain.
 
 Future prototype accelerators will live alongside `macc8/` as sibling
-directories, each with its own `README.md`, `CLAUDE.md`, and build flow.
+directories, each with its own `README.md` and build flow.
 
 ## License
 

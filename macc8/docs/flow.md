@@ -21,5 +21,16 @@ git-ignored `pd/openlane/runs/` (OpenLane manages its own run history there
 already); folding those into `reports/` too is a possible follow-up once
 Phase 7 is running for real.
 
-See `CLAUDE.md` for the required order of work and pass/fail gates between
-stages.
+## Order of work and pass/fail gates
+
+Each stage must pass before moving on to the next:
+
+1. `make lint` -> Verible + Verilator clean (fix or justify-waive warnings).
+2. `make sim` -> cocotb regression passes bit-exact vs the golden model.
+3. `make formal` -> all sby properties PASS.
+4. `make pdk && make synth` -> OpenLane synthesis + STA meets 10 ns; report area.
+5. `make gds` -> full harden; then `make signoff` -> DRC + LVS clean.
+
+After synth/gds, summarize achieved clock, cell area, and critical path into
+`reports/` against the spec's targets (100 MHz, < 0.05 mm²). Flag any
+deviation explicitly; do not silently relax targets.
