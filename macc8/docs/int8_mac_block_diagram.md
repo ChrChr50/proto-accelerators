@@ -95,19 +95,23 @@ flowchart LR
     subgraph FILL["Serial fill (input-bound)"]
         F["L beats<br/>8 cyc (or 4)"]
     end
+    subgraph DECIDE["IDLE decision"]
+        G["act_full seen,<br/>go evaluated<br/>1 cyc"]
+    end
     subgraph COMPUTE["Compute (fixed, data-independent)"]
         C1["MUL<br/>1 cyc"] --> C2["ADACC<br/>1 cyc"] --> C3["DONE<br/>1 cyc"]
     end
-    FILL --> COMPUTE
+    FILL --> DECIDE --> COMPUTE
+    COMPUTE -->|"next fill may start only after DONE -> IDLE<br/>(single activation buffer, no overlap)"| FILL
 ```
 
 | Operation | Cycles |
 |---|---|
 | `start` → `done` (vector resident) | **3** (MUL → ADACC → DONE) |
-| One full chunk incl. serial fill | `L + 3` → **11** (8‑lane) / **7** (4‑lane) |
-| Length‑`K` dot product, `M=K/L` chunks, fills overlapping compute | `≈ M·L + 3` (fill‑bound) |
+| One full chunk incl. serial fill (`auto_start=1`) | `L + 4` → **12** (8‑lane) / **8** (4‑lane) |
+| Length‑`K` dot product, `M=K/L` chunks, back‑to‑back | `M·(L + 4)` — fill and compute serialized |
 
-Compute latency is constant and independent of operand values — scheduling‑friendly. End‑to‑end is dominated by the `L`‑cycle serial fill, which is the crux of the next two sections.
+Compute latency is constant and independent of operand values — scheduling‑friendly. End‑to‑end is dominated by the `L`‑cycle serial fill, which is the crux of the next two sections. The extra `+1` is the `IDLE` cycle in which the registered `act_full` first becomes visible to the FSM; the lack of overlap is because `act_ready` is only asserted in `IDLE` and there is only one activation buffer (see `rtl/macc8_serial_rx.sv`).
 
 ---
 
@@ -130,35 +134,36 @@ flowchart TD
     SER["Serial input (chosen)"] --> S1["+ ~10 pins, shuttle-friendly"]
     SER --> S2["+ exposes bandwidth-vs-compute tradeoff"]
     SER --> S3["+ real valid/ready back-pressure to verify"]
-    SER --> S4["- sustained ~1 MAC/cyc (input-bound)"]
+    SER --> S4["- sustained <= 1 MAC/cyc ceiling (input-bound);<br/>v0.1 achieves 0.67 (fill/compute serialized)"]
 ```
 
 ---
 
 ## 4. Area vs. throughput tradeoff
 
-The core tension: the **8‑lane array is provisioned for 8 MAC/cycle, but the byte‑serial front end sustains only ~1 int8/cycle → ~1 MAC/cycle.** Roughly 8× of the multiplier area does no useful work in steady state.
+The core tension: the **8‑lane array is provisioned for 8 MAC/cycle, but the byte‑serial front end delivers at most 1 int8/cycle → at most 1 MAC/cycle**, and v0.1 reaches only `L/(L+4)` ≈ 0.67 MAC/cycle because fill and compute are serialized. Roughly 11/12 of the multiplier capacity does no useful work in steady state.
 
 ```mermaid
 flowchart LR
     subgraph V01["v0.1 (this design)"]
         A1["8 parallel int8 multipliers<br/>~2/3 of datapath area"]
         A2["Peak 8 MAC/cyc"]
-        A3["Sustained ~1 MAC/cyc<br/>(serial input-bound)"]
+        A3["Sustained 0.67 MAC/cyc<br/>(serial input-bound, fill/compute serialized)"]
         A1 --> A2 --> A3
     end
 ```
 
 | Design point | Multipliers | Peak MAC/cyc | Sustained MAC/cyc | Area | Utilization |
 |---|---|---|---|---|---|
-| 8‑lane parallel (v0.1) | 8 | 8 | ~1 | high | ~12% |
-| 4‑lane (`lane_sel=0`) | 4 (active) | 4 | ~1 | med | ~25% |
-| **1 time‑shared multiplier (v0.2)** | 1 | 1 | ~1 | **low** | **~100%** |
-| Wider input + 8 lanes (v0.2) | 8 | 8 | ~8 | high | ~100% |
+| 8‑lane parallel (v0.1, as built) | 8 | 8 | 0.67 (`8/12`) | high | ~8% |
+| 4‑lane (`lane_sel=0`, as built) | 4 (active) | 4 | 0.5 (`4/8`) | high (same netlist; lanes 4–7 masked, not removed) | ~12% |
+| 8‑lane + ping‑pong activation buffer (v0.2) | 8 | 8 | ~1 | high + 64 flops | ~12% |
+| **1 time‑shared multiplier (v0.2)** | 1 | 1 | ~1 (MAC on arrival) | **low** | **~100%** |
+| Wider input + 8 lanes + ping‑pong (v0.2) | 8 | 8 | ~8 | high + pins | ~100% |
 
 **Reading the table.** Given a 1‑byte/cycle input, spending area on 8 multipliers buys peak numbers you can't sustain. Two principled fixes:
 
 1. **Shrink the array to match the input** — fold the 8 lanes onto 1 (or 2) time‑multiplexed multiplier(s). Sustained throughput is unchanged (~1 MAC/cyc), utilization approaches 100%, and multiplier area drops ~8×. Best *area‑efficiency* point for this input bandwidth.
 2. **Widen the input to match the array** — a parallel/multi‑byte port or bit‑parallel weight+activation load lifts sustained toward 8 MAC/cyc, finally justifying the 8 multipliers. Best *throughput* point, at the pin/area cost from §3.
 
-The 8‑lane parallel v0.1 is intentionally the *worst* point on this curve for sustained work — it exists to make the tradeoff concrete and to keep peak MAC/adder‑tree logic visible for the RTL/verification story. The design is parameterized (`LANES`, and a planned `MUL_SHARE` factor) so all four rows above are the same source with different knobs — which is itself the portfolio point: PPA is a dial, not a rewrite.
+The 8‑lane parallel v0.1 is intentionally the *worst* point on this curve for sustained work — it exists to make the tradeoff concrete and to keep peak MAC/adder‑tree logic visible for the RTL/verification story. The design is parameterized (`LANES`, and a planned `MUL_SHARE` factor) so all rows above are the same source with different knobs — which is itself the portfolio point: PPA is a dial, not a rewrite.

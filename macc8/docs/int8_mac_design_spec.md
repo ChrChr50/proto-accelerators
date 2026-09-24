@@ -131,7 +131,7 @@ Single FSM, one‑hot encoded, clocked on `clk`. Weight writes and `CONFIG` latc
 - **IDLE:** `act_ready=1`; accept serial activations into lane registers, incrementing a lane counter. Set `STATUS.act_full` when `L` beats are resident. Accept weight/config register writes. On `act_full` and (`start` pulse or `auto_start`): latch config, clear `act_ready`, go to `MUL`.
 - **MUL:** compute and register all `L` int16 products (pipeline stage 1). → `ADACC`.
 - **ADACC:** balanced int16 adder tree sums the `L` products; result is added into the accumulator when `acc_en=1`, else loaded. Evaluate overflow → `acc_ovf`. Register the accumulator (pipeline stage 2). → `DONE`.
-- **DONE:** assert `done` for one cycle, set sticky `STATUS.done`, present `ACC_OUT`. Deassert `busy`. → `IDLE`.
+- **DONE:** assert `done` for one cycle, set sticky `STATUS.done`, present `ACC_OUT`. → `IDLE` (`busy` deasserts on the return to `IDLE`).
 
 `busy` is high in `MUL`/`ADACC`/`DONE`. `lane_sel` gates lanes 4–7 (weights forced to 0 and their products masked) for the 4‑lane mode. FSM properties (no deadlock, exactly one active state, no `done` without a preceding `start`) are asserted in SVA and are formal‑check targets.
 
@@ -142,8 +142,10 @@ Cycle counts at `clk`, with weights pre‑loaded:
 | Path | Cycles |
 |---|---|
 | `start` → `done` (activation vector already resident) | **3** (`MUL` → `ADACC` → `DONE`) — pipeline depth 2 + done cycle |
-| End‑to‑end per chunk incl. serial fill | `L + 3` (8‑lane: **11**; 4‑lane: **7**), serial‑fill‑dominated |
-| Length‑`K` dot product (`M = K/L` chunks, back‑to‑back) | `≈ M·L + 3` when fills overlap prior compute (fill‑bound) |
+| End‑to‑end per chunk incl. serial fill (`auto_start=1`) | `L + 4` (8‑lane: **12**; 4‑lane: **8**) = `L` fill beats + 1 `IDLE` decision cycle + 3 compute |
+| Length‑`K` dot product (`M = K/L` chunks, back‑to‑back) | `M·(L + 4)` — fill and compute are **serialized**, not overlapped (see below) |
+
+Why `L + 4` and not `L + 3`: `act_full` is decoded from the registered lane counter, so it is first visible the cycle *after* the last beat is accepted; `go` is evaluated in that `IDLE` cycle. Why no overlap: v0.1 has a single activation buffer, and `act_ready = accept_en & ~act_full` with `accept_en` high only in `IDLE`, so the next vector cannot start filling until the current pass returns to `IDLE`. Overlapping fill with compute requires a second (ping‑pong) activation buffer — a v0.2 item. With an explicit `CTRL.start` instead of `auto_start`, add the register‑bus write latency on top.
 
 Compute latency (`start→done`) is fixed and data‑independent — attractive for scheduling.
 
@@ -152,7 +154,8 @@ Compute latency (`start→done`) is fixed and data‑independent — attractive 
 The engine has two clearly different regimes, and stating both is the point:
 
 - **Peak (compute‑bound, adder tree active):** `L` MACs/cycle. At 8 lanes × 100 MHz = **0.8 GMAC/s ≈ 1.6 GOP/s** (counting multiply + add).
-- **Sustained (input‑bound):** the byte‑serial port accepts **1 int8/cycle**, so a new `L`‑element vector takes `L` cycles to load. With weights stationary and fills overlapping compute, sustained throughput is **≈ 1 MAC/cycle ≈ 0.1 GMAC/s** at 100 MHz — the 8‑lane array is provisioned for 8× the rate the serial front end can feed it.
+- **Sustained (input‑bound), as built in v0.1:** the byte‑serial port accepts **1 int8/cycle**, so a new `L`‑element vector takes `L` cycles to load, and because fill and compute are serialized each chunk costs `L + 4` cycles. Sustained throughput is therefore `L/(L+4)`: **≈ 0.67 MAC/cycle ≈ 67 MMAC/s** in 8‑lane mode and **0.5 MAC/cycle** in 4‑lane mode, at 100 MHz — the 8‑lane array is provisioned for ~12× the rate the front end actually delivers.
+- **Input‑bandwidth ceiling:** 1 activation/cycle means no design fed by this port can sustain more than **1 MAC/cycle**. Reaching that ceiling needs fill to overlap compute (ping‑pong activation buffer); v0.1 leaves ~33% of even the serial bandwidth on the table.
 
 This ~8× imbalance is the central architectural finding, not a bug: it motivates a v0.2 rebalance (wider input port, bit‑parallel weight+activation load, or replicating lanes only when input bandwidth scales with them). It is the kind of provisioning‑vs‑bandwidth tradeoff a real accelerator front end lives or dies on.
 
@@ -186,7 +189,7 @@ Multiplier count is the first area knob; sharing multipliers across cycles trade
 
 ## Known limitations
 
-- **Input‑bandwidth bound:** byte‑serial front end caps sustained throughput at ~1 MAC/cycle; the 8‑lane array is ~8× underutilized. Primary v0.2 target.
+- **Input‑bandwidth bound:** byte‑serial front end caps sustained throughput at 1 MAC/cycle, and v0.1's serialized fill/compute (single activation buffer) delivers only `L/(L+4)` ≈ 0.67 MAC/cycle in 8‑lane mode; the 8‑lane array is ~12× underutilized. Primary v0.2 target.
 - **No requantization stage:** raw int32 partial sum only — no scale/shift, bias, or activation function (ReLU/clamp). The output needs host‑side dequant to be useful in a full pipeline.
 - **No spatial reuse:** a single dot‑product engine, not a systolic/tiled GEMM array. Scaling to matrix multiply requires replication plus a dataflow/scheduler layer.
 - **Weight reload cost:** long dot products (`K ≫ L`) reload 8 weights over the register bus per chunk, adding control‑plane overhead not modeled in the peak number.
