@@ -1,41 +1,40 @@
 # reports/
 
-Every `make lint`, `make sim` / `sim-fast` / `sim-icarus`, `make formal`, and
-`make synth-check` run writes its output here, under a timestamped
-subdirectory, and that subdirectory is committed to the repo — this is the
-project's actual, reproducible verification record, not a throwaway log.
+`make lint`, `make sim` / `sim-fast` / `sim-icarus`, `make formal` and
+`make synth-check` each put their output in a new timestamped folder here,
+and those folders are committed. This is the project's verification record,
+not a scratch log.
 
-## Naming convention
+## Folder names
 
 ```
 reports/<YYYYMMDD-HHMMSS>_<target>/
 ```
 
-The timestamp is computed once per `make` invocation (so a single `make sim`
-run gets one consistent timestamp even though it touches multiple files).
+The timestamp is taken once per `make` call, so all files from one run share
+it.
 
-| Directory suffix | Produced by | Contents |
+| Suffix | Made by | What's inside |
 |---|---|---|
 | `_lint` | `make lint` | `verible.log`, `verilator.log` |
-| `_sim-full` | `make sim` | `sim.log` (full regression incl. real int32 overflow crossing), `results.xml` (cocotb JUnit-style results) |
-| `_sim-fast` | `make sim-fast` | same as above, but with `MACC8_FAST=1` (capped overflow loop, for quick iteration) |
-| `_sim-icarus` | `make sim-icarus` | same as `_sim-fast`, run under Icarus Verilog instead of Verilator (see `env/tool-versions.md` for a cocotb-version caveat specific to this path) |
-| `_formal` | `make formal` | `fsm_props.log` / `handshake_props.log`, plus the full SymbiYosys work directories (`fsm_props/`, `handshake_props/` — SMT2 models, per-engine logs, `PASS`/`FAIL` marker files) |
-| `_synth-check` | `make synth-check` | `yosys.log` (full run), `yosys_stat.log` (raw `stat` output), `summary.md` (curated cell/FF counts + checklist — also copied to `docs/synthesis_summary.md` as the latest snapshot). Technology-independent, no PDK required; real Sky130 area comes from OpenLane in Phase 7. |
+| `_sim-full` | `make sim` | `sim.log` (full run, including the real int32 overflow) and `results.xml` (cocotb's JUnit-style results) |
+| `_sim-fast` | `make sim-fast` | the same, with `MACC8_FAST=1` so the overflow loops stop early |
+| `_sim-icarus` | `make sim-icarus` | like `_sim-fast` but on Icarus (see `env/tool-versions.md` for the cocotb version caveat) |
+| `_formal` | `make formal` | `fsm_props.log`, `handshake_props.log`, and the full SymbiYosys work folders (SMT2 models, engine logs, `PASS`/`FAIL` files) |
+| `_synth-check` | `make synth-check` | `yosys.log` (whole run), `yosys_stat.log` (raw `stat`), `summary.md` (cell and flop counts plus the checklist, also copied to `docs/synthesis_summary.md`). No PDK needed; real Sky130 area comes from OpenLane. |
 
-## Why timestamped and committed, not overwritten in place
+## Why not just overwrite one log
 
-A single `reports/lint.log` that gets clobbered on every run only ever shows
-the most recent result — there's no record of when something last passed, or
-whether a fix actually changed the outcome. Timestamped, committed
-directories make the verification history part of the repo's own history,
-inspectable via `git log -- reports/` without needing to have run anything
-yourself.
+If every run overwrote a single `reports/lint.log`, you'd only ever see the
+latest result. There'd be no way to tell when something last passed, or
+whether a fix actually changed anything. With one committed folder per run,
+the verification history is part of the git history, and anyone can browse
+it with `git log -- reports/` without running a thing.
 
-## What's still git-ignored
+## Still git-ignored
 
-`build/`, `pd/openlane/runs/`, and `pdk/` remain scratch space (large,
-regenerable, or PDK-managed) — see the repo root `.gitignore`. Manually
-running `verif/formal/run_formal.sh` directly (bypassing `make formal`) still
-writes to `verif/formal/<task>/`, which also stays git-ignored — that path is
-for quick local iteration, not the committed record.
+`build/`, `pd/openlane/runs/` and `pdk/` are still scratch (big,
+reproducible, or managed by Volare); see `macc8/.gitignore`. Running
+`verif/formal/run_formal.sh` by hand instead of `make formal` writes to
+`verif/formal/<task>/`, which is ignored too. That's for quick local checks,
+not the record.
