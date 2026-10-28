@@ -1,9 +1,6 @@
-// -----------------------------------------------------------------------------
-// macc8_props_rx.sv
-// Formal properties for the byte-serial activation front end (macc8_serial_rx),
-// as clocked immediate assertions (Yosys-portable). Checks the valid/ready +
-// full contract over the module I/O.
-// -----------------------------------------------------------------------------
+// Properties for macc8_serial_rx: the valid/ready handshake and the full
+// flag, checked through the ports only. Same immediate-assert style as
+// macc8_props_fsm.sv so plain Yosys can read it.
 module macc8_props_rx (
   input logic       clk,
   input logic       rst_n,
@@ -29,7 +26,7 @@ module macc8_props_rx (
   always @(posedge clk) past_valid <= 1'b1;
 
   always @(posedge clk) begin
-    // legal configuration: 4 or 8 lanes
+    // the regfile can only ever produce 4 or 8
     m_lanes: assume (active_lanes == 4'd4 || active_lanes == 4'd8);
 
     if (!rst_n) begin

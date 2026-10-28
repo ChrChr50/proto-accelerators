@@ -1,48 +1,46 @@
-"""
-macc8_ref.py — Golden reference model for the MACC-8 int8 dot-product engine.
+"""Reference model for MACC-8.
 
-Bit-exact software twin of the RTL. Every RTL test compares against this model.
-The model mirrors the hardware register/compute semantics exactly:
+A plain-Python copy of what the RTL computes, used by the cocotb tests to
+predict every accumulator and status value. The rules it follows:
 
-  - operands are signed int8 (two's complement)
-  - product is signed int16, tree sum is signed (fits int20 for 8 lanes)
-  - accumulator is signed int32
-  - acc_en = 1 -> acc += sum ; acc_en = 0 -> acc = sum (load)
-  - overflow of int32:
-        acc_sat = 1 -> clamp to +/- int32 max/min, overflow flag NOT set
-        acc_sat = 0 -> wrap (two's complement) and set sticky overflow flag
-  - acc_clr / soft reset zero the accumulator and the overflow flag
-  - active lanes = 8 when lane_sel else 4 (extra lanes masked to 0)
+  * activations and weights are signed int8
+  * each product is int16; the 8-lane sum always fits in int20
+  * the accumulator is int32
+  * acc_en=1 adds the pass result to the accumulator, acc_en=0 overwrites it
+  * on int32 overflow:
+      acc_sat=1  clamp to INT32_MAX / INT32_MIN, overflow flag stays clear
+      acc_sat=0  wrap around and set the (sticky) overflow flag
+  * acc_clr and soft reset zero both the accumulator and the flag
+  * lane_sel=1 uses 8 lanes, lane_sel=0 uses 4 (the rest contribute 0)
 
-This module has no cocotb dependency and is independently unit-testable.
+No cocotb import here, so it can be exercised on its own.
 """
 
 INT8_MIN, INT8_MAX = -128, 127
 INT32_MIN, INT32_MAX = -(2**31), 2**31 - 1
-ID_VALUE = 0x4D414338  # "MAC8"
+ID_VALUE = 0x4D414338  # ASCII "MAC8"
 
 
-def s8(b: int) -> int:
-    """Interpret the low 8 bits of b as a signed int8."""
-    b &= 0xFF
-    return b - 256 if b >= 128 else b
+def s8(byte: int) -> int:
+    """Read the low 8 bits of `byte` as a signed int8."""
+    byte &= 0xFF
+    return byte - 256 if byte >= 128 else byte
 
 
-def to_int32(x: int) -> int:
-    """Wrap an arbitrary integer into signed int32 (two's complement)."""
-    return ((x + 2**31) % 2**32) - 2**31
+def to_int32(value: int) -> int:
+    """Wrap any Python int into the signed int32 range."""
+    return ((value + 2**31) % 2**32) - 2**31
 
 
 class Macc8Model:
     def __init__(self):
         self.reset()
 
-    # ---- reset / state --------------------------------------------------
     def reset(self):
         self.acc = 0
         self.ovf = 0
         self.weights = [0] * 8
-        self.lane_sel = 1       # default 8 lanes (matches RTL reset default)
+        self.lane_sel = 1  # RTL comes out of reset in 8-lane mode
         self.acc_en = 0
         self.acc_sat = 0
         self.auto_start = 0
@@ -59,54 +57,48 @@ class Macc8Model:
     def clear_done(self):
         self.done_sticky = 0
 
-    # ---- configuration --------------------------------------------------
     def set_weights_list(self, wl):
         assert len(wl) == 8
         self.weights = [s8(w) for w in wl]
 
     def set_weights_words(self, w0: int, w1: int):
-        for i in range(4):
-            self.weights[i] = s8((w0 >> (8 * i)) & 0xFF)
-        for i in range(4):
-            self.weights[4 + i] = s8((w1 >> (8 * i)) & 0xFF)
+        for lane in range(4):
+            self.weights[lane] = s8(w0 >> (8 * lane))
+            self.weights[lane + 4] = s8(w1 >> (8 * lane))
 
     def set_mode(self, lane_sel=None, acc_en=None, acc_sat=None, auto_start=None):
-        if lane_sel is not None:
-            self.lane_sel = int(bool(lane_sel))
-        if acc_en is not None:
-            self.acc_en = int(bool(acc_en))
-        if acc_sat is not None:
-            self.acc_sat = int(bool(acc_sat))
-        if auto_start is not None:
-            self.auto_start = int(bool(auto_start))
+        updates = dict(lane_sel=lane_sel, acc_en=acc_en,
+                       acc_sat=acc_sat, auto_start=auto_start)
+        for name, val in updates.items():
+            if val is not None:
+                setattr(self, name, int(bool(val)))
 
-    # ---- compute one pass ----------------------------------------------
     def dot(self, acts):
-        """Apply one MAC pass over 'acts' (len >= active_lanes). Returns (acc, ovf)."""
-        n = self.active_lanes
-        prods = [s8(acts[i]) * self.weights[i] for i in range(n)]
-        tree = sum(prods)                      # exact; fits int20 for 8 lanes
+        """Run one pass over `acts` (needs at least active_lanes entries).
 
-        res = self.acc + tree if self.acc_en else tree
-        overflow = (res > INT32_MAX) or (res < INT32_MIN)
+        Returns the new (acc, ovf) pair.
+        """
+        lanes = self.active_lanes
+        pass_sum = sum(s8(acts[i]) * self.weights[i] for i in range(lanes))
+
+        result = self.acc + pass_sum if self.acc_en else pass_sum
+        too_big = result > INT32_MAX
+        too_small = result < INT32_MIN
 
         if self.acc_sat:
-            if res > INT32_MAX:
-                self.acc = INT32_MAX
-            elif res < INT32_MIN:
-                self.acc = INT32_MIN
-            else:
-                self.acc = res
-            # overflow flag not set when saturating
+            if too_big:
+                result = INT32_MAX
+            elif too_small:
+                result = INT32_MIN
+            self.acc = result
         else:
-            self.acc = to_int32(res)
-            if overflow:
-                self.ovf = 1                   # sticky
+            self.acc = to_int32(result)
+            if too_big or too_small:
+                self.ovf = 1
 
         self.done_sticky = 1
         return self.acc, self.ovf
 
-    # ---- expected register readback ------------------------------------
     def status_word(self, busy=0):
         return (self.ovf << 2) | (self.done_sticky << 1) | (busy & 1)
 
