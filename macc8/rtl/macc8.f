@@ -1,4 +1,3 @@
-# compile order: package -> leaf -> composite -> top
 +incdir+include
 rtl/macc8_pkg.sv
 rtl/macc8_reset_sync.sv
