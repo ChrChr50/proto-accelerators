@@ -1,55 +1,59 @@
 # MACC-8
 
-Programmable int8, 8-lane (4-lane configurable) dot-product engine — RTL-to-GDSII
-on the open SkyWater Sky130 PDK via OpenLane 2.
+An int8 dot-product engine with 8 lanes (switchable to 4), built for the
+SkyWater Sky130 open PDK with OpenLane 2.
 
-Companion docs: `docs/int8_mac_design_spec.md`, `docs/int8_mac_block_diagram.md`,
-`docs/flow.md`.
+More detail lives in `docs/`: the spec (`int8_mac_design_spec.md`), the block
+diagram and microarchitecture notes (`int8_mac_block_diagram.md`), and the
+make-target flow (`flow.md`).
 
-## Toolchain
+## Tools
 
-| Stage | Tool |
+| What | Using |
 |---|---|
-| Lint | Verible + `verilator --lint-only` |
-| Simulation / DV | cocotb + Verilator (fast) / Icarus (fallback) |
-| Golden model | Python + NumPy int8 reference |
-| Formal | SymbiYosys (sby) + Yosys |
-| Equivalence (opt.) | Yosys `eqy` |
-| Synthesis + Physical | OpenLane 2 (Yosys, OpenROAD, Magic, KLayout, Netgen) |
-| PDK | Sky130 via Volare/ciel |
-| Front-end bundle | OSS-CAD-Suite |
+| Lint | Verible, `verilator --lint-only` |
+| Simulation | cocotb on Verilator (main) or Icarus |
+| Reference model | Python/NumPy |
+| Formal | SymbiYosys + Yosys |
+| Equivalence (optional) | Yosys `eqy` |
+| Synthesis and P&R | OpenLane 2 (Yosys, OpenROAD, Magic, KLayout, Netgen) |
+| PDK | Sky130 through Volare |
+| Front-end toolchain | OSS-CAD-Suite |
 | CI | GitHub Actions |
 
-## Quickstart
+## Getting started
 
 ```bash
-# one-time
-python -m venv .venv && source .venv/bin/activate
+# first time only
+python -m venv .venv
+source .venv/bin/activate
 pip install -r env/requirements.txt
-source env/setup.sh          # OSS-CAD-Suite on PATH
-make pdk                     # fetch Sky130
+source env/setup.sh     # puts OSS-CAD-Suite on PATH
+make pdk                # downloads Sky130
 
-# inner loop
+# day to day
 make lint
 make sim
 make formal
 
-# implementation
-make synth                   # fast: synthesis + STA
-make gds                     # full RTL-to-GDSII
-make signoff                 # DRC + LVS
+# backend
+make synth              # synthesis + STA only
+make gds                # the whole RTL-to-GDSII run
+make signoff            # DRC and LVS
 ```
 
-## Layout
+## What's where
 
-- `rtl/` — synthesizable SystemVerilog only (populate this to run the flow end-to-end)
-- `include/` — compile-time macros shared across RTL
-- `constraints/` — SDC + pin placement hints
-- `verif/` — cocotb testbenches, golden model, SVA, formal properties
-- `lint/` — Verible/Verilator rule configs and waivers
-- `pd/openlane/` — OpenLane 2 config and run outputs (git-ignored)
-- `pdk/` — Volare-managed Sky130 (git-ignored)
-- `scripts/` — one-shot flow scripts invoked by the Makefile
-- `reports/` — collected area/timing/power/DRC summaries (git-ignored)
-- `docs/` — design spec, block diagram, flow notes
-- `caravel/` — optional Caravel user-project integration
+| Folder | Contents |
+|---|---|
+| `rtl/` | the synthesizable SystemVerilog |
+| `include/` | shared compile-time macros |
+| `constraints/` | SDC and pin placement hints |
+| `verif/` | cocotb tests, the reference model, formal properties |
+| `lint/` | Verible/Verilator settings and waivers |
+| `pd/openlane/` | OpenLane config (run outputs are git-ignored) |
+| `pdk/` | Sky130 installed by Volare (git-ignored) |
+| `scripts/` | helper scripts the Makefile calls |
+| `reports/` | timestamped lint/sim/formal/synth results, committed |
+| `docs/` | spec, block diagram, flow notes |
+| `caravel/` | placeholder for a future Caravel wrapper |

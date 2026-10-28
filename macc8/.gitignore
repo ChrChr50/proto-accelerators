@@ -1,4 +1,4 @@
-# tool outputs
+# build and tool output
 build/
 pd/openlane/runs/
 pdk/
@@ -12,13 +12,13 @@ obj_dir/
 !reports/**/*.log
 __pycache__/
 .venv/
-# cocotb / SymbiYosys scratch runs (verif/formal/<task>/, from manually running
-# run_formal.sh directly) -- the committed record lives under reports/, see
-# reports/README.md and the Makefile's lint/sim*/formal targets.
+# scratch output from running cocotb or verif/formal/run_formal.sh by hand;
+# the runs worth keeping go in reports/ (see reports/README.md)
 verif/cocotb/results.xml
 verif/formal/*/
-# PDK / big binaries
+# PDK and large layout files
 *.gds
 *.lef
 *.def
-!**/tech/**  # keep tech LEFs if vendored
+# vendored tech LEFs are fine to commit
+!**/tech/**

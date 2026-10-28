@@ -1,18 +1,17 @@
-# MACC-8 top-level orchestration
+# MACC-8 build targets. `make help` lists them.
 DESIGN      := macc8
 RTL         := rtl/macc8.f
 export PDK        ?= sky130A
 export PDK_ROOT   ?= $(CURDIR)/pdk
 
-# Computed once per `make` invocation. Every target below that produces a
-# report writes it to reports/<TS>_<target>/, which is committed to the repo
-# (see reports/README.md) -- unlike build/, pd/openlane/runs/, pdk/, which
-# stay git-ignored scratch space.
+# One timestamp per make call. Report-producing targets write to
+# reports/<TS>_<target>/, which gets committed (see reports/README.md);
+# build/, pd/openlane/runs/ and pdk/ are git-ignored scratch.
 TS := $(shell date +%Y%m%d-%H%M%S)
 
 .PHONY: all lint sim sim-fast sim-icarus formal synth-check pdk synth gds drc lvs signoff vectors clean help
 
-help:            ## list targets
+help:            ## show this list
 	@grep -E '^[a-z].*:.*##' $(MAKEFILE_LIST) | sed 's/:.*##/ -/'
 
 lint:            ## Verible + Verilator lint (report: reports/<ts>_lint/)
@@ -59,7 +58,7 @@ gds:             ## full RTL-to-GDSII
 signoff:         ## Magic DRC + Netgen LVS
 	bash scripts/run_signoff.sh
 
-vectors:         ## regenerate golden vectors
+vectors:         ## write reference vectors (stub)
 	python scripts/gen_vectors.py
 
 clean:
