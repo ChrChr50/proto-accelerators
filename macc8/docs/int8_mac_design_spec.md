@@ -1,198 +1,316 @@
-# Design Specification — MACC‑8: Programmable int8 Dot‑Product Engine
+# MACC-8 design spec: a programmable int8 dot-product engine
 
-**Document status:** v0.1 (portfolio proposal)
+**Status:** v0.1
 **Author:** Chris Choi Lee
-**Scope:** RTL design · accelerator architecture · quantized ML hardware · PPA (power/performance/area) tradeoff analysis
+**Covers:** RTL design, accelerator architecture, quantized ML hardware, PPA trade-offs
 
 ---
 
-## Project name
+## What it is
 
-**MACC‑8** — a programmable 8‑lane (4‑lane configurable) signed int8 multiply‑accumulate dot‑product engine with serial activation streaming, register‑mapped weights, a start/done handshake, and a wide accumulation output.
+MACC-8 is a signed int8 multiply-accumulate engine with 8 lanes (4 if you
+want). Activations stream in one byte at a time, weights sit in registers,
+there's a start/done handshake, and results build up in a 32-bit
+accumulator.
 
 ## Goal
 
-Build a small, tapeout‑ready quantized‑ML compute primitive that demonstrates the full RTL front‑end flow — micro‑architecture, parameterized SystemVerilog, verification, and PPA closure — on a real open‑source shuttle. The engine computes the fundamental accelerator operation:
+I wanted a small quantized-ML block that could actually go to tapeout on an
+open shuttle, and that goes through the whole front-end flow: architecture,
+parameterized SystemVerilog, verification, and PPA closure. It computes the
+basic accelerator operation
 
 $$acc \mathrel{+}= \sum_{i=0}^{L-1} a_i \cdot w_i \qquad L \in \{4, 8\}$$
 
-where `a_i`, `w_i` are signed int8 (two's complement). Chunks of length `L` accumulate into a wide result so that longer length‑`K` dot products (`K` a multiple of `L`) are computed as `K/L` accumulating passes. The deliverable is intended to double as an interview artifact: the design intentionally exposes a clean input‑bandwidth‑vs‑compute tradeoff for discussion rather than papering over it.
+with `a_i` and `w_i` as signed int8. Each pass handles `L` elements and adds
+into the accumulator, so a length-`K` dot product (with `K` a multiple of
+`L`) is `K/L` passes. I also wanted something I can walk through in an
+interview, so the design leaves the input-bandwidth versus compute
+trade-off in plain sight on purpose.
 
-Explicit **non‑goals** for v0.1: no requantization/activation‑function/bias stage, no spatial (systolic) tiling to GEMM, no per‑channel scaling, int8‑only. These are listed under *Known limitations* and framed as the natural v0.2 roadmap.
+Out of scope for v0.1: requantization, activation functions or bias,
+systolic tiling into a GEMM, per-channel scaling, and anything other than
+int8. They're listed under *Known limitations* and are the obvious next
+steps.
 
-## Target shuttle / platform
+## Platforms
 
-| Stage | Platform | Purpose |
+| Stage | Platform | Why |
 |---|---|---|
-| Functional bring‑up | Low‑cost FPGA dev board (e.g. Lattice/Xilinx Artix‑class) | RTL validation, on‑board golden‑model check over UART |
-| ASIC tapeout (primary) | **Efabless ChipIgnite / Caravel harness on SkyWater Sky130** (open PDK) | Real silicon PPA closure; Wishbone control plane + logic‑analyzer probes |
-| ASIC tapeout (fallback) | **TinyTapeout** (Sky130) | Smaller, standardized submission if area/pin budget tightens |
+| Bring-up | an inexpensive FPGA board (Lattice, or an Artix-class Xilinx) | check the RTL on hardware against the reference model over UART |
+| Main tapeout | **Efabless ChipIgnite / Caravel on SkyWater Sky130** | real silicon PPA; Wishbone for control, logic analyzer for probing |
+| Backup tapeout | **TinyTapeout** (Sky130) | a smaller, standard slot if area or pins get tight |
 
-The RTL is PDK‑agnostic and parameterized so the same source targets all three. Caravel is the primary target because its Wishbone bus maps cleanly onto the register interface below.
+The RTL doesn't depend on the PDK and is parameterized, so the same source
+works for all three. Caravel is the main target because its Wishbone bus
+lines up neatly with the register interface below.
 
-## Clock assumption
+## Clock
 
-- Single clock domain, `clk`. **Target 100 MHz (10 ns period)** at the Sky130 slow corner (SS, 1.60 V, 125 °C) post‑synthesis. FPGA prototype closes this comfortably; the number is a *target* to be confirmed at gate level.
-- The activation serial interface and the register/control bus are synchronous to `clk`. No asynchronous or multi‑clock crossings are required in v0.1 (a deliberate scope reduction — CDC is a v0.2 concern if a slow serial link is added).
-- Critical path is `int8×int8 multiplier → adder tree → accumulator adder`. It is broken by pipeline registers (see *State machine*) so the target clock is met without a wide combinational MAC path.
+- One clock, `clk`. **The target is 100 MHz (10 ns)** at the Sky130 slow
+  corner (SS, 1.60 V, 125 °C) after synthesis. An FPGA hits that easily;
+  for silicon it's a target until gate-level numbers confirm it.
+- The activation port and the register bus both run on `clk`. There are no
+  clock crossings in v0.1. That's a conscious scope cut: CDC only becomes a
+  concern if a slower serial link gets added later.
+- The longest path is multiplier, adder tree, accumulator adder. Pipeline
+  registers split it (see *State machine*) so no single cycle has to cover
+  the whole MAC.
 
-## Reset behavior
+## Reset
 
-- Active‑low reset `rst_n`, **asynchronous assertion, synchronous de‑assertion** via a 2‑flop reset synchronizer (standard for Sky130/Caravel).
-- On reset the design deterministically enters a known state:
-  - FSM → `IDLE`.
-  - Accumulator → `0`.
-  - Weight registers → `0` (deterministic for sim/silicon reproducibility rather than left `X`).
-  - Activation shift register and lane counter → `0`.
-  - `STATUS` flags (`busy`, `done`, `acc_ovf`) → `0`; `busy` and `done` are outputs and are guaranteed low out of reset.
-- A separate **soft reset** bit in `CTRL` clears the accumulator and FSM without disturbing loaded weights, enabling a fresh dot product without a full chip reset.
+- `rst_n` is active low, **asserted asynchronously and released
+  synchronously** through a two-flop synchronizer, the usual arrangement on
+  Sky130 and Caravel.
+- Reset puts everything in a known state:
+  - FSM in `IDLE`
+  - accumulator at 0
+  - weight registers at 0 (so simulation and silicon agree, instead of
+    starting at `X`)
+  - activation registers and lane counter at 0
+  - `busy`, `done` and `acc_ovf` low; `busy` and `done` are outputs and are
+    guaranteed low coming out of reset
+- `CTRL.soft_rst` clears the accumulator, the overflow flag and the sticky
+  done flag but leaves the weights and mode bits alone, so a new dot product
+  can start without a full reset.
 
-## Input protocol
+## Inputs
 
-Two decoupled input planes:
+There are two independent ways data gets in.
 
-**1. Activation data plane — byte‑serial streaming (`valid`/`ready`).**
-One signed int8 activation per accepted beat on an 8‑bit bus.
+**1. Activations: a byte-wide valid/ready stream.**
+Each accepted beat carries one signed int8 activation.
 
-| Signal | Dir | Width | Description |
+| Signal | Dir | Width | Meaning |
 |---|---|---|---|
-| `act_data` | in | 8 | Signed int8 activation |
-| `act_valid` | in | 1 | Producer asserts when `act_data` is valid |
-| `act_ready` | out | 1 | Engine asserts when it can accept a beat |
+| `act_data` | in | 8 | signed int8 activation |
+| `act_valid` | in | 1 | driven high by the sender when `act_data` is valid |
+| `act_ready` | out | 1 | driven high by the engine when it can take a beat |
 
-- Transfer occurs on any cycle where `act_valid && act_ready`. Standard AMBA‑style handshake: `act_valid` must not depend combinationally on `act_ready`, and once asserted `act_valid`/`act_data` are held stable until accepted.
-- Accepted beats fill lanes `0..L-1` in order. When lane `L-1` is filled the engine either auto‑fires a pass (if `CTRL.auto_start=1`) or waits for an explicit `start`.
+- A byte transfers on any cycle with `act_valid && act_ready`. It's the
+  usual AMBA-style rule: `act_valid` must not depend combinationally on
+  `act_ready`, and once `act_valid` is up, it and `act_data` hold until the
+  beat is taken.
+- Bytes fill lanes `0..L-1` in order. Once lane `L-1` is filled, the engine
+  either starts a pass on its own (`CTRL.auto_start=1`) or waits for
+  `start`.
 
-**2. Control / weight plane — register‑mapped writes (Wishbone on Caravel).**
-Weights and control are written through the register map below. Weights are *stationary*: written once, reused across many activation passes until reloaded.
+**2. Control and weights: register writes (Wishbone on Caravel).**
+Weights and control go through the register map below. The weights are
+*stationary*: write them once and they're reused for every activation pass
+until you write new ones.
 
-**Start/done handshake.** `start` is a single‑cycle pulse (from `CTRL.start` or a top‑level pin). It is ignored unless the FSM is in `IDLE` with a full activation vector resident. The engine raises `busy` for the duration of the pass and emits a single‑cycle `done` pulse on completion; a sticky `STATUS.done` bit is also set and is cleared on read (read‑to‑clear) or by writing `CTRL.done_clr`.
+**Start and done.** `start` is a one-cycle strobe from writing `CTRL.start`.
+It's ignored unless the FSM is in `IDLE` and a full activation vector is
+loaded. `busy` stays high for the whole pass and `done` pulses for one cycle
+at the end. The sticky `STATUS.done` bit gets set as well; reading it
+doesn't clear it, only writing `CTRL.done_clr` or `CTRL.soft_rst` does.
 
-## Output protocol
+## Outputs
 
-- **Primary:** 32‑bit signed accumulator readable at `ACC_OUT` (register map). Value is valid and stable whenever `busy=0`. It is *not* auto‑cleared between passes — accumulation across chunks is the intended behavior; clear explicitly via `CTRL.acc_clr` or soft reset.
-- **Streaming/handshake:** `done` (1‑cycle pulse) marks completion of each pass; consumers may latch `ACC_OUT` on `done`. `acc_ovf` in `STATUS` flags signed overflow of the accumulator (see *Datapath width*).
-- Accumulate vs. overwrite is selected by `CTRL.acc_en`: `1` = add the pass result into the running accumulator; `0` = load the pass result (single‑chunk / independent dot products).
+- **Main result:** the 32-bit signed accumulator at `ACC_OUT`. It's valid and
+  steady any time `busy=0`. It doesn't reset between passes, because adding
+  up chunks is the whole idea; clear it with `CTRL.acc_clr` or soft reset.
+- **Handshake:** the one-cycle `done` pulse marks the end of each pass, and
+  a consumer can grab `ACC_OUT` then. `STATUS.acc_ovf` reports signed
+  overflow of the accumulator (see *Datapath widths*).
+- `CTRL.acc_en` picks accumulate or overwrite: with `1` the pass result is
+  added to the running total, with `0` it replaces it (for single-chunk or
+  independent dot products).
 
 ## Register map
 
-Byte‑addressed, 32‑bit registers. Offsets relative to the block base (Wishbone slave on Caravel).
+32-bit registers at byte offsets from the block base (a Wishbone slave on
+Caravel).
 
-| Offset | Name | Access | Bits | Description |
+| Offset | Name | Access | Bits | Purpose |
 |---|---|---|---|---|
-| `0x00` | `CTRL` | R/W | `[0] start` (self‑clearing pulse), `[1] acc_clr`, `[2] acc_en`, `[3] auto_start`, `[4] done_clr`, `[5] soft_rst`, `[6] lane_sel` (0=4 lanes, 1=8 lanes) | Control / command |
-| `0x04` | `STATUS` | RO | `[0] busy`, `[1] done` (sticky, read‑to‑clear), `[2] acc_ovf`, `[3] act_full` (vector resident) | Status / flags |
-| `0x08` | `CONFIG` | R/W | `[0] act_signed`, `[1] wt_signed`, `[2] acc_sat` (0=wrap+flag, 1=saturate) | Static config, latched in `IDLE` |
-| `0x0C` | `WEIGHTS0` | R/W | `[7:0]=w0 … [31:24]=w3` | Lanes 0–3 weights (int8, packed) |
-| `0x10` | `WEIGHTS1` | R/W | `[7:0]=w4 … [31:24]=w7` | Lanes 4–7 weights (int8, packed) |
-| `0x14` | `ACC_OUT` | RO | `[31:0]` | Signed int32 accumulator |
-| `0x18` | `ID` | RO | `[31:0]=0x4D414338` ("MAC8") | Version / identification |
+| `0x00` | `CTRL` | R/W | `[0] start` (strobe), `[1] acc_clr` (strobe), `[2] acc_en`, `[3] auto_start`, `[4] done_clr` (strobe), `[5] soft_rst` (strobe), `[6] lane_sel` (0 = 4 lanes, 1 = 8) | control and commands; strobe bits read back as 0 |
+| `0x04` | `STATUS` | RO | `[0] busy`, `[1] done` (sticky), `[2] acc_ovf` | status flags |
+| `0x08` | `CONFIG` | R/W | `[0] act_signed`, `[1] wt_signed` (both stored only, no effect in v0.1), `[2] acc_sat` (0 = wrap and flag, 1 = saturate) | configuration; takes effect on write, so change it only while idle |
+| `0x0C` | `WEIGHTS0` | R/W | `[7:0]=w0 … [31:24]=w3` | weights for lanes 0-3, packed int8 |
+| `0x10` | `WEIGHTS1` | R/W | `[7:0]=w4 … [31:24]=w7` | weights for lanes 4-7, packed int8 |
+| `0x14` | `ACC_OUT` | RO | `[31:0]` | signed int32 accumulator |
+| `0x18` | `ID` | RO | `[31:0]=0x4D414338` ("MAC8") | identification |
 
-Activations are **not** written through the register map in normal operation — they arrive on the serial data plane. (An optional `ACT_PUSH` write‑only register can be added behind a parameter for register‑only bring‑up on platforms without the streaming port.)
+Reads are registered (one cycle of latency) and have no side effects.
+Unmapped addresses read as 0 and ignore writes.
 
-## Datapath width
+Activations don't normally go through the register map; they come in on the
+serial port. If a platform has no streaming port, a write-only `ACT_PUSH`
+register could be added behind a parameter for register-only bring-up.
 
-| Stage | Type / width | Rationale |
+## Datapath widths
+
+| Where | Type | Why |
 |---|---|---|
-| Activation `a_i`, weight `w_i` | signed int8 (`[7:0]`, two's complement) | Quantized‑ML native precision |
-| Product `p_i = a_i · w_i` | signed int16 (`[15:0]`) | 8×8 signed → 16 bits, no loss (`-128 · -128 = 16384` fits) |
-| Adder tree sum (of `L=8` products) | signed int20 | `16 + ⌈log2 8⌉ = 19`; carried as 20 bits, no overflow within a pass |
-| Accumulator | signed **int32** | Headroom for `K/L` accumulating chunks; overflow detected, not silent |
-| Output `ACC_OUT` | signed int32 | Raw pre‑requantization partial sum |
+| activation `a_i`, weight `w_i` | signed int8 | the native precision for quantized ML |
+| product `p_i = a_i · w_i` | signed int16 | 8 × 8 signed is exactly 16 bits (`-128 · -128 = 16384` fits) |
+| adder tree sum of 8 products | signed int20 | needs `16 + log2(8) = 19` bits, rounded up to 20; can't overflow within a pass |
+| accumulator | signed **int32** | room for `K/L` passes; overflow is caught, not silent |
+| `ACC_OUT` | signed int32 | the raw partial sum, before any requantization |
 
-Overflow handling on the accumulator is `CONFIG.acc_sat`: wrap‑and‑flag (`acc_ovf`) by default, or saturate to `±(2³¹−1)`.
+`CONFIG.acc_sat` controls accumulator overflow: wrap and set `acc_ovf` (the
+default), or clamp to `2^31 - 1` / `-2^31`.
 
-## State machine description
+## State machine
 
-Single FSM, one‑hot encoded, clocked on `clk`. Weight writes and `CONFIG` latching happen combinationally through the bus in `IDLE` and are not FSM states.
+One FSM on `clk` with a 2-bit binary state encoding. Register writes
+(weights, config) are just bus writes; they aren't FSM states.
 
 ```
-        rst_n
-          │
-          ▼
-     ┌─────────┐  act_valid&act_ready (fill lanes 0..L-1)
-     │  IDLE   │◄─────────────────────────────┐
-     └────┬────┘                              │
-          │ act_full && (start | auto_start)  │
-          ▼                                   │
-     ┌─────────┐  pipeline stage 1            │
-     │  MUL    │  register L products p_i      │
-     └────┬────┘                              │
-          ▼                                   │
-     ┌─────────┐  pipeline stage 2            │
-     │  ADACC  │  adder tree + accumulate      │
-     └────┬────┘  (acc_en ? acc+sum : sum)     │
-          ▼                                   │
-     ┌─────────┐  assert done (1 cyc),         │
-     │  DONE   │  latch ACC_OUT, set STATUS ───┘
-     └─────────┘
+          rst_n
+            |
+            v
+       +---------+   act_valid & act_ready: fill lanes 0..L-1
+       |  IDLE   |<-------------------------------------+
+       +----+----+                                      |
+            | act_full && (start || auto_start)         |
+            v                                           |
+       +---------+   pipeline stage 1:                  |
+       |   MUL   |   register the L products            |
+       +----+----+                                      |
+            v                                           |
+       +---------+   pipeline stage 2: adder tree,      |
+       |  ADACC  |   then acc_en ? acc + sum : sum      |
+       +----+----+                                      |
+            v                                           |
+       +---------+   done high for one cycle,           |
+       |  DONE   |   STATUS.done set                    |
+       +----+----+                                      |
+            +-------------------------------------------+
 ```
 
-- **IDLE:** `act_ready=1`; accept serial activations into lane registers, incrementing a lane counter. Set `STATUS.act_full` when `L` beats are resident. Accept weight/config register writes. On `act_full` and (`start` pulse or `auto_start`): latch config, clear `act_ready`, go to `MUL`.
-- **MUL:** compute and register all `L` int16 products (pipeline stage 1). → `ADACC`.
-- **ADACC:** balanced int16 adder tree sums the `L` products; result is added into the accumulator when `acc_en=1`, else loaded. Evaluate overflow → `acc_ovf`. Register the accumulator (pipeline stage 2). → `DONE`.
-- **DONE:** assert `done` for one cycle, set sticky `STATUS.done`, present `ACC_OUT`. → `IDLE` (`busy` deasserts on the return to `IDLE`).
+- **IDLE:** `act_ready` is high. Incoming bytes go into the lane registers
+  and bump a counter; `act_full` goes high once `L` are in. Register writes
+  are accepted. When `act_full` is set and there's a `start` (or
+  `auto_start` is on), drop `act_ready` and go to MUL.
+- **MUL:** compute all `L` int16 products and register them (stage 1), then
+  go to ADACC.
+- **ADACC:** the adder tree sums the products, and the sum is added to the
+  accumulator (`acc_en=1`) or replaces it (`acc_en=0`). Check overflow,
+  update `acc_ovf`, register the accumulator (stage 2), go to DONE.
+- **DONE:** raise `done` for one cycle and set `STATUS.done`; `ACC_OUT`
+  holds the new value. Go back to IDLE, where `busy` falls.
 
-`busy` is high in `MUL`/`ADACC`/`DONE`. `lane_sel` gates lanes 4–7 (weights forced to 0 and their products masked) for the 4‑lane mode. FSM properties (no deadlock, exactly one active state, no `done` without a preceding `start`) are asserted in SVA and are formal‑check targets.
+`busy` is high in MUL, ADACC and DONE. In 4-lane mode (`lane_sel=0`) the
+products of lanes 4-7 are forced to zero. The FSM's safety properties (no
+deadlock, fixed state sequence, no `done` without a `start`) are proven with
+SymbiYosys; see `docs/formal_and_pd.md`.
 
 ## Latency
 
-Cycle counts at `clk`, with weights pre‑loaded:
+In `clk` cycles, with the weights already written:
 
 | Path | Cycles |
 |---|---|
-| `start` → `done` (activation vector already resident) | **3** (`MUL` → `ADACC` → `DONE`) — pipeline depth 2 + done cycle |
-| End‑to‑end per chunk incl. serial fill (`auto_start=1`) | `L + 4` (8‑lane: **12**; 4‑lane: **8**) = `L` fill beats + 1 `IDLE` decision cycle + 3 compute |
-| Length‑`K` dot product (`M = K/L` chunks, back‑to‑back) | `M·(L + 4)` — fill and compute are **serialized**, not overlapped (see below) |
+| `start` to `done`, vector already loaded | **3** (MUL, ADACC, DONE): two pipeline stages plus the done cycle |
+| one chunk end to end, including the fill (`auto_start=1`) | `L + 4` (**12** with 8 lanes, **8** with 4): `L` fill beats, 1 IDLE decision cycle, 3 compute |
+| length-`K` dot product, `M = K/L` chunks back to back | `M·(L + 4)`; fill and compute **take turns**, they don't overlap (see below) |
 
-Why `L + 4` and not `L + 3`: `act_full` is decoded from the registered lane counter, so it is first visible the cycle *after* the last beat is accepted; `go` is evaluated in that `IDLE` cycle. Why no overlap: v0.1 has a single activation buffer, and `act_ready = accept_en & ~act_full` with `accept_en` high only in `IDLE`, so the next vector cannot start filling until the current pass returns to `IDLE`. Overlapping fill with compute requires a second (ping‑pong) activation buffer — a v0.2 item. With an explicit `CTRL.start` instead of `auto_start`, add the register‑bus write latency on top.
+Why `L + 4` and not `L + 3`: `act_full` comes from the registered lane
+counter, so it shows up the cycle *after* the last byte is accepted, and
+`go` is evaluated in that IDLE cycle. Why no overlap: v0.1 has only one
+activation buffer, and `act_ready = accept_en & ~act_full` where `accept_en`
+is only high in IDLE, so the next vector can't start loading until the
+current pass is back in IDLE. Overlapping them needs a second (ping-pong)
+buffer, which is planned for v0.2. If you use `CTRL.start` instead of
+`auto_start`, add the bus write latency on top.
 
-Compute latency (`start→done`) is fixed and data‑independent — attractive for scheduling.
+The compute part (`start` to `done`) is fixed and doesn't depend on the
+data, which is nice for scheduling.
 
 ## Throughput
 
-The engine has two clearly different regimes, and stating both is the point:
+There are two very different numbers here, and the point is to state both.
 
-- **Peak (compute‑bound, adder tree active):** `L` MACs/cycle. At 8 lanes × 100 MHz = **0.8 GMAC/s ≈ 1.6 GOP/s** (counting multiply + add).
-- **Sustained (input‑bound), as built in v0.1:** the byte‑serial port accepts **1 int8/cycle**, so a new `L`‑element vector takes `L` cycles to load, and because fill and compute are serialized each chunk costs `L + 4` cycles. Sustained throughput is therefore `L/(L+4)`: **≈ 0.67 MAC/cycle ≈ 67 MMAC/s** in 8‑lane mode and **0.5 MAC/cycle** in 4‑lane mode, at 100 MHz — the 8‑lane array is provisioned for ~12× the rate the front end actually delivers.
-- **Input‑bandwidth ceiling:** 1 activation/cycle means no design fed by this port can sustain more than **1 MAC/cycle**. Reaching that ceiling needs fill to overlap compute (ping‑pong activation buffer); v0.1 leaves ~33% of even the serial bandwidth on the table.
+- **Peak (compute-bound):** `L` MACs per cycle. With 8 lanes at 100 MHz
+  that's **0.8 GMAC/s, about 1.6 GOP/s** counting each multiply and add.
+- **Sustained (input-bound), v0.1 as built:** the serial port takes **one
+  byte per cycle**, so loading an `L`-element vector takes `L` cycles, and
+  with fill and compute taking turns each chunk costs `L + 4` cycles.
+  That's `L/(L+4)`: **about 0.67 MAC/cycle (67 MMAC/s)** with 8 lanes and
+  **0.5 MAC/cycle** with 4, at 100 MHz. The 8-lane array could go about 12×
+  faster than the input lets it.
+- **The ceiling:** one activation per cycle means nothing behind this port
+  can ever do more than **one MAC per cycle**. Getting there needs fill and
+  compute to overlap (the ping-pong buffer), so v0.1 is leaving about a
+  third of even the serial bandwidth unused.
 
-This ~8× imbalance is the central architectural finding, not a bug: it motivates a v0.2 rebalance (wider input port, bit‑parallel weight+activation load, or replicating lanes only when input bandwidth scales with them). It is the kind of provisioning‑vs‑bandwidth tradeoff a real accelerator front end lives or dies on.
+This roughly 8× mismatch is the main architectural takeaway, and it's
+intentional. It's what v0.2 is for: a wider input port, loading weights and
+activations in parallel, or only adding lanes when input bandwidth grows
+with them. Real accelerator front ends live or die on exactly this
+provisioning-versus-bandwidth balance.
 
 ## Area target
 
-Sky130 HD standard cells, core logic only (excludes Caravel harness). **Target < 0.05 mm² / ~12–18k cells**, to be confirmed post‑synthesis — treat as an estimate, not a measurement. Basis for the estimate:
+Sky130 HD cells, core logic only (no Caravel harness). **Target: under
+0.05 mm², about 12-18k cells.** This is an estimate until synthesis says
+otherwise. Where it comes from:
 
-- 8× signed 8×8 multipliers dominate combinational area (roughly two‑thirds of the datapath).
-- Adder tree (7 int16 adds) + 32‑bit accumulator adder: modest.
-- Registers: 8×8 weights + 8×8 activations + 32‑bit accumulator + pipeline + control ≈ 200–250 flops.
-- 4‑lane mode is a synthesis/runtime subset, not a separate netlist.
+- the 8 signed 8×8 multipliers dominate, at roughly two thirds of the
+  datapath logic
+- the adder tree (7 int16 adds) and 32-bit accumulator adder are small by
+  comparison
+- registers: 8×8 weights, 8×8 activations, the 32-bit accumulator, the
+  pipeline and control, around 200-250 flops by the original estimate (the
+  first Yosys run counted 336, see `docs/synthesis_summary.md`)
+- 4-lane mode uses the same netlist; it isn't a separate build
 
-Multiplier count is the first area knob; sharing multipliers across cycles trades area for the throughput the serial port can't use anyway — a defensible v0.2 optimization.
+The multiplier count is the first thing to turn down for area. Sharing
+multipliers across cycles gives up throughput the serial port can't use
+anyway, which makes it an easy v0.2 optimization to defend.
 
 ## Timing target
 
-- **100 MHz (10 ns)** at Sky130 SS corner, met via the 2‑stage compute pipeline that isolates `multiply`, `adder‑tree + accumulate` on separate cycles.
-- Reported after synthesis and again after place‑and‑route (with SDF back‑annotation); the RTL number is provisional until gate‑level.
-- Expected critical path: multiplier → first adder‑tree level (registered at `MUL`/`ADACC` boundary). If it fails closure, the tree is split across an added pipeline stage (latency 3→4), a documented and cheap fallback.
+- **100 MHz (10 ns)** at the Sky130 SS corner, made possible by the two-stage
+  pipeline that puts the multiply on one cycle and the adder tree plus
+  accumulate on the next.
+- Measured after synthesis and again after place and route (with SDF back
+  annotation). Anything from RTL alone is provisional.
+- The expected critical path is the adder tree plus accumulate after the
+  MUL/ADACC register. If it doesn't close, split the tree with one more
+  pipeline stage (latency 3 to 4). That's a cheap, known fallback.
 
-## Test strategy
+## Test plan
 
-1. **Golden reference:** a NumPy int8 model computes expected products, tree sums, and accumulator behavior (including wrap/saturate) bit‑exactly.
-2. **Directed tests:** all‑zeros; identity/one‑hot weights; both signs; extremes (`±127`, `−128` boundary; `−128·−128`); accumulate across `M` chunks; `acc_clr`/soft‑reset; 4‑lane vs 8‑lane; overflow and saturation boundaries.
-3. **Constrained‑random:** randomized activation/weight streams and control sequences checked every `done` against the golden model.
-4. **Protocol assertions (SVA):** `act_valid`/`act_ready` stability and no‑combinational‑dependency; `start`→`done` causality (no `done` without `start`); one‑hot/no‑deadlock FSM; `busy` bracketing; `acc_ovf` correctness.
-5. **Functional coverage:** cross of lane mode × sign combos × accumulate/clear × overflow/saturate, targeting closure before sign‑off.
-6. **Formal (targeted):** FSM safety/liveness and handshake properties (bounded model check).
-7. **Gate‑level sim:** post‑synth and post‑PnR netlist with SDF to confirm timing and reset behavior.
-8. **FPGA bring‑up:** stream activations over UART, read back `ACC_OUT`, compare to host golden model on hardware.
+1. **Reference model:** a Python model predicts products, tree sums and the
+   accumulator (including wrap and saturate) bit for bit.
+2. **Directed tests:** all zeros; identity and one-hot weights; both signs;
+   extremes (`±127`, `-128`, `-128 · -128`); accumulating over `M` chunks;
+   `acc_clr` and soft reset; 4 vs 8 lanes; overflow and saturation edges.
+3. **Random tests:** random activations, weights and control, checked
+   against the model after every `done`.
+4. **Protocol checks:** valid/ready stability with no combinational loop
+   between them; `done` only after a `start`; FSM never deadlocks; `busy`
+   brackets every pass; `acc_ovf` is correct.
+5. **Functional coverage:** lane mode × sign mix × accumulate/clear ×
+   overflow/saturate, closed before signoff.
+6. **Formal:** FSM and handshake properties, proven by k-induction.
+7. **Gate-level sim:** post-synthesis and post-route netlists with SDF, to
+   check timing and reset.
+8. **FPGA bring-up:** stream activations over UART, read back `ACC_OUT`, and
+   compare with the model on the host.
 
 ## Known limitations
 
-- **Input‑bandwidth bound:** byte‑serial front end caps sustained throughput at 1 MAC/cycle, and v0.1's serialized fill/compute (single activation buffer) delivers only `L/(L+4)` ≈ 0.67 MAC/cycle in 8‑lane mode; the 8‑lane array is ~12× underutilized. Primary v0.2 target.
-- **No requantization stage:** raw int32 partial sum only — no scale/shift, bias, or activation function (ReLU/clamp). The output needs host‑side dequant to be useful in a full pipeline.
-- **No spatial reuse:** a single dot‑product engine, not a systolic/tiled GEMM array. Scaling to matrix multiply requires replication plus a dataflow/scheduler layer.
-- **Weight reload cost:** long dot products (`K ≫ L`) reload 8 weights over the register bus per chunk, adding control‑plane overhead not modeled in the peak number.
-- **Precision fixed:** symmetric signed int8 only; no per‑channel scales, no int4/fp8, no mixed precision.
-- **Elaboration‑time lane count:** 4/8 selectable, but not arbitrary runtime widths; lanes 4–7 are gated, not repurposed.
-- **Single clock domain:** no CDC/slow‑serial‑link support in v0.1 by design.
+- **Bound by input bandwidth.** The serial port caps sustained throughput at
+  one MAC per cycle, and because v0.1 has a single activation buffer it only
+  reaches `L/(L+4)`, about 0.67, in 8-lane mode. The 8-lane array sits idle
+  about 92% of the time. This is the main thing to fix in v0.2.
+- **No requantization.** Output is the raw int32 partial sum: no scale or
+  shift, no bias, no ReLU or clamp. The host has to dequantize before it's
+  useful in a real pipeline.
+- **No spatial reuse.** It's one dot-product engine, not a systolic or tiled
+  GEMM array. Matrix multiply would need many copies plus a dataflow and
+  scheduling layer.
+- **Weight reloads cost time.** For long dot products (`K` much larger than
+  `L`), each chunk reloads 8 weights over the register bus, and that
+  overhead isn't in the peak number.
+- **Fixed precision.** Symmetric signed int8 only: no per-channel scales, no
+  int4 or fp8, no mixed precision. The `act_signed`/`wt_signed` bits are
+  placeholders.
+- **Lane count is 4 or 8.** You can't pick an arbitrary width at runtime,
+  and in 4-lane mode lanes 4-7 just sit idle.
+- **One clock domain.** No CDC or slow serial link in v0.1, by design.
