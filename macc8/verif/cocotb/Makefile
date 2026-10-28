@@ -1,14 +1,12 @@
-# -----------------------------------------------------------------------------
-# verif/cocotb/Makefile — cocotb regression for MACC-8
+# cocotb regression for MACC-8
 #
-#   make            # run full suite on Verilator
-#   make SIM=icarus # run on Icarus Verilog instead
-#   make WAVES=1    # dump macc8.fst for GTKWave
-#   make MACC8_FAST=1  # shrink the accumulate-to-overflow loops (quick iteration)
+#   make                  all tests on Verilator
+#   make SIM=icarus       all tests on Icarus
+#   make WAVES=1          also write macc8.fst
+#   make MACC8_FAST=1     cut the overflow loops short
 #   make clean
 #
-# RTL_DIR defaults to the workspace layout (verif/cocotb -> ../../rtl).
-# -----------------------------------------------------------------------------
+# RTL_DIR points at ../../rtl unless you override it.
 TOPLEVEL_LANG ?= verilog
 SIM           ?= verilator
 RTL_DIR       ?= ../../rtl
@@ -17,7 +15,7 @@ MODEL_DIR     ?= ../models
 TOPLEVEL      := macc8_top
 MODULE        := test_macc8
 
-# compile order: package first, top last (mirrors rtl/macc8.f)
+# package first, top last, same order as rtl/macc8.f
 VERILOG_SOURCES := \
   $(RTL_DIR)/macc8_pkg.sv \
   $(RTL_DIR)/macc8_reset_sync.sv \
@@ -30,11 +28,10 @@ VERILOG_SOURCES := \
   $(RTL_DIR)/macc8_regfile.sv \
   $(RTL_DIR)/macc8_top.sv
 
-# make the golden model importable
+# so the tests can import macc8_ref
 export PYTHONPATH := $(shell cd $(MODEL_DIR) && pwd):$(PYTHONPATH)
 export MACC8_FAST
 
-# --- simulator-specific args -------------------------------------------------
 ifeq ($(SIM),verilator)
   EXTRA_ARGS += -Wno-DECLFILENAME -Wno-UNUSEDSIGNAL
   ifeq ($(WAVES),1)
