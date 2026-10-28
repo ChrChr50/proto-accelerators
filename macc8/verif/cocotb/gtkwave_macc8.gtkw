@@ -1,7 +1,7 @@
 [*]
-[*] GTKWave save file for MACC-8 (open with: make WAVES=1 then gtkwave macc8.fst gtkwave_macc8.gtkw)
-[*] Signal paths assume the Verilator FST top wrapper 'TOP.macc8_top'.
-[*] If your dump uses a different top hierarchy, drag signals in manually.
+[*] MACC-8 wave layout. Usage: make WAVES=1, then gtkwave macc8.fst gtkwave_macc8.gtkw
+[*] Paths are under Verilator's TOP.macc8_top wrapper; with another simulator
+[*] you may have to drag the signals in by hand.
 [*]
 [dumpfile] "macc8.fst"
 [savefile] "gtkwave_macc8.gtkw"
@@ -37,6 +37,6 @@ TOP.macc8_top.u_datapath.ovf_q
 @200
 -fsm
 @22
-TOP.macc8_top.u_fsm.state_q[1:0]
+TOP.macc8_top.u_fsm.cur_state[1:0]
 [pattern_trace] 1
 [pattern_trace] 0
