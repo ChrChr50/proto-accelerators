@@ -1,4 +1,4 @@
-"""Emit golden test vectors from macc8_ref.py into verif/vectors/.
+"""Will write reference vectors from macc8_ref.py into verif/vectors/.
 
-TODO: implement per the order of work in docs/flow.md.
+Not written yet; see docs/flow.md for where it fits.
 """

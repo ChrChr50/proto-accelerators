@@ -1,50 +1,51 @@
 #!/usr/bin/env bash
-# Parse a Yosys `stat` text report into the curated synthesis-summary fields
-# used by docs/synthesis_summary.md and reports/<ts>_synth-check/summary.md.
+# Turns Yosys `stat` output into the short summary in docs/synthesis_summary.md
+# (and reports/<ts>_synth-check/summary.md).
 #
 #   parse_yosys_stat.sh <full_yosys.log> <stat_only.log> <output.md>
 #
-# Flip-flop classification is based on the "$_DFF" / "$_SDFF" cell-name
-# prefix Yosys's internal gate library uses after `synth -flatten` -- e.g.
-# $_DFF_PN0_, $_DFFE_PN0P_. $scopeinfo is a debug/metadata pseudo-cell, not
-# real logic, and is excluded from both flip-flop and combinational counts.
+# After `synth -flatten`, every flop is a $_DFF* or $_SDFF* cell
+# ($_DFF_PN0_, $_DFFE_PN0P_, ...), so that prefix is what gets counted.
+# $scopeinfo cells only carry hierarchy names, so they're left out of both
+# counts.
 set -euo pipefail
 
 full_log="$1"
 stat_log="$2"
 out_md="$3"
 
-total_cells=$(grep -oE '^[[:space:]]*[0-9]+ cells$' "$stat_log" | grep -oE '[0-9]+' || echo 0)
-dff_cells=$(awk '/\$_S?DFF/ {sum += $1} END {print sum+0}' "$stat_log")
-scopeinfo=$(awk '/\$scopeinfo/ {sum += $1} END {print sum+0}' "$stat_log")
-comb_cells=$(( total_cells - dff_cells - scopeinfo ))
-warnings=$(grep -c '^Warning:' "$full_log" || true)
-yosys_version=$(yosys -V 2>/dev/null | head -1 || echo "version unknown")
+n_cells=$(grep -oE '^[[:space:]]*[0-9]+ cells$' "$stat_log" | grep -oE '[0-9]+' || echo 0)
+n_ffs=$(awk '/\$_S?DFF/ {n += $1} END {print n+0}' "$stat_log")
+n_scope=$(awk '/\$scopeinfo/ {n += $1} END {print n+0}' "$stat_log")
+n_comb=$(( n_cells - n_ffs - n_scope ))
+n_warn=$(grep -c '^Warning:' "$full_log" || true)
+yosys_ver=$(yosys -V 2>/dev/null | head -1 || echo "(version unknown)")
+yosys_ver=${yosys_ver#Yosys }
 
 cat > "$out_md" <<EOF
-# MACC-8 — Synthesis Summary (Yosys, technology-independent)
+# MACC-8 synthesis summary (generic Yosys, no PDK)
 
-Generated $(date -u +%Y-%m-%dT%H:%M:%SZ) by \`make synth-check\`
-(\`syn/yosys_area.tcl\`, $yosys_version, no PDK). Raw logs are the timestamped
-\`reports/<ts>_synth-check/\` directory this file was copied from.
+Written by \`make synth-check\` at $(date -u +%Y-%m-%dT%H:%M:%SZ), using
+\`syn/yosys_area.tcl\` on Yosys $yosys_ver. The full logs are in the
+\`reports/<ts>_synth-check/\` folder this file came from.
 
-| Field | Value |
+| | |
 |---|---|
-| Total cells | $total_cells |
-| Flip-flops | $dff_cells |
-| Combinational cells | $comb_cells |
-| Estimated area | N/A at this stage — technology-independent proxy only. Real area comes from OpenLane (\`scripts/run_synth.sh\`) once the Sky130 PDK is available. |
-| Critical warnings | $warnings |
+| Total cells | $n_cells |
+| Flip-flops | $n_ffs |
+| Combinational cells | $n_comb |
+| Area | not available yet; these are technology-independent counts. Real Sky130 area comes from OpenLane (\`scripts/run_synth.sh\`). |
+| Yosys warnings | $n_warn |
 
-## Synthesizability checks
+## Checks
 
-\`syn/yosys_area.tcl\` asserts these (the run fails, not just warns, if
-violated) — this run passed all of them:
+\`syn/yosys_area.tcl\` fails the run outright if any of these don't hold. All
+passed:
 
-- [x] No inferred latches (\`\$_DLATCH_*\` / \`\$_DLATCHSR_*\` cells)
-- [x] No undriven nets
-- [x] No multiple drivers
-- [x] No unsynthesizable constructs (\`yosys check -assert\`)
+- [x] no latches (\`\$_DLATCH_*\` / \`\$_DLATCHSR_*\` cells)
+- [x] no undriven nets
+- [x] no nets with more than one driver
+- [x] nothing unsynthesizable (\`yosys check -assert\`)
 
-See \`docs/flow.md\` for how this step fits into the overall make-target flow.
+\`docs/flow.md\` shows where this fits among the other make targets.
 EOF
