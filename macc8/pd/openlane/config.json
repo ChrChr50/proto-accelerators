@@ -27,7 +27,5 @@
   "ERROR_ON_LINTER_WARNINGS": false,
   "ERROR_ON_SYNTH_CHECKS": true,
 
-  "//": "Package symbols are macc8_pkg:: scoped, so Yosys read_verilog handles the",
-  "//sv": "SystemVerilog directly; no slang/synlig plugin is required.",
   "VERILOG_DEFINES": []
 }

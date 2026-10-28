@@ -1,2 +1,2 @@
-# Justified lint waivers — each entry must include a reason.
-# format: waive --rule=<rule-name> --location=<file:line> --reason="..."
+# Individual Verible waivers. None so far. Every entry needs a reason:
+#   waive --rule=<rule-name> --location=<file:line> --reason="..."
