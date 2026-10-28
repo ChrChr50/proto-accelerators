@@ -1,15 +1,10 @@
-# Verible lint rule configuration — enabled/disabled rules.
-# See: verible-verilog-lint --help_rules
+# Verible rule settings (`verible-verilog-lint --help_rules` lists them).
+# Everything is at the defaults except the one rule below.
 #
-# First real `make lint` run (2026-07-11, Verible v0.0-4080-ga0a8d8eb) surfaced
-# one genuine, project-wide false positive, waived below with justification.
-# Everything else stays at Verible's defaults.
-
-# Verible's default parameter-name-style regex expects UpperCamelCase (or a
-# single trailing _123 numeric suffix), not multi-word ALL_CAPS_SNAKE. This
-# codebase deliberately uses ALL_CAPS_SNAKE for every parameter/localparam
-# (LANES, ACT_W, ADDR_CTRL, S_IDLE, ...) — the standard HDL constant
-# convention. Renaming ~30 declarations across every rtl/ file to satisfy an
-# atypical regex would be pure churn with no readability benefit, so this
-# rule is waived project-wide rather than case-by-case.
+# parameter-name-style wants UpperCamelCase. Every parameter and localparam
+# here is ALL_CAPS_SNAKE (LANES, ACT_W, ADDR_CTRL, S_IDLE, ...), which is
+# the usual HDL convention, and renaming them all just to satisfy this rule
+# would make the code harder to read, not easier. It came up on the first
+# lint run (2026-07-11, Verible v0.0-4080-ga0a8d8eb) and is turned off for
+# the whole project.
 -parameter-name-style
