@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
-# Thin wrapper: `make sim` is the source of truth (and writes a timestamped,
-# committed report to reports/ -- see reports/README.md). Use `make sim-fast`
-# or `make sim-icarus` directly for the other variants.
+# Shortcut for `make sim` (the full-length regression). For the quicker
+# variants run `make sim-fast` or `make sim-icarus` yourself.
 set -euo pipefail
 source env/setup.sh
 make sim

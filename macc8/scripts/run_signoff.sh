@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
-# Report DRC/LVS/antenna outcomes from the most recent OpenLane run.
+# Prints the DRC, LVS and antenna results from the newest OpenLane run.
 set -euo pipefail
-run=$(ls -td pd/openlane/runs/* 2>/dev/null | head -1)
-[ -z "$run" ] && { echo "No OpenLane run found; run scripts/run_gds.sh first."; exit 1; }
-echo "Latest run: $run"
-grep -iE '"(magic__drc|klayout__drc|lvs).*"|violations|error' "$run/metrics.json" 2>/dev/null || \
-  echo "Inspect $run/*-drc/ , *-lvs/ and metrics.json for sign-off status."
+latest=$(ls -td pd/openlane/runs/* 2>/dev/null | head -1)
+[ -z "$latest" ] && { echo "No OpenLane runs yet. Run scripts/run_gds.sh first."; exit 1; }
+echo "Newest run: $latest"
+grep -iE '"(magic__drc|klayout__drc|lvs).*"|violations|error' "$latest/metrics.json" 2>/dev/null || \
+  echo "Nothing matched in metrics.json; check $latest/*-drc/ and *-lvs/ by hand."

@@ -1,15 +1,16 @@
 #!/usr/bin/env bash
-# Fast loop: OpenLane synthesis + STA only (no place/route). Run from workspace root.
+# OpenLane up to pre-route STA: synthesis and timing, no place and route.
+# Run it from macc8/.
 #
-# --dockerized is required: several OpenLane 2.x steps (e.g. Generate JSON
-# Header) need a Yosys built with pyosys (embedded Python scripting, the -y
-# flag), which our local OSS-CAD-Suite Yosys (used for lint/formal/
-# synth-check) doesn't have. OpenLane's own Docker image does.
-# --docker-no-tty is also required (must precede --dockerized): Docker's
-# default -t (allocate a TTY) fails with "the input device is not a TTY"
-# when run from a non-interactive shell, which this always is here.
-# Learned the hard way 2026-07-13 -- see env/tool-versions.md.
+# Two flags matter here:
+#   --dockerized     some OpenLane 2 steps run Yosys with -y (pyosys), and
+#                    the OSS-CAD-Suite Yosys we lint and prove with isn't
+#                    built with it. OpenLane's Docker image is.
+#   --docker-no-tty  has to come before --dockerized. Without it docker run
+#                    asks for a TTY and fails with "the input device is not
+#                    a TTY", since this never runs interactively.
+# More background in env/tool-versions.md.
 set -euo pipefail
 source env/setup.sh 2>/dev/null || true
 openlane --docker-no-tty --dockerized --to OpenROAD.STAPrePNR pd/openlane/config.json
-echo "Synthesis + STA reports under pd/openlane/runs/<run>/ (see *-sta/ and 1-*-yosys/)."
+echo "Done. Look in pd/openlane/runs/<run>/ (the *-sta/ and 1-*-yosys/ folders)."
