@@ -1,10 +1,11 @@
-# Caravel integration (optional)
+# Caravel wrapper (not started)
 
-Notes on wrapping `macc8_top` as a `caravel_user_project`.
+This folder is for eventually packaging `macc8_top` as a
+`caravel_user_project`.
 
-This directory is isolated from the core so `rtl/` stays independently
-hardenable and the repo isn't coupled to the Caravel harness for everyday
-lint/sim/formal/synth work.
+It's kept apart from the core on purpose: `rtl/` should harden on its own,
+and day-to-day lint, sim, formal and synth work shouldn't depend on the
+Caravel harness.
 
-TODO: document the user-project wrapper, GPIO mapping, and Caravel-specific
-constraints when the integration is undertaken.
+Still to write up: the user-project wrapper, how the ports map onto GPIO,
+and any Caravel-specific constraints.

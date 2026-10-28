@@ -1,2 +1,2 @@
-# Optional pin placement hints for OpenLane.
-# Populate with set_pin_order / pad-ring hints as needed.
+# Pin placement hints for OpenLane. Empty for now; set_pin_order and similar
+# go here when the pin layout matters.
