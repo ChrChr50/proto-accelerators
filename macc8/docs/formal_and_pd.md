@@ -1,98 +1,111 @@
-# MACC‑8 — Formal Verification + Physical Design (RTL‑to‑GDSII)
+# MACC-8: formal proofs and physical design
 
-This delivery adds formal property proofs and the OpenLane synthesis/PD setup,
-and includes a small **RTL portability fix** required for the open‑source flow.
+Notes on the two SymbiYosys proofs, the OpenLane setup, and one change the
+open-source flow forced on the RTL.
 
-## 1. RTL portability fix (important — read first)
+## Why there are no package imports
 
-Vanilla open‑source **Yosys** `read_verilog -sv` (used by both SymbiYosys and by
-OpenLane's default synthesis) does **not** accept SystemVerilog wildcard package
-imports (`import macc8_pkg::*;`), in either header or file scope. The original
-RTL used header imports, which parse fine in Verilator/slang but fail in Yosys.
+Stock Yosys (`read_verilog -sv`, which both SymbiYosys and OpenLane's default
+synthesis use) can't parse wildcard imports like `import macc8_pkg::*;`,
+whether they sit in the module header or at file scope. Verilator and slang
+are fine with them, so this only showed up once the RTL went through Yosys.
 
-Fix: the five modules that imported the package now reference package symbols with
-the explicit `macc8_pkg::` scope in their port lists, plus small local aliases in
-the body so the logic reads naturally. **No behavior changed** — only symbol
-scoping. Affected files (these supersede the earlier RTL delivery):
+So every module spells out `macc8_pkg::` in its port list, and the modules
+that use package constants a lot copy them into local `localparam`s near the
+top. That's purely a scoping change; the logic is the same. The modules
+involved are:
 
 ```
-macc8_fsm.sv  macc8_serial_rx.sv  macc8_datapath.sv  macc8_regfile.sv  macc8_top.sv
+macc8_fsm  macc8_serial_rx  macc8_datapath  macc8_regfile  macc8_top
 ```
 
-The leaf modules (`macc8_pkg`, `macc8_reset_sync`, `macc8_mac_lane`,
-`macc8_adder_tree`, `macc8_accumulator`) were already import‑free and are unchanged.
+`macc8_pkg`, `macc8_reset_sync`, `macc8_mac_lane`, `macc8_adder_tree` and
+`macc8_accumulator` never imported anything and didn't need touching.
 
-Re‑validation after the fix (all run here):
-- `verilator --lint-only -Wall` — clean.
-- Yosys `read_verilog -sv … ; hierarchy ; proc ; check` — clean.
-- Full cocotb suite (17 tests incl. 1000‑vector random) — all PASS, behavior identical.
+After the change I re-ran `verilator --lint-only -Wall` (clean), a Yosys
+`read_verilog -sv; hierarchy; proc; check` pass (clean), and the full cocotb
+suite (17 tests, 1000 random vectors, all passing as before).
 
-## 2. Formal proofs (SymbiYosys + Yosys + z3)
+## Formal proofs
 
-Two jobs, both **proven unbounded by k‑induction** (not just BMC):
+There are two sby jobs. Both are full k-induction proofs, so they hold for
+any number of cycles, not just up to a BMC depth.
 
-`fsm_props.sby` → `macc8_props_fsm.sv` (over macc8_fsm I/O):
-- reset ⇒ engine idle
-- IDLE xor busy; capture phases mutually exclusive; done only while busy
-- fixed 3‑cycle progression MUL→ADACC→DONE→IDLE (no deadlock, no stall)
-- causality: done only right after ADACC; MUL entered only via `go`
-- start‑before‑load is a no‑op (stay IDLE while `!go`)
-- `consume` strobe only at an accepted pass start
+**`fsm_props.sby`** checks `macc8_props_fsm.sv` against the I/O of `macc8_fsm`:
 
-`handshake_props.sby` → `macc8_props_rx.sv` (over macc8_serial_rx I/O):
+- in reset the engine is idle
+- `accept_en` and `busy` are always opposites; the two capture strobes never
+  overlap; `done` only appears while busy
+- every pass goes MUL, ADACC, DONE, IDLE, one cycle each, with no stall
+- `done` only follows ADACC, and MUL is only entered when `go` was true
+- a `start` with no vector loaded is ignored (stays in IDLE)
+- `consume` only fires on the cycle a pass is accepted
+
+**`handshake_props.sby`** checks `macc8_props_rx.sv` against the I/O of
+`macc8_serial_rx`:
+
 - `act_ready == (accept_en && !act_full)`
-- never ready when full (no overrun); ready ⇒ accepting enabled
-- a pass‑start `consume` empties the buffer next cycle
-- reset ⇒ buffer empty
-- (assumes `active_lanes ∈ {4,8}`)
+- never ready while full, never ready unless accepting
+- `consume` empties the buffer by the next cycle
+- the buffer is empty in reset
+- assumes `active_lanes` is either 4 or 8
 
-The properties are written as clocked immediate assertions with `$past` guarded by
-a past‑valid flag — the portable idiom vanilla Yosys accepts (it rejects inline‑
-clocked `assert property`). Run them with:
-
-```bash
-cd verif/formal && ./run_formal.sh      # or: sby -f fsm_props.sby ; sby -f handshake_props.sby
-```
-
-Result observed here: **both jobs `DONE (PASS)` — successful proof by k‑induction.**
-
-## 3. Synthesis / PPA
-
-`pd/openlane/config.json` hardens `macc8_top` on **Sky130** (`sky130_fd_sc_hd`) at
-`CLOCK_PERIOD 10.0` (100 MHz), with `constraints/macc8.sdc`. Because the RTL is
-`macc8_pkg::`‑scoped, OpenLane's Yosys reads it directly — no slang/synlig plugin
-needed.
+The properties use clocked immediate assertions, with `$past` gated by a
+`past_valid` register. Stock Yosys doesn't accept `assert property` with an
+inline clock, and this style works everywhere. To run them:
 
 ```bash
-make pdk            # scripts/install_pdk.sh (Volare -> Sky130)
-scripts/run_synth.sh   # OpenLane synthesis + STA (fast loop)
-scripts/run_gds.sh     # full RTL-to-GDSII
-scripts/run_signoff.sh # DRC / LVS summary from the latest run
+cd verif/formal
+./run_formal.sh                # runs both jobs
+sby -f fsm_props.sby           # or one at a time
+sby -f handshake_props.sby
 ```
 
-### First‑order complexity proxy (measured here with Yosys, no PDK)
+Both jobs finish with `DONE (PASS)`. The committed logs are under
+`reports/*_formal/`.
 
-`syn/yosys_area.tcl` runs technology‑independent synthesis:
+## Synthesis and PPA
 
-- **≈336 flip‑flops** — 128 product‑pipeline + 64 weights + 64 activation regs +
-  32 accumulator + 32 read‑data + config/counter/FSM/reset‑sync.
-- Combinational cells are **XOR/XNOR/AOI‑heavy**, the signature of the 8 signed
-  int8 multipliers plus the adder tree.
+`pd/openlane/config.json` hardens `macc8_top` with `sky130_fd_sc_hd` at a
+10 ns clock (100 MHz) using `constraints/macc8.sdc`. With the package
+references written out explicitly, OpenLane's Yosys reads the RTL as is; there's
+no need for the slang or synlig plugins.
 
-This is consistent with the spec's `< 0.05 mm²` Sky130 target; the authoritative
-area/timing/power numbers come from the OpenLane run (`metrics.json`, STA reports).
+```bash
+make pdk                 # scripts/install_pdk.sh, fetches Sky130 with Volare
+scripts/run_synth.sh     # synthesis + STA, the quick loop
+scripts/run_gds.sh       # complete RTL-to-GDSII
+scripts/run_signoff.sh   # DRC/LVS summary of the latest run
+```
 
-### How to read the first OpenLane report
+### Rough size before the PDK
 
-- **Timing:** check the post‑synth and post‑route STA — worst negative slack (WNS)
-  must be ≥ 0 at 10 ns. If MUL→adder‑tree→accumulate is the critical path and WNS
-  is slightly negative, split the tree with one more pipeline stage (spec §Timing,
-  documented fallback; latency 3→4).
-- **Area:** `metrics.json` `design__instance__area` / core utilization vs `FP_CORE_UTIL`.
-- **Sign‑off:** `magic__drc__violations` and LVS status must be 0 / clean.
+`syn/yosys_area.tcl` does a technology-independent synthesis. It reports
+about **336 flip-flops**: 128 for the product pipeline, 64 for weights, 64
+for activations, 32 for the accumulator, 32 for read data, and the rest for
+config bits, the lane counter, the FSM and the reset synchronizer. The
+combinational side is mostly XOR/XNOR/AOI cells, which is what eight signed
+multipliers and an adder tree look like.
 
-## 4. Tool notes
+That's in line with the `< 0.05 mm²` target in the spec. The real area,
+timing and power numbers come from OpenLane (`metrics.json` and the STA
+reports).
 
-- Proven here with **Yosys 0.33 + yosys‑smtbmc + z3 + SymbiYosys**. Any oss‑cad‑suite
-  build works; a solver (z3/yices/boolector) must be on PATH.
-- OpenLane 2 + Volare Sky130 as per the workspace `env/`.
+### Reading the first OpenLane run
+
+- **Timing:** look at the post-synthesis and post-route STA. WNS has to be
+  0 or better at 10 ns. If the multiply, adder tree, accumulate path is the
+  worst one and only misses by a little, split the tree with another
+  pipeline register (the fallback in the spec's timing section; latency goes
+  from 3 to 4).
+- **Area:** `design__instance__area` in `metrics.json`, and core utilization
+  compared with `FP_CORE_UTIL`.
+- **Signoff:** `magic__drc__violations` must be 0 and LVS must be clean.
+
+## Tool notes
+
+- The proofs were first run with Yosys 0.33, yosys-smtbmc, z3 and
+  SymbiYosys, and re-run on the pinned toolchain in `env/tool-versions.md`.
+  Any recent OSS-CAD-Suite should work as long as a solver (z3, yices or
+  boolector) is on PATH.
+- OpenLane 2 and the Sky130 PDK are set up as described in `env/`.
