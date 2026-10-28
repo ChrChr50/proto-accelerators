@@ -1,12 +1,9 @@
-// -----------------------------------------------------------------------------
-// macc8_props_fsm.sv
-// Formal properties for macc8_fsm, written as clocked immediate assertions so
-// they parse under vanilla open-source Yosys (which does not accept inline-
-// clocked `assert property`). Properties are expressed purely over the FSM I/O.
-// FSM outputs are a one-hot view of the state:
-//   accept_en=IDLE, mul_capture=MUL, acc_capture=ADACC, done_pulse=DONE,
-//   busy = !IDLE.
-// -----------------------------------------------------------------------------
+// Properties for macc8_fsm, checked only through its ports.
+//
+// Plain Yosys won't take `assert property` with an inline clock, so these are
+// immediate asserts inside a clocked block. Each FSM output decodes one
+// state: accept_en is IDLE, mul_capture is MUL, acc_capture is ADACC,
+// done_pulse is DONE, and busy is anything but IDLE.
 module macc8_props_fsm (
   input logic clk,
   input logic rst_n,
@@ -33,27 +30,26 @@ module macc8_props_fsm (
 
   always @(posedge clk) begin
     if (!rst_n) begin
-      // reset: engine is idle
       a_reset_idle: assert (accept_en && !busy && !done_pulse);
     end else begin
-      // ---- single-cycle invariants ----
+      // true on every cycle
       a_idle_xor_busy:  assert (accept_en == !busy);
       a_cap_excl:       assert (!(mul_capture && acc_capture));
       a_done_is_phase:  assert (!done_pulse || busy);
       a_consume_valid:  assert (!consume || (accept_en && go));
 
-      // ---- temporal (guarded so we never check across the reset edge) ----
+      // across cycles; skipped on the first cycle and right after reset
       if (past_valid && $past(rst_n)) begin
-        // fixed 3-cycle pipeline progression: MUL -> ADACC -> DONE -> IDLE
+        // MUL, ADACC, DONE, IDLE, one cycle each
         a_mul_to_adacc:  assert (!$past(mul_capture) || acc_capture);
         a_adacc_to_done: assert (!$past(acc_capture) || done_pulse);
         a_done_to_idle:  assert (!$past(done_pulse) || accept_en);
 
-        // causality: done only right after ADACC; MUL only entered via go
+        // nothing happens out of order or without a reason
         a_done_after_adacc: assert (!done_pulse || $past(acc_capture));
         a_mul_needs_go:     assert (!(mul_capture && !$past(mul_capture)) || $past(go));
 
-        // start-before-load / no-op: stay IDLE while there is no go
+        // without go, IDLE stays IDLE (covers start with nothing loaded)
         a_stay_idle: assert (!($past(accept_en) && !$past(go)) || accept_en);
       end
     end
