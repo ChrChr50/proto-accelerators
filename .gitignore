@@ -1,5 +1,10 @@
-# spent one-off delivery-drop folders (contents already migrated into their
-# destination projects; only PLACEMENT.md remains as a record)
+# old drop-off folders; everything in them has already been moved into the
+# projects, and only PLACEMENT.md is left as a record
 /files/
 /files (2)/
 /files (4)/
+
+# local AI assistant config and notes
+.claude/
+CLAUDE.md
+CLAUDE.local.md

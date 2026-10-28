@@ -2,20 +2,20 @@
 
 [![CI](https://github.com/ChrChr50/proto-accelerators/actions/workflows/ci.yml/badge.svg)](https://github.com/ChrChr50/proto-accelerators/actions/workflows/ci.yml)
 
-A monorepo for prototype hardware accelerator projects — RTL through GDSII on
-open-source tooling and open PDKs.
+Small hardware accelerator prototypes, taken from RTL toward GDSII using only
+open-source tools and open PDKs.
 
 ## Projects
 
-- **[macc8/](macc8/)** — signed int8, 8-lane (4-lane configurable) dot-product
-  accelerator. SystemVerilog RTL, cocotb verification, SymbiYosys formal
-  properties, and an OpenLane 2 / Sky130 physical design flow. See
-  [macc8/README.md](macc8/README.md) for its own quickstart and toolchain.
+- **[macc8/](macc8/)**: a signed int8 dot-product engine with 8 lanes (or 4,
+  set at runtime). SystemVerilog RTL, a cocotb testbench, SymbiYosys proofs,
+  and an OpenLane 2 flow targeting Sky130. Build instructions are in
+  [macc8/README.md](macc8/README.md).
 
-Future prototype accelerators will live alongside `macc8/` as sibling
-directories, each with its own `README.md` and build flow.
+New prototypes will get their own top-level folder next to `macc8/`, each
+with its own README and build setup.
 
 ## License
 
-Apache-2.0 — see [LICENSE](LICENSE). Individual projects may override this if
-a future prototype needs different terms.
+Apache-2.0, see [LICENSE](LICENSE). A project folder can carry its own
+license if it ever needs different terms.
