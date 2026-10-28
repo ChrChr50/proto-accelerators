@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# Thin wrapper: `make lint` is the source of truth (and writes a timestamped,
-# committed report to reports/ -- see reports/README.md).
+# Shortcut for `make lint`. Use make directly if you prefer; either way the
+# results land in a new reports/<ts>_lint/ folder.
 set -euo pipefail
 source env/setup.sh
 make lint
